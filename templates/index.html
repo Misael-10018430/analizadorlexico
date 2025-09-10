@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analizador</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <style>
+        .tabla-analisis {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .tabla-analisis th, .tabla-analisis td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        .tabla-analisis th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+        
+        .token-column {
+            font-weight: bold;
+            background-color: #f9f9f9;
+        }
+        
+        .marca-x {
+            color: #007bff;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .tabla-tokens {
+            margin-top: 30px;
+        }
+        
+        .tabla-tokens table {
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>ANALIZADOR LÉXICO</h1>
+    <form method="POST" action="/analizar">
+        <textarea name="texto">{% if texto %}{{texto}}{% endif %}</textarea>
+        <button>ANALIZAR</button>
+    </form>
+
+    {% if tokens %}
+    <div class="estadisticas">
+        <h2>ESTADÍSTICAS</h2>
+        <div class="stats-container">
+            <div class="stat-item">
+                <span class="stat-number">{{estadisticas.total_palabras_reservadas}}</span>
+                <span class="stat-label">Palabras Reservadas</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">{{estadisticas.total_identificadores}}</span>
+                <span class="stat-label">Identificadores</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">{{estadisticas.total_parentesis if estadisticas.total_parentesis is defined else 0}}</span>
+                <span class="stat-label">Paréntesis</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">{{estadisticas.total_simbolos if estadisticas.total_simbolos is defined else 0}}</span>
+                <span class="stat-label">Símbolos</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">{{estadisticas.total_tokens}}</span>
+                <span class="stat-label">Total Tokens</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="listas-container">
+        <div class="lista">
+            <h3>PALABRAS RESERVADAS ENCONTRADAS</h3>
+            <div class="lista-items">
+                {% for palabra in palabras_reservadas_lista %}
+                <span class="item-reservada">{{palabra}}</span>
+                {% endfor %}
+                {% if not palabras_reservadas_lista %}
+                <span class="no-items">No se encontraron palabras reservadas</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="lista">
+            <h3>IDENTIFICADORES ENCONTRADOS</h3>
+            <div class="lista-items">
+                {% for identificador in identificadores_lista %}
+                <span class="item-identificador">{{identificador}}</span>
+                {% endfor %}
+                {% if not identificadores_lista %}
+                <span class="no-items">No se encontraron identificadores</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Nueva tabla de análisis detallado -->
+    <h2>ANÁLISIS DETALLADO</h2>
+    <table class="tabla-analisis">
+        <tr>
+            <th>TOKEN</th>
+            <th>PALABRA RESERVADA (PR)</th>
+            <th>IDENTIFICADOR (ID)</th>
+            <th>SÍMBOLOS</th>
+            <th>NÚMEROS</th>
+        </tr>
+        {% for token in tokens %}
+        <tr>
+            <td class="token-column">{{token[0]}}</td>
+            <td>
+                {% if token[1] == 'PALABRA RESERVADA' %}
+                    <span class="marca-x">X</span>
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td>
+                {% if token[1] == 'IDENTIFICADOR' %}
+                    <span class="marca-x">X</span>
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td>
+                {% if token[1] in ['P.I', 'P.D', 'LLAVE_I', 'LLAVE_D', 'DELIMITADOR', 'OPERADOR'] %}
+                    <span class="marca-x">X</span>
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td>
+                {% if token[1] == 'NUMERO' %}
+                    <span class="marca-x">X</span>
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Tabla de tokens original (más pequeña) -->
+    <div class="tabla-tokens">
+        <h3>TABLA DE TOKENS</h3>
+        <table>
+            <tr><th>TOKEN</th><th>TIPO</th></tr>
+            {% for token in tokens %}
+            <tr><td>{{token[0]}}</td><td>{{token[1]}}</td></tr>
+            {% endfor %}
+        </table>
+    </div>
+    
+    {% endif %}   
+</body>
+</html>
