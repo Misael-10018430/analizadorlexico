@@ -4,11 +4,20 @@
     <title>Analizador</title>
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <style>
-        /* Estilos generales y de formulario */
-        body { font-family: sans-serif; margin: 2em; }
+        /* --- CAMBIOS PRINCIPALES PARA CENTRAR Y FIJAR EL ANCHO --- */
+        body { 
+            font-family: sans-serif; 
+            /* Se elimina el margen de aquí para dárselo al contenedor */
+        }
+
+        .main-container {
+            max-width: 900px; /* Ancho máximo para todo el contenido */
+            margin: 2em auto; /* Centra el contenedor en la página */
+        }
+        /* --------------------------------------------------------- */
+        
         textarea { width: 100%; height: 150px; padding: 10px; border: 1px solid #333; border-radius: 5px; margin-bottom: 10px; }
         
-        /* Contenedor y estilo de botones con tu color naranja */
         .form-buttons { display: flex; gap: 15px; }
         button { 
             padding: 10px 20px; 
@@ -20,10 +29,10 @@
             font-weight: bold;
         }
         button[formaction="/analizar_lexico"],
-
         button[formaction="/analizar_sintactico"] { 
-            background-color: #d78e3f; /* Color naranja para botones */
+            background-color: #d78e3f;
         }
+
         .estadisticas {
             background-color: #d78e3f;
             padding: 20px;
@@ -31,31 +40,27 @@
             margin-top: 25px;
         }
 
-        /* REGLA NUEVA: Título "ESTADÍSTICAS" en blanco */
         .estadisticas h2 {
             color: white;
             text-align: center;
             margin: 0 0 20px 0;
         }
 
-        /* REGLA SIN CAMBIOS: Organiza los cuadros internos */
         .stats-container {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
         }
 
-        /* REGLA SIN CAMBIOS: Estilo para cada cuadro blanco individual */
         .stat-item {
             flex: 1;
             padding: 15px;
             border: 1px solid #333;
             border-radius: 5px;
             text-align: center;
-            background-color: white; /* <-- Esto mantiene los cuadros internos en blanco */
+            background-color: white;
         }
 
-        /* REGLAS SIN CAMBIOS: Estilo para los números y etiquetas dentro de los cuadros */
         .stat-number {
             display: block;
             font-size: 2em;
@@ -65,30 +70,31 @@
             color: #555;
         }
 
-        /* Estilos de tabla con encabezados en naranja */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        table { 
+            width: 100%; /* Ahora ocupará el 100% del .main-container */
+            border-collapse: collapse; 
+            margin-top: 20px; 
+        }
         th, td { 
-            border: 1px solid #333; /* Color de borde original */
+            border: 1px solid #333;
             padding: 10px; 
             text-align: center; 
         }
         th { 
-            background-color: #d78e3f; /* Color naranja para encabezados de tabla */
+            background-color: #d78e3f;
             font-weight: bold;
-            color: white; /* Letra blanca para que resalte sobre el naranja */
+            color: white;
         }
         .token-column { 
             font-weight: bold; 
             text-align: left; 
-            background-color: #f9f9f9; /* Color de fondo para la columna de token original */
+            background-color: #f9f9f9;
         }
         .marca-x { 
-            color: #007bff; /* Color para la "X" original */
+            color: #007bff;
             font-weight: bold; 
             font-size: 1.2em; 
         }
-
-        /* Estilos para el resultado sintáctico (manteniendo verde/rojo por funcionalidad) */
         .resultado-sintactico {
             padding: 15px;
             margin-top: 20px;
@@ -109,91 +115,94 @@
     </style>
 </head>
 <body>
-
-    <h1>ANALIZADOR LÉXICO Y SINTÁCTICO</h1>
     
-    <form method="POST">
-        <textarea name="texto" placeholder="Escribe tu código aquí...">{% if texto %}{{texto}}{% endif %}</textarea>
-        <div class="form-buttons">
-            <button type="submit" formaction="/analizar_lexico">Analizar (Léxico)</button>
-            <button type="submit" formaction="/analizar_sintactico">Analizar (Sintáctico)</button>
+    <div class="main-container">
+
+        <h1>ANALIZADOR LÉXICO Y SINTÁCTICO</h1>
+    
+        <form method="POST">
+            <textarea name="texto" placeholder="Escribe tu código aquí...">{% if texto %}{{texto}}{% endif %}</textarea>
+            <div class="form-buttons">
+                <button type="submit" formaction="/analizar_lexico">Analizar (Léxico)</button>
+                <button type="submit" formaction="/analizar_sintactico">Analizar (Sintáctico)</button>
+            </div>
+        </form>
+
+        {% if resultado_sintactico %}
+            <h2>Resultado del Análisis Sintáctico</h2>
+            <div class="resultado-sintactico {{ 'exito' if 'exitoso' in resultado_sintactico else 'error' }}">
+                <p>{{ resultado_sintactico }}</p>
+            </div>
+        {% endif %}
+
+        {% if tokens %}
+        <div class="estadisticas">
+            <h2>ESTADÍSTICAS</h2>
+            <div class="stats-container">
+                <div class="stat-item">
+                    <span class="stat-number">{{estadisticas.total_palabras_reservadas}}</span>
+                    <span class="stat-label">Palabras Reservadas</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">{{estadisticas.total_identificadores}}</span>
+                    <span class="stat-label">Identificadores</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">{{estadisticas.total_simbolos if estadisticas.total_simbolos is defined else 0}}</span>
+                    <span class="stat-label">Símbolos y Números</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">{{estadisticas.total_tokens}}</span>
+                    <span class="stat-label">Total Tokens</span>
+                </div>
+            </div>
         </div>
-    </form>
 
-    {% if resultado_sintactico %}
-        <h2>Resultado del Análisis Sintáctico</h2>
-        <div class="resultado-sintactico {{ 'exito' if 'exitoso' in resultado_sintactico else 'error' }}">
-            <p>{{ resultado_sintactico }}</p>
-        </div>
-    {% endif %}
-
-    {% if tokens %}
-    <div class="estadisticas">
-        <h2>ESTADÍSTICAS</h2>
-        <div class="stats-container">
-            <div class="stat-item">
-                <span class="stat-number">{{estadisticas.total_palabras_reservadas}}</span>
-                <span class="stat-label">Palabras Reservadas</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">{{estadisticas.total_identificadores}}</span>
-                <span class="stat-label">Identificadores</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">{{estadisticas.total_simbolos if estadisticas.total_simbolos is defined else 0}}</span>
-                <span class="stat-label">Símbolos y Números</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">{{estadisticas.total_tokens}}</span>
-                <span class="stat-label">Total Tokens</span>
-            </div>
-        </div>
-    </div>
-
-    <table class="tabla-analisis">
-        <tr>
-            <th>TOKEN</th>
-            <th>PALABRA RESERVADA (PR)</th>
-            <th>IDENTIFICADOR (ID)</th>
-            <th>SÍMBOLOS</th>
-            <th>NÚMEROS</th>
-        </tr>
-        {% for token in tokens %}
-        <tr>
-            <td class="token-column">{{token[0]}}</td>
-            <td>
-                {% if token[1] in ['IF', 'FOR', 'WHILE'] %}
-                    <span class="marca-x">X</span>
-                {% else %} - {% endif %}
-            </td>
-            <td>
-                {% if token[1] == 'ID' %}
-                    <span class="marca-x">X</span>
-                {% else %} - {% endif %}
-            </td>
-            <td>
-                {% if token[1] in ['PI', 'PD', 'LLAVEI', 'LLAVED', 'DELIMITADOR', 'OPERADOR'] %}
-                    <span class="marca-x">X</span>
-                {% else %} - {% endif %}
-            </td>
-            <td>
-                {% if token[1] == 'NUMERO' %}
-                    <span class="marca-x">X</span>
-                {% else %} - {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <div class="tabla-tokens">
-        <h3>TABLA DE TOKENS</h3>
-        <table>
-            <tr><th>TOKEN</th><th>TIPO</th></tr>
+        <table class="tabla-analisis">
+            <tr>
+                <th>TOKEN</th>
+                <th>PALABRA RESERVADA (PR)</th>
+                <th>IDENTIFICADOR (ID)</th>
+                <th>SÍMBOLOS</th>
+                <th>NÚMEROS</th>
+            </tr>
             {% for token in tokens %}
-            <tr><td>{{token[0]}}</td><td>{{token[1]}}</td></tr>
+            <tr>
+                <td class="token-column">{{token[0]}}</td>
+                <td>
+                    {% if token[1] in ['IF', 'FOR', 'WHILE'] %}
+                        <span class="marca-x">X</span>
+                    {% else %} - {% endif %}
+                </td>
+                <td>
+                    {% if token[1] == 'ID' %}
+                        <span class="marca-x">X</span>
+                    {% else %} - {% endif %}
+                </td>
+                <td>
+                    {% if token[1] in ['PI', 'PD', 'LLAVEI', 'LLAVED', 'DELIMITADOR', 'OPERADOR'] %}
+                        <span class="marca-x">X</span>
+                    {% else %} - {% endif %}
+                </td>
+                <td>
+                    {% if token[1] == 'NUMERO' %}
+                        <span class="marca-x">X</span>
+                    {% else %} - {% endif %}
+                </td>
+            </tr>
             {% endfor %}
         </table>
-    </div>
-    {% endif %}     
-</body>
+
+        <div class="tabla-tokens">
+            <h3>TABLA DE TOKENS</h3>
+            <table>
+                <tr><th>TOKEN</th><th>TIPO</th></tr>
+                {% for token in tokens %}
+                <tr><td>{{token[0]}}</td><td>{{token[1]}}</td></tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+
+    </div></body>
 </html>
