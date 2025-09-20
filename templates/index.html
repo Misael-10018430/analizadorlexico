@@ -5,12 +5,11 @@
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <style>
         /* Estilos generales */
-        body { font-family: sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
-        h1, h2 { color: #1a237e; }
-        textarea { width: 100%; height: 150px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px; }
+        body { font-family: sans-serif; margin: 2em; }
+        textarea { width: 100%; height: 150px; padding: 10px; border: 1px solid #333; border-radius: 5px; margin-bottom: 10px; }
         
-        /* Contenedor y estilo de botones */
-        .form-buttons { display: flex; gap: 15px; /* <-- Espacio entre botones */ }
+        /* Contenedor y estilo de botones (manteniendo colores funcionales) */
+        .form-buttons { display: flex; gap: 15px; }
         button { 
             padding: 10px 20px; 
             font-size: 16px; 
@@ -23,20 +22,35 @@
         button[formaction="/analizar_lexico"] { background-color: #007bff; }
         button[formaction="/analizar_sintactico"] { background-color: #28a745; }
 
-        /* Estilos para las estadísticas */
+        /* Estilos para las estadísticas con tu color de borde */
         .stats-container { display: flex; flex-wrap: wrap; gap: 20px; }
-        .stat-item { flex: 1; padding: 15px; border: 1px solid #ddd; border-radius: 5px; text-align: center; background-color: white; }
-        .stat-number { display: block; font-size: 2em; font-weight: bold; color: #1a237e; }
+        .stat-item { flex: 1; padding: 15px; border: 1px solid #333; border-radius: 5px; text-align: center; background-color: white; }
+        .stat-number { display: block; font-size: 2em; font-weight: bold; }
         .stat-label { color: #555; }
 
-        /* Estilos para las tablas */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; background-color: white; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
-        th { background-color: #f2f2f2; font-weight: bold; }
-        .token-column { font-weight: bold; text-align: left; }
-        .marca-x { color: #28a745; font-weight: bold; font-size: 1.2em; }
+        /* --- ESTILOS DE TABLA CON TUS COLORES ORIGINALES --- */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { 
+            border: 1px solid #333; /* Tu color de borde */
+            padding: 10px; 
+            text-align: center; 
+        }
+        th { 
+            background-color: #f4f4f4; /* Tu color de fondo para encabezados */
+            font-weight: bold; 
+        }
+        .token-column { 
+            font-weight: bold; 
+            text-align: left; 
+            background-color: #f9f9f9; /* Tu color de fondo para la columna de token */
+        }
+        .marca-x { 
+            color: #007bff; /* Tu color para la "X" */
+            font-weight: bold; 
+            font-size: 1.2em; 
+        }
 
-        /* --- NUEVOS ESTILOS PARA EL RESULTADO SINTÁCTICO --- */
+        /* Estilos para el resultado sintáctico (manteniendo verde/rojo por funcionalidad) */
         .resultado-sintactico {
             padding: 15px;
             margin-top: 20px;
@@ -54,7 +68,6 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
-
     </style>
 </head>
 <body>

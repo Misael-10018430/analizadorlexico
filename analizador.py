@@ -151,6 +151,3 @@ def analizar_sintactico(texto):
     if error_sintactico:
         return error_sintactico
     return "Análisis sintáctico exitoso. La estructura es correcta."
-
-if __name__ == "__main__":
-    app.run(debug=True)
