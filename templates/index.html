@@ -4,10 +4,11 @@
     <title>Analizador</title>
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <style>
+        /* Estilos generales y de formulario */
         body { font-family: sans-serif; margin: 2em; }
         textarea { width: 100%; height: 150px; padding: 10px; border: 1px solid #333; border-radius: 5px; margin-bottom: 10px; }
         
-        /* Contenedor y estilo de botones (manteniendo colores funcionales) */
+        /* Contenedor y estilo de botones con tu color naranja */
         .form-buttons { display: flex; gap: 15px; }
         button { 
             padding: 10px 20px; 
@@ -18,33 +19,37 @@
             color: white;
             font-weight: bold;
         }
-        button[formaction="/analizar_lexico"] { background-color: #d78e3f; }
-        button[formaction="/analizar_sintactico"] { background-color:#d78e3f; }
+        button[formaction="/analizar_lexico"],
+        
+        button[formaction="/analizar_sintactico"] { 
+            background-color: #d78e3f; /* Color naranja para botones */
+        }
 
-        /* Estilos para las estadísticas con tu color de borde */
+        /* Estilos para las estadísticas con tu color de borde original */
         .stats-container { display: flex; flex-wrap: wrap; gap: 20px; }
-        .stat-item { flex: 1; padding: 15px; border: 1px solid #333; border-radius: 5px; text-align: center; background-color:#d78e3f; }
+        .stat-item { flex: 1; padding: 15px; border: 1px solid #333; border-radius: 5px; text-align: center; background-color: white; }
         .stat-number { display: block; font-size: 2em; font-weight: bold; }
         .stat-label { color: #555; }
 
-        /* --- ESTILOS DE TABLA CON TUS COLORES ORIGINALES --- */
+        /* Estilos de tabla con encabezados en naranja */
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { 
-            border: 1px solid #f9f9f9; /* Tu color de borde */
+            border: 1px solid #333; /* Color de borde original */
             padding: 10px; 
             text-align: center; 
         }
         th { 
-            background-color: #d78e3f ; /* Tu color de fondo para encabezados */
-            font-weight: bold; 
+            background-color: #d78e3f; /* Color naranja para encabezados de tabla */
+            font-weight: bold;
+            color: white; /* Letra blanca para que resalte sobre el naranja */
         }
         .token-column { 
             font-weight: bold; 
             text-align: left; 
-            background-color: #f9f9f9; /* Tu color de fondo para la columna de token */
+            background-color: #f9f9f9; /* Color de fondo para la columna de token original */
         }
         .marca-x { 
-            color: #ff0000; /* Tu color para la "X" */
+            color: #007bff; /* Color para la "X" original */
             font-weight: bold; 
             font-size: 1.2em; 
         }
