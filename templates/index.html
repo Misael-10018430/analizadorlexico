@@ -4,57 +4,77 @@
     <title>Analizador</title>
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <style>
-        .tabla-analisis {
-            width: 100%;
-            border-collapse: collapse;
+        /* Estilos generales */
+        body { font-family: sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+        h1, h2 { color: #1a237e; }
+        textarea { width: 100%; height: 150px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px; }
+        
+        /* Contenedor y estilo de botones */
+        .form-buttons { display: flex; gap: 15px; /* <-- Espacio entre botones */ }
+        button { 
+            padding: 10px 20px; 
+            font-size: 16px; 
+            cursor: pointer; 
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+        }
+        button[formaction="/analizar_lexico"] { background-color: #007bff; }
+        button[formaction="/analizar_sintactico"] { background-color: #28a745; }
+
+        /* Estilos para las estadísticas */
+        .stats-container { display: flex; flex-wrap: wrap; gap: 20px; }
+        .stat-item { flex: 1; padding: 15px; border: 1px solid #ddd; border-radius: 5px; text-align: center; background-color: white; }
+        .stat-number { display: block; font-size: 2em; font-weight: bold; color: #1a237e; }
+        .stat-label { color: #555; }
+
+        /* Estilos para las tablas */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background-color: white; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        th { background-color: #f2f2f2; font-weight: bold; }
+        .token-column { font-weight: bold; text-align: left; }
+        .marca-x { color: #28a745; font-weight: bold; font-size: 1.2em; }
+
+        /* --- NUEVOS ESTILOS PARA EL RESULTADO SINTÁCTICO --- */
+        .resultado-sintactico {
+            padding: 15px;
             margin-top: 20px;
-        }
-        
-        .tabla-analisis th, .tabla-analisis td {
-            border: 1px solid #333;
-            padding: 8px;
-            text-align: center;
-        }
-        
-        .tabla-analisis th {
-            background-color: #f4f4f4;
+            border-radius: 5px;
             font-weight: bold;
+            font-size: 1.1em;
         }
-        
-        .token-column {
-            font-weight: bold;
-            background-color: #f9f9f9;
+        .exito {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
         }
-        
-        .marca-x {
-            color: #007bff;
-            font-weight: bold;
-            font-size: 16px;
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
-        
-        .tabla-tokens {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        
-        .tabla-tokens table {
-            width: 100%;
-        }
+
     </style>
 </head>
 <body>
 
-
-
-    <h1>ANALIZADOR LÉXICO</h1>
-    <form method="POST" action="/analizar">
-        <textarea name="texto">{% if texto %}{{texto}}{% endif %}</textarea>
-        <button>ANALIZAR</button>
+    <h1>ANALIZADOR LÉXICO Y SINTÁCTICO</h1>
+    
+    <form method="POST">
+        <textarea name="texto" placeholder="Escribe tu código aquí...">{% if texto %}{{texto}}{% endif %}</textarea>
+        <div class="form-buttons">
+            <button type="submit" formaction="/analizar_lexico">Analizar (Léxico)</button>
+            <button type="submit" formaction="/analizar_sintactico">Analizar (Sintáctico)</button>
+        </div>
     </form>
 
-
-
+    {% if resultado_sintactico %}
+        <h2>Resultado del Análisis Sintáctico</h2>
+        <div class="resultado-sintactico {{ 'exito' if 'exitoso' in resultado_sintactico else 'error' }}">
+            <p>{{ resultado_sintactico }}</p>
+        </div>
+    {% endif %}
 
     {% if tokens %}
     <div class="estadisticas">
@@ -70,7 +90,7 @@
             </div>
             <div class="stat-item">
                 <span class="stat-number">{{estadisticas.total_simbolos if estadisticas.total_simbolos is defined else 0}}</span>
-                <span class="stat-label">Símbolos</span>
+                <span class="stat-label">Símbolos y Números</span>
             </div>
             <div class="stat-item">
                 <span class="stat-number">{{estadisticas.total_tokens}}</span>
@@ -91,38 +111,29 @@
         <tr>
             <td class="token-column">{{token[0]}}</td>
             <td>
-                {% if token[1] == 'PALABRA RESERVADA' %}
+                {% if token[1] in ['IF', 'FOR', 'WHILE'] %}
                     <span class="marca-x">X</span>
-                {% else %}
-                    -
-                {% endif %}
+                {% else %} - {% endif %}
             </td>
             <td>
-                {% if token[1] == 'IDENTIFICADOR' %}
+                {% if token[1] == 'ID' %}
                     <span class="marca-x">X</span>
-                {% else %}
-                    -
-                {% endif %}
+                {% else %} - {% endif %}
             </td>
             <td>
-                {% if token[1] in ['P.I', 'P.D', 'LLAVE_I', 'LLAVE_D', 'DELIMITADOR', 'OPERADOR'] %}
+                {% if token[1] in ['PI', 'PD', 'LLAVEI', 'LLAVED', 'DELIMITADOR', 'OPERADOR'] %}
                     <span class="marca-x">X</span>
-                {% else %}
-                    -
-                {% endif %}
+                {% else %} - {% endif %}
             </td>
             <td>
                 {% if token[1] == 'NUMERO' %}
                     <span class="marca-x">X</span>
-                {% else %}
-                    -
-                {% endif %}
+                {% else %} - {% endif %}
             </td>
         </tr>
         {% endfor %}
     </table>
 
-    <!-- Tabla de tokens original (más pequeña) -->
     <div class="tabla-tokens">
         <h3>TABLA DE TOKENS</h3>
         <table>
@@ -132,7 +143,6 @@
             {% endfor %}
         </table>
     </div>
-    
-    {% endif %}   
+    {% endif %}     
 </body>
 </html>
