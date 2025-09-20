@@ -33,7 +33,9 @@
         }
         
         .tabla-tokens {
-            margin-top: 30px;
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
         
         .tabla-tokens table {
@@ -43,11 +45,16 @@
 </head>
 <body>
 
+
+
     <h1>ANALIZADOR LÉXICO</h1>
     <form method="POST" action="/analizar">
         <textarea name="texto">{% if texto %}{{texto}}{% endif %}</textarea>
         <button>ANALIZAR</button>
     </form>
+
+
+
 
     {% if tokens %}
     <div class="estadisticas">
@@ -62,10 +69,6 @@
                 <span class="stat-label">Identificadores</span>
             </div>
             <div class="stat-item">
-                <span class="stat-number">{{estadisticas.total_parentesis if estadisticas.total_parentesis is defined else 0}}</span>
-                <span class="stat-label">Paréntesis</span>
-            </div>
-            <div class="stat-item">
                 <span class="stat-number">{{estadisticas.total_simbolos if estadisticas.total_simbolos is defined else 0}}</span>
                 <span class="stat-label">Símbolos</span>
             </div>
@@ -76,33 +79,6 @@
         </div>
     </div>
 
-    <div class="listas-container">
-        <div class="lista">
-            <h3>PALABRAS RESERVADAS ENCONTRADAS</h3>
-            <div class="lista-items">
-                {% for palabra in palabras_reservadas_lista %}
-                <span class="item-reservada">{{palabra}}</span>
-                {% endfor %}
-                {% if not palabras_reservadas_lista %}
-                <span class="no-items">No se encontraron palabras reservadas</span>
-                {% endif %}
-            </div>
-        </div>
-        <div class="lista">
-            <h3>IDENTIFICADORES ENCONTRADOS</h3>
-            <div class="lista-items">
-                {% for identificador in identificadores_lista %}
-                <span class="item-identificador">{{identificador}}</span>
-                {% endfor %}
-                {% if not identificadores_lista %}
-                <span class="no-items">No se encontraron identificadores</span>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-    <!-- Nueva tabla de análisis detallado -->
-    <h2>ANÁLISIS DETALLADO</h2>
     <table class="tabla-analisis">
         <tr>
             <th>TOKEN</th>

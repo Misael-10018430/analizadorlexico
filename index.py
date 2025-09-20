@@ -25,8 +25,6 @@ def index():
 def analizar():
     global tokens_lista, palabras_reservadas_encontradas, identificadores_encontrados, parentesis_encontrados, simbolos_encontrados, estadisticas
     texto = request.form['texto']
-    
-    # Limpiar listas
     tokens_lista = []
     palabras_reservadas_encontradas = []
     identificadores_encontrados = []
