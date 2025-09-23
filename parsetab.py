@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'DELIMITADOR FOR ID IF LLAVED LLAVEI NUMERO OPERADOR PD PI WHILE\nprograma : sentencias\n\nsentencias : sentencia sentencias\n           | sentencia\n\nsentencia : if_sentencia\n          | for_sentencia\n          | while_sentencia\n          | asignacion DELIMITADOR\n\nif_sentencia : IF PI expresion PD LLAVEI sentencias LLAVED\n\nfor_sentencia : FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED\n\nwhile_sentencia : WHILE PI expresion PD LLAVEI sentencias LLAVED\n\nasignacion : ID OPERADOR expresion\n           | ID OPERADOR ID\n           | ID OPERADOR NUMERO\n\nexpresion : ID OPERADOR NUMERO\n          | ID OPERADOR ID\n          | NUMERO OPERADOR NUMERO\n          | NUMERO OPERADOR ID\n          | ID\n          | NUMERO\n\nexpresion_incremento : ID OPERADOR OPERADOR\n                    | ID OPERADOR NUMERO\n                    | ID OPERADOR ID\n                    | asignacion\n'
+_lr_signature = 'DELIMITADOR FOR ID IF LLAVED LLAVEI NUMERO OPERADOR PD PI WHILE\nprograma : sentencias\n\nsentencias : sentencia sentencias\n           | sentencia\n\nsentencia : if_sentencia\n          | for_sentencia\n          | while_sentencia\n          | asignacion DELIMITADOR\n\nif_sentencia : IF PI expresion PD LLAVEI sentencias LLAVED\n\nfor_sentencia : FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED\n\nwhile_sentencia : WHILE PI expresion PD LLAVEI sentencias LLAVED\n\nasignacion : ID OPERADOR expresion\n           | ID OPERADOR ID\n           | ID OPERADOR NUMERO\n\nasignacion_simple : ID OPERADOR NUMERO\n                  | ID OPERADOR ID\n\nexpresion : ID OPERADOR NUMERO\n          | ID OPERADOR ID\n          | NUMERO OPERADOR NUMERO\n          | NUMERO OPERADOR ID\n          | ID\n          | NUMERO\n\nexpresion_incremento : ID OPERADOR OPERADOR\n                    | ID OPERADOR NUMERO\n                    | ID OPERADOR ID\n                    | asignacion\n'
     
-_lr_action_items = {'IF':([0,3,4,5,6,13,31,37,41,45,48,53,],[8,8,-4,-5,-6,-7,8,8,-8,-10,8,-9,]),'FOR':([0,3,4,5,6,13,31,37,41,45,48,53,],[9,9,-4,-5,-6,-7,9,9,-8,-10,9,-9,]),'WHILE':([0,3,4,5,6,13,31,37,41,45,48,53,],[10,10,-4,-5,-6,-7,10,10,-8,-10,10,-9,]),'ID':([0,3,4,5,6,13,14,15,16,17,27,28,29,31,37,39,41,45,47,48,53,],[11,11,-4,-5,-6,-7,19,11,19,23,32,35,19,11,11,44,-8,-10,49,11,-9,]),'$end':([1,2,3,4,5,6,12,13,41,45,53,],[0,-1,-3,-4,-5,-6,-2,-7,-8,-10,-9,]),'LLAVED':([3,4,5,6,12,13,38,40,41,45,52,53,],[-3,-4,-5,-6,-2,-7,41,45,-8,-10,53,-9,]),'DELIMITADOR':([7,19,20,21,23,24,25,32,33,34,35,36,],[13,-18,-19,29,-12,-11,-13,-15,-14,-16,-17,39,]),'PI':([8,9,10,],[14,15,16,]),'OPERADOR':([11,19,20,23,25,44,47,49,51,],[17,27,28,27,28,47,50,27,28,]),'NUMERO':([14,16,17,27,28,29,47,],[20,20,25,33,34,20,51,]),'PD':([18,19,20,22,24,32,33,34,35,42,43,49,50,51,],[26,-18,-19,30,-11,-15,-14,-16,-17,-23,46,-12,-20,-13,]),'LLAVEI':([26,30,46,],[31,37,48,]),}
+_lr_action_items = {'IF':([0,3,4,5,6,13,31,37,41,45,48,53,],[8,8,-4,-5,-6,-7,8,8,-8,-10,8,-9,]),'FOR':([0,3,4,5,6,13,31,37,41,45,48,53,],[9,9,-4,-5,-6,-7,9,9,-8,-10,9,-9,]),'WHILE':([0,3,4,5,6,13,31,37,41,45,48,53,],[10,10,-4,-5,-6,-7,10,10,-8,-10,10,-9,]),'ID':([0,3,4,5,6,13,14,15,16,17,27,28,29,31,37,39,41,45,47,48,53,],[11,11,-4,-5,-6,-7,19,11,19,23,32,35,19,11,11,44,-8,-10,49,11,-9,]),'$end':([1,2,3,4,5,6,12,13,41,45,53,],[0,-1,-3,-4,-5,-6,-2,-7,-8,-10,-9,]),'LLAVED':([3,4,5,6,12,13,38,40,41,45,52,53,],[-3,-4,-5,-6,-2,-7,41,45,-8,-10,53,-9,]),'DELIMITADOR':([7,19,20,21,23,24,25,32,33,34,35,36,],[13,-20,-21,29,-12,-11,-13,-17,-16,-18,-19,39,]),'PI':([8,9,10,],[14,15,16,]),'OPERADOR':([11,19,20,23,25,44,47,49,51,],[17,27,28,27,28,47,50,27,28,]),'NUMERO':([14,16,17,27,28,29,47,],[20,20,25,33,34,20,51,]),'PD':([18,19,20,22,24,32,33,34,35,42,43,49,50,51,],[26,-20,-21,30,-11,-17,-16,-18,-19,-25,46,-12,-22,-13,]),'LLAVEI':([26,30,46,],[31,37,48,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -40,14 +40,16 @@ _lr_productions = [
   ('asignacion -> ID OPERADOR expresion','asignacion',3,'p_asignacion','analizador.py',102),
   ('asignacion -> ID OPERADOR ID','asignacion',3,'p_asignacion','analizador.py',103),
   ('asignacion -> ID OPERADOR NUMERO','asignacion',3,'p_asignacion','analizador.py',104),
-  ('expresion -> ID OPERADOR NUMERO','expresion',3,'p_expresion','analizador.py',111),
-  ('expresion -> ID OPERADOR ID','expresion',3,'p_expresion','analizador.py',112),
-  ('expresion -> NUMERO OPERADOR NUMERO','expresion',3,'p_expresion','analizador.py',113),
-  ('expresion -> NUMERO OPERADOR ID','expresion',3,'p_expresion','analizador.py',114),
-  ('expresion -> ID','expresion',1,'p_expresion','analizador.py',115),
-  ('expresion -> NUMERO','expresion',1,'p_expresion','analizador.py',116),
-  ('expresion_incremento -> ID OPERADOR OPERADOR','expresion_incremento',3,'p_expresion_incremento','analizador.py',123),
-  ('expresion_incremento -> ID OPERADOR NUMERO','expresion_incremento',3,'p_expresion_incremento','analizador.py',124),
-  ('expresion_incremento -> ID OPERADOR ID','expresion_incremento',3,'p_expresion_incremento','analizador.py',125),
-  ('expresion_incremento -> asignacion','expresion_incremento',1,'p_expresion_incremento','analizador.py',126),
+  ('asignacion_simple -> ID OPERADOR NUMERO','asignacion_simple',3,'p_asignacion_simple','analizador.py',111),
+  ('asignacion_simple -> ID OPERADOR ID','asignacion_simple',3,'p_asignacion_simple','analizador.py',112),
+  ('expresion -> ID OPERADOR NUMERO','expresion',3,'p_expresion','analizador.py',119),
+  ('expresion -> ID OPERADOR ID','expresion',3,'p_expresion','analizador.py',120),
+  ('expresion -> NUMERO OPERADOR NUMERO','expresion',3,'p_expresion','analizador.py',121),
+  ('expresion -> NUMERO OPERADOR ID','expresion',3,'p_expresion','analizador.py',122),
+  ('expresion -> ID','expresion',1,'p_expresion','analizador.py',123),
+  ('expresion -> NUMERO','expresion',1,'p_expresion','analizador.py',124),
+  ('expresion_incremento -> ID OPERADOR OPERADOR','expresion_incremento',3,'p_expresion_incremento','analizador.py',131),
+  ('expresion_incremento -> ID OPERADOR NUMERO','expresion_incremento',3,'p_expresion_incremento','analizador.py',132),
+  ('expresion_incremento -> ID OPERADOR ID','expresion_incremento',3,'p_expresion_incremento','analizador.py',133),
+  ('expresion_incremento -> asignacion','expresion_incremento',1,'p_expresion_incremento','analizador.py',134),
 ]

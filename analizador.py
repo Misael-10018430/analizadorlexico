@@ -105,6 +105,14 @@ def p_asignacion(p):
     '''
     pass
 
+# NUEVA: Regla específica para asignaciones simples
+def p_asignacion_simple(p):
+    '''
+    asignacion_simple : ID OPERADOR NUMERO
+                      | ID OPERADOR ID
+    '''
+    pass
+
 # MEJORADO: Expresiones más flexibles
 def p_expresion(p):
     '''
