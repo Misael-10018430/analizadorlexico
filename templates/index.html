@@ -161,8 +161,6 @@
                 <th>IDENTIFICADOR (ID)</th>
                 <th>SÍMBOLOS</th>
                 <th>NÚMEROS</th>
-                <!-- ÚNICA MEJORA: Columna de línea -->
-                <th>LÍNEA</th>
             </tr>
             {% for token in tokens %}
             <tr>
@@ -187,8 +185,6 @@
                         <span class="marca-x">X</span>
                     {% else %} - {% endif %}
                 </td>
-                <!-- ÚNICA MEJORA: Mostrar línea -->
-                <td class="linea-column">{{token[2]}}</td>
             </tr>
             {% endfor %}
         </table>
@@ -199,15 +195,11 @@
                 <tr>
                     <th>TOKEN</th>
                     <th>TIPO</th>
-                    <!-- ÚNICA MEJORA: Columna de línea -->
-                    <th>LÍNEA</th>
                 </tr>
                 {% for token in tokens %}
                 <tr>
                     <td>{{token[0]}}</td>
                     <td>{{token[1]}}</td>
-                    <!-- ÚNICA MEJORA: Mostrar línea -->
-                    <td class="linea-column">{{token[2]}}</td>
                 </tr>
                 {% endfor %}
             </table>
