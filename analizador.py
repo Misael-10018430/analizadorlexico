@@ -134,7 +134,7 @@ def p_expresion_incremento(p):
     '''
     pass
 
-# Regla para manejar errores de sintaxis - MEJORADA con errores específicos error_sintactico = f"ERROR SINTÁCTICO: Llave de cierre '}' inesperada en línea {linea}. Posible problema: falta delimitador ';' en la línea anterior o estructura incompleta."
+# Regla para manejar errores de sintaxis - INFORMACIÓN SEPARADA
 def p_error(p):
     global error_sintactico
     if p:
@@ -142,40 +142,45 @@ def p_error(p):
         tipo_token = p.type
         linea = p.lineno
         
-        # ERRORES ESPECÍFICOS según el contexto
+        # INFORMACIÓN BÁSICA DEL ERROR
+        info_basica = f"ERROR SINTÁCTICO - Token: '{token_actual}' | Tipo: {tipo_token} | Línea: {linea}"
+        
+        # DESCRIPCIÓN ESPECÍFICA según el contexto
         if tipo_token == 'LLAVED':
-            error_sintactico = f"ERROR SINTÁCTICO: Llave de cierre '}}' inesperada en línea {linea}. Posible problema: falta delimitador ';' en la línea anterior o estructura incompleta."
+            descripcion = "Llave de cierre '}}' inesperada. Posible problema: falta delimitador ';' en la línea anterior o estructura incompleta."
         
         elif tipo_token == 'LLAVEI':
-            error_sintactico = f"ERROR SINTÁCTICO: Llave de apertura '{{{{' inesperada en línea {linea}. Posible problema: falta paréntesis de cierre ')' antes de la llave."
+            descripcion = "Llave de apertura '{{{{' inesperada. Posible problema: falta paréntesis de cierre ')' antes de la llave."
         
         elif tipo_token == 'PD':
-            error_sintactico = f"ERROR SINTÁCTICO: Paréntesis de cierre ')' inesperado en línea {linea}. Posible problema: paréntesis desbalanceados o expresión incompleta."
+            descripcion = "Paréntesis de cierre ')' inesperado. Posible problema: paréntesis desbalanceados o expresión incompleta."
         
         elif tipo_token == 'PI':
-            error_sintactico = f"ERROR SINTÁCTICO: Paréntesis de apertura '(' inesperado en línea {linea}. Posible problema: falta palabra reservada (if, for, while) antes del paréntesis."
+            descripcion = "Paréntesis de apertura '(' inesperado. Posible problema: falta palabra reservada (if, for, while) antes del paréntesis."
         
         elif tipo_token == 'ID':
-            error_sintactico = f"ERROR SINTÁCTICO: Identificador '{token_actual}' inesperado en línea {linea}. Posible problema: falta operador, delimitador ';' o estructura de control incompleta."
+            descripcion = f"Identificador '{token_actual}' inesperado. Posible problema: falta operador, delimitador ';' o estructura de control incompleta."
         
         elif tipo_token == 'OPERADOR':
-            error_sintactico = f"ERROR SINTÁCTICO: Operador '{token_actual}' inesperado en línea {linea}. Posible problema: falta identificador o número antes/después del operador."
+            descripcion = f"Operador '{token_actual}' inesperado. Posible problema: falta identificador o número antes/después del operador."
         
         elif tipo_token == 'NUMERO':
-            error_sintactico = f"ERROR SINTÁCTICO: Número '{token_actual}' inesperado en línea {linea}. Posible problema: falta operador antes del número."
+            descripcion = f"Número '{token_actual}' inesperado. Posible problema: falta operador antes del número."
         
         elif tipo_token == 'DELIMITADOR':
-            error_sintactico = f"ERROR SINTÁCTICO: Delimitador '{token_actual}' inesperado en línea {linea}. Posible problema: expresión incompleta antes del delimitador."
+            descripcion = f"Delimitador '{token_actual}' inesperado. Posible problema: expresión incompleta antes del delimitador."
         
         elif tipo_token in ['IF', 'FOR', 'WHILE']:
-            error_sintactico = f"ERROR SINTÁCTICO: Palabra reservada '{token_actual}' inesperada en línea {linea}. Posible problema: estructura de control anterior incompleta o falta delimitador ';'."
+            descripcion = f"Palabra reservada '{token_actual}' inesperada. Posible problema: estructura de control anterior incompleta o falta delimitador ';'."
         
         else:
-            error_sintactico = f"ERROR SINTÁCTICO: Token '{token_actual}' (tipo: {tipo_token}) inesperado en línea {linea}. Token no válido en esta posición."
+            descripcion = f"Token '{token_actual}' no válido en esta posición."
+        
+        # COMBINAR INFORMACIÓN BÁSICA + DESCRIPCIÓN
+        error_sintactico = f"{info_basica}\n{descripcion}"
     
     else:
-        error_sintactico = "ERROR SINTÁCTICO: Fin de entrada inesperado. El código parece incompleto - posible problema: falta llave de cierre '}' o delimitador ';'."
-      
+        error_sintactico = "ERROR SINTÁCTICO - Token: N/A | Tipo: N/A | Línea: N/A\nFin de entrada inesperado. El código parece incompleto - posible problema: falta llave de cierre '}}' o delimitador ';'."
 
 # Construir el parser
 parser = yacc.yacc()
