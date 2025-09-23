@@ -27,11 +27,17 @@ t_LLAVEI = r'\{'
 t_LLAVED = r'\}'
 t_DELIMITADOR = r'[;,]'
 
-# Regla para números
+# Regla para números - MEJORADA para capturar errores
 def t_NUMERO(t):
-    r'\d+'
-    t.value = int(t.value)
-    return t
+    r'\d+[a-zA-Z_][a-zA-Z0-9_]*|\d+'
+    if any(c.isalpha() or c == '_' for c in t.value):
+        # Si hay letras después de números, es un error
+        print(f"ERROR LÉXICO: Identificador inválido '{t.value}' en línea {t.lineno}. Los identificadores no pueden empezar con números.")
+        t.lexer.skip(len(t.value))
+        return None
+    else:
+        t.value = int(t.value)
+        return t
 
 # Regla para identificadores y palabras reservadas
 def t_ID(t):
@@ -105,6 +111,28 @@ def p_asignacion(p):
     '''
     pass
 
+# NUEVAS REGLAS PARA CAPTURAR ERRORES ESPECÍFICOS
+def p_asignacion_error(p):
+    '''
+    asignacion : NUMERO ID
+               | OPERADOR expresion
+               | ID ID
+    '''
+    # Captura errores comunes en asignaciones
+    global error_sintactico
+    if p[1].isdigit() if hasattr(p[1], 'isdigit') else str(p[1]).isdigit():
+        error_sintactico = f"ERROR SINTÁCTICO - Token: '{p[2]}' | Tipo: ID | Línea: {p.lineno(2)}\nIdentificador '{p[2]}' inesperado después de número. Los identificadores no pueden empezar con números."
+    elif p[1] in ['=', '+', '-', '*', '/', '<', '>', '<=', '>=']:
+        error_sintactico = f"ERROR SINTÁCTICO - Token: '{p[1]}' | Tipo: OPERADOR | Línea: {p.lineno(1)}\nOperador '{p[1]}' inesperado al inicio. Falta identificador antes del operador."
+
+def p_expresion_error(p):
+    '''
+    expresion : OPERADOR NUMERO
+              | OPERADOR ID
+    '''
+    global error_sintactico
+    error_sintactico = f"ERROR SINTÁCTICO - Token: '{p[1]}' | Tipo: OPERADOR | Línea: {p.lineno(1)}\nOperador '{p[1]}' inesperado. Falta identificador o número antes del operador."
+
 # MEJORADO: Expresiones más flexibles
 def p_expresion(p):
     '''
@@ -150,7 +178,7 @@ def p_error(p):
             descripcion = "Llave de cierre '}}' inesperada. Posible problema: falta delimitador ';' en la línea anterior o estructura incompleta."
         
         elif tipo_token == 'LLAVEI':
-            descripcion = "Llave de apertura '{{' inesperada. Posible problema: falta paréntesis de cierre ')' antes de la llave."
+            descripcion = "Llave de apertura '{{{{' inesperada. Posible problema: falta paréntesis de cierre ')' antes de la llave."
         
         elif tipo_token == 'PD':
             descripcion = "Paréntesis de cierre ')' inesperado. Posible problema: paréntesis desbalanceados o expresión incompleta."
