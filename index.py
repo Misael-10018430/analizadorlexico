@@ -1,9 +1,8 @@
-# app.py
+# ARCHIVO: app.py - MEJORAS MÍNIMAS SIN CAMBIAR ESTRUCTURA
+
 from flask import Flask, render_template, request
 from analizador import analizar_lexico, analizar_sintactico # Importamos las funciones
-
 app = Flask(__name__)
-
 @app.route('/')
 def index():
     return render_template("index.html")
@@ -17,7 +16,6 @@ def ejecutar_analisis_lexico():
     palabras_reservadas_encontradas = [t.value for t in tokens_lista if t.type in ['IF', 'FOR', 'WHILE']]
     identificadores_encontrados = [t.value for t in tokens_lista if t.type == 'ID']
     simbolos_encontrados = [t.value for t in tokens_lista if t.type in ['OPERADOR', 'PI', 'PD', 'LLAVEI', 'LLAVED', 'DELIMITADOR', 'NUMERO']]
-
     estadisticas = {
         'total_palabras_reservadas': len(palabras_reservadas_encontradas),
         'total_identificadores': len(identificadores_encontrados),
@@ -25,13 +23,13 @@ def ejecutar_analisis_lexico():
         'total_tokens': len(tokens_lista)
     }
 
-    # Convertir tokens para la tabla
-    tokens_tabla = [[t.value, t.type] for t in tokens_lista]
-
+    # ÚNICA MEJORA: Convertir tokens para la tabla con información de línea
+    tokens_tabla = [[t.value, t.type, getattr(t, 'lineno', 'N/A')] for t in tokens_lista]
     return render_template("index.html",
                            texto=texto,
                            tokens=tokens_tabla,
                            estadisticas=estadisticas)
+
 
 @app.route('/analizar_sintactico', methods=['POST'])
 def ejecutar_analisis_sintactico():
@@ -41,9 +39,9 @@ def ejecutar_analisis_sintactico():
     tokens_lista_obj = analizar_lexico(texto)
     resultado_sintactico = analizar_sintactico(texto)
 
-    tokens_tabla = [[t.value, t.type] for t in tokens_lista_obj]
+    # ÚNICA MEJORA: Tokens con información de línea
+    tokens_tabla = [[t.value, t.type, getattr(t, 'lineno', 'N/A')] for t in tokens_lista_obj]
 
-    # Recalculamos estadísticas para la vista
     palabras_reservadas_encontradas = [t.value for t in tokens_lista_obj if t.type in ['IF', 'FOR', 'WHILE']]
     identificadores_encontrados = [t.value for t in tokens_lista_obj if t.type == 'ID']
     simbolos_encontrados = [t.value for t in tokens_lista_obj if t.type in ['OPERADOR', 'PI', 'PD', 'LLAVEI', 'LLAVED', 'DELIMITADOR', 'NUMERO']]

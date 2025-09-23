@@ -1,8 +1,7 @@
-# analizador.py
+# ARCHIVO: analizador.py - MEJORAS MÍNIMAS SIN CAMBIAR ESTRUCTURA
+
 import ply.lex as lex
 import ply.yacc as yacc
-
-# --- DEFINICIÓN DEL ANALIZADOR LÉXICO (LEXER) ---
 
 # Lista de palabras reservadas
 reserved = {
@@ -10,8 +9,7 @@ reserved = {
     'for': 'FOR',
     'while': 'WHILE'
 }
-
-# Lista de nombres de tokens. Siempre es requerida.
+# Lista de nombres de tokens
 tokens = [
     'ID',
     'NUMERO',
@@ -24,7 +22,7 @@ tokens = [
 ] + list(reserved.values())
 
 # Expresiones regulares para tokens simples
-t_OPERADOR = r'<=|>=|\+\+|[<>/+]'
+t_OPERADOR = r'<=|>=|\+\+|[<>/+=]'  # Agregué = para asignaciones
 t_PI = r'\('
 t_PD = r'\)'
 t_LLAVEI = r'\{'
@@ -51,32 +49,26 @@ def t_newline(t):
 # Ignorar espacios y tabs
 t_ignore = ' \t'
 
-# Regla para manejar errores léxicos
+# ÚNICA MEJORA: Mejor manejo de errores léxicos
 def t_error(t):
-    print(f"Carácter ilegal '{t.value[0]}' en la línea {t.lineno}")
+    print(f"ERROR LÉXICO: Carácter ilegal '{t.value[0]}' en la línea {t.lineno}")
     t.lexer.skip(1)
 
 # Construir el lexer
 lexer = lex.lex()
-
-# --- DEFINICIÓN DEL ANALIZADOR SINTÁCTICO (PARSER) ---
-
 # Variable para almacenar el resultado del análisis
 error_sintactico = None
-
 def p_programa(p):
     '''
     programa : sentencias
     '''
     p[0] = "Programa válido"
-
 def p_sentencias(p):
     '''
     sentencias : sentencia sentencias
                | sentencia
     '''
     pass
-
 def p_sentencia(p):
     '''
     sentencia : if_sentencia
@@ -85,32 +77,27 @@ def p_sentencia(p):
               | asignacion DELIMITADOR
     '''
     pass
-
 def p_if_sentencia(p):
     '''
     if_sentencia : IF PI expresion PD LLAVEI sentencias LLAVED
     '''
     pass
-
 def p_for_sentencia(p):
     '''
     for_sentencia : FOR PI asignacion DELIMITADOR expresion DELIMITADOR asignacion PD LLAVEI sentencias LLAVED
     '''
     pass
-
 def p_while_sentencia(p):
     '''
     while_sentencia : WHILE PI expresion PD LLAVEI sentencias LLAVED
     '''
     pass
-
 def p_asignacion(p):
     '''
     asignacion : ID OPERADOR expresion
                | ID OPERADOR ID
     '''
     pass
-
 def p_expresion(p):
     '''
     expresion : ID OPERADOR NUMERO
@@ -120,19 +107,16 @@ def p_expresion(p):
     '''
     pass
 
-# Regla para manejar errores de sintaxis
+# ÚNICA MEJORA: Manejo de errores de sintaxis más específico
 def p_error(p):
     global error_sintactico
     if p:
-        error_sintactico = f"Error de sintaxis en el token '{p.value}' (tipo: {p.type}) en la línea {p.lineno}"
+        error_sintactico = f"ERROR SINTÁCTICO: Token '{p.value}' (tipo: {p.type}) en línea {p.lineno} - Token inesperado en esta posición"
     else:
-        error_sintactico = "Error de sintaxis: fin de entrada inesperado."
+        error_sintactico = "ERROR SINTÁCTICO: Fin de entrada inesperado - El código parece incompleto"
 
 # Construir el parser
 parser = yacc.yacc()
-
-# --- FUNCIONES DE INTERFAZ ---
-
 def analizar_lexico(texto):
     lexer.input(texto)
     tokens_encontrados = []
@@ -142,7 +126,6 @@ def analizar_lexico(texto):
             break
         tokens_encontrados.append(tok)
     return tokens_encontrados
-
 def analizar_sintactico(texto):
     global error_sintactico
     error_sintactico = None # Reiniciar el error en cada análisis
