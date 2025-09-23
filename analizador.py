@@ -1,24 +1,13 @@
 import ply.lex as lex
 import ply.yacc as yacc
-
 # Lista de palabras reservadas
 reserved = {
-    'if': 'IF',
-    'for': 'FOR',
-    'while': 'WHILE'
+    'if': 'IF','for': 'FOR','while': 'WHILE'
 }
 # Lista de nombres de tokens
 tokens = [
-    'ID',
-    'NUMERO',
-    'OPERADOR',
-    'PI',  # Paréntesis Izquierdo
-    'PD',  # Paréntesis Derecho
-    'LLAVEI',
-    'LLAVED',
-    'DELIMITADOR'
+    'ID','NUMERO', 'OPERADOR','PI',  'PD', 'LLAVEI','LLAVED','DELIMITADOR'
 ] + list(reserved.values())
-
 # CORREGIDO: Expresiones regulares para tokens simples - agregué más operadores
 t_OPERADOR = r'<=|>=|\+\+|--|\*|/|[<>=+\-]'
 t_PI = r'\('
@@ -26,7 +15,6 @@ t_PD = r'\)'
 t_LLAVEI = r'\{'
 t_LLAVED = r'\}'
 t_DELIMITADOR = r'[;,]'
-
 # Regla para números - MEJORADA para capturar errores
 def t_NUMERO(t):
     r'\d+[a-zA-Z_][a-zA-Z0-9_]*|\d+'
@@ -38,18 +26,15 @@ def t_NUMERO(t):
     else:
         t.value = int(t.value)
         return t
-
 # Regla para identificadores y palabras reservadas
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     t.type = reserved.get(t.value.lower(), 'ID')  # Revisa si es una palabra reservada
     return t
-
 # Regla para contar números de línea
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
-
 # Ignorar espacios y tabs
 t_ignore = ' \t'
 # Regla para manejar errores léxicos
@@ -67,16 +52,12 @@ def p_programa(p):
     p[0] = "Programa válido"
 def p_sentencias(p):
     '''
-    sentencias : sentencia sentencias
-               | sentencia
+    sentencias : sentencia sentencias | sentencia
     '''
     pass
 def p_sentencia(p):
     '''
-    sentencia : if_sentencia
-              | for_sentencia
-              | while_sentencia
-              | asignacion DELIMITADOR
+    sentencia : if_sentencia| for_sentencia| while_sentencia| asignacion DELIMITADOR
     '''
     pass
 def p_if_sentencia(p):
@@ -102,17 +83,13 @@ def p_while_sentencia(p):
     pass
 def p_asignacion(p):
     '''
-    asignacion : ID OPERADOR expresion
-               | ID OPERADOR ID
-               | ID OPERADOR NUMERO
+    asignacion : ID OPERADOR expresion| ID OPERADOR ID| ID OPERADOR NUMERO
     '''
     pass
 # NUEVAS REGLAS PARA CAPTURAR ERRORES ESPECÍFICOS
 def p_asignacion_error(p):
     '''
-    asignacion : NUMERO ID
-               | OPERADOR expresion
-               | ID ID
+    asignacion : NUMERO ID| OPERADOR expresion| ID ID
     '''
     # Captura errores comunes en asignaciones
     global error_sintactico
@@ -122,20 +99,14 @@ def p_asignacion_error(p):
         error_sintactico = f"ERROR SINTÁCTICO - Token: '{p[1]}' | Tipo: OPERADOR | Línea: {p.lineno(1)}\nOperador '{p[1]}' inesperado al inicio. Falta identificador antes del operador."
 def p_expresion_error(p):
     '''
-    expresion : OPERADOR NUMERO
-              | OPERADOR ID
+    expresion : OPERADOR NUMERO| OPERADOR ID
     '''
     global error_sintactico
     error_sintactico = f"ERROR SINTÁCTICO - Token: '{p[1]}' | Tipo: OPERADOR | Línea: {p.lineno(1)}\nOperador '{p[1]}' inesperado. Falta identificador o número antes del operador."
 # MEJORADO: Expresiones más flexibles
 def p_expresion(p):
     '''
-    expresion : ID OPERADOR NUMERO
-              | ID OPERADOR ID
-              | NUMERO OPERADOR NUMERO
-              | NUMERO OPERADOR ID
-              | ID
-              | NUMERO
+    expresion : ID OPERADOR NUMERO| ID OPERADOR ID| NUMERO OPERADOR NUMERO| NUMERO OPERADOR ID| ID| NUMERO
     '''
     pass
 #Permitir sentencias vacías para manejar bloques correctamente
@@ -147,10 +118,7 @@ def p_sentencias_vacia(p):
 #Regla para incrementos en for que reconoce i++ correctamente
 def p_expresion_incremento(p):
     '''
-    expresion_incremento : ID OPERADOR
-                        | ID OPERADOR NUMERO
-                        | ID OPERADOR ID
-                        | asignacion
+    expresion_incremento : ID OPERADOR| ID OPERADOR NUMERO| ID OPERADOR ID| asignacion
     '''
     pass
 

@@ -27,14 +27,9 @@ def ejecutar_analisis_lexico():
 @app.route('/analizar_sintactico', methods=['POST'])
 def ejecutar_analisis_sintactico():
     texto = request.form['texto']
-    
-    # Ejecutamos ambos análisis para mostrar toda la información
     tokens_lista_obj = analizar_lexico(texto)
     resultado_sintactico = analizar_sintactico(texto)
-
-    #Tokens con información de línea
     tokens_tabla = [[t.value, t.type, getattr(t, 'lineno', 'N/A')] for t in tokens_lista_obj]
-
     palabras_reservadas_encontradas = [t.value for t in tokens_lista_obj if t.type in ['IF', 'FOR', 'WHILE']]
     identificadores_encontrados = [t.value for t in tokens_lista_obj if t.type == 'ID']
     simbolos_encontrados = [t.value for t in tokens_lista_obj if t.type in ['OPERADOR', 'PI', 'PD', 'LLAVEI', 'LLAVED', 'DELIMITADOR', 'NUMERO']]
