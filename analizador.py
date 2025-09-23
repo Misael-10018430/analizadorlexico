@@ -150,7 +150,7 @@ def p_error(p):
             descripcion = "Llave de cierre '}}' inesperada. Posible problema: falta delimitador ';' en la línea anterior o estructura incompleta."
         
         elif tipo_token == 'LLAVEI':
-            descripcion = "Llave de apertura '{{{{' inesperada. Posible problema: falta paréntesis de cierre ')' antes de la llave."
+            descripcion = "Llave de apertura '{{' inesperada. Posible problema: falta paréntesis de cierre ')' antes de la llave."
         
         elif tipo_token == 'PD':
             descripcion = "Paréntesis de cierre ')' inesperado. Posible problema: paréntesis desbalanceados o expresión incompleta."
