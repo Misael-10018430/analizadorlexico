@@ -213,7 +213,7 @@ def p_error(p):
         error_sintactico = f"{info_basica}\n{descripcion}"
     
     else:
-        error_sintactico = "ERROR SINTÁCTICO - Token: N/A | Tipo: N/A | Línea: N/A\nFin de entrada inesperado. El código parece incompleto - posible problema: falta llave de cierre '}}' o delimitador ';'."
+        error_sintactico = "Error sintactico - Token: N/A | Tipo: N/A | Línea: N/A\nFin de entrada inesperado. El código parece incompleto - posible problema: falta llave de cierre '}}' o delimitador ';'."
 
 # Construir el parser
 parser = yacc.yacc()
