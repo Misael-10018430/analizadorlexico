@@ -1,5 +1,3 @@
-# ARCHIVO: analizador.py - MEJORAS MÍNIMAS SIN CAMBIAR ESTRUCTURA
-
 import ply.lex as lex
 import ply.yacc as yacc
 
@@ -21,8 +19,8 @@ tokens = [
     'DELIMITADOR'
 ] + list(reserved.values())
 
-# Expresiones regulares para tokens simples
-t_OPERADOR = r'<=|>=|\+\+|[<>/+=]'  # Agregué = para asignaciones
+# CORREGIDO: Expresiones regulares para tokens simples - agregué más operadores
+t_OPERADOR = r'<=|>=|\+\+|--|\*|/|[<>=+\-]'
 t_PI = r'\('
 t_PD = r'\)'
 t_LLAVEI = r'\{'
@@ -49,7 +47,7 @@ def t_newline(t):
 # Ignorar espacios y tabs
 t_ignore = ' \t'
 
-# ÚNICA MEJORA: Mejor manejo de errores léxicos
+# Regla para manejar errores léxicos
 def t_error(t):
     print(f"ERROR LÉXICO: Carácter ilegal '{t.value[0]}' en la línea {t.lineno}")
     t.lexer.skip(1)
@@ -58,17 +56,20 @@ def t_error(t):
 lexer = lex.lex()
 # Variable para almacenar el resultado del análisis
 error_sintactico = None
+
 def p_programa(p):
     '''
     programa : sentencias
     '''
     p[0] = "Programa válido"
+
 def p_sentencias(p):
     '''
     sentencias : sentencia sentencias
                | sentencia
     '''
     pass
+
 def p_sentencia(p):
     '''
     sentencia : if_sentencia
@@ -77,37 +78,56 @@ def p_sentencia(p):
               | asignacion DELIMITADOR
     '''
     pass
+
 def p_if_sentencia(p):
     '''
     if_sentencia : IF PI expresion PD LLAVEI sentencias LLAVED
     '''
     pass
+
 def p_for_sentencia(p):
     '''
-    for_sentencia : FOR PI asignacion DELIMITADOR expresion DELIMITADOR asignacion PD LLAVEI sentencias LLAVED
+    for_sentencia : FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
     '''
     pass
+
 def p_while_sentencia(p):
     '''
     while_sentencia : WHILE PI expresion PD LLAVEI sentencias LLAVED
     '''
     pass
+
 def p_asignacion(p):
     '''
     asignacion : ID OPERADOR expresion
                | ID OPERADOR ID
+               | ID OPERADOR NUMERO
     '''
     pass
+
+# MEJORADO: Expresiones más flexibles
 def p_expresion(p):
     '''
     expresion : ID OPERADOR NUMERO
               | ID OPERADOR ID
-              | NUMERO
+              | NUMERO OPERADOR NUMERO
+              | NUMERO OPERADOR ID
               | ID
+              | NUMERO
     '''
     pass
 
-# ÚNICA MEJORA: Manejo de errores de sintaxis más específico
+# NUEVO: Regla para incrementos en for (como i++, i--, i+1, etc.)
+def p_expresion_incremento(p):
+    '''
+    expresion_incremento : ID OPERADOR OPERADOR
+                        | ID OPERADOR NUMERO
+                        | ID OPERADOR ID
+                        | asignacion
+    '''
+    pass
+
+# Regla para manejar errores de sintaxis
 def p_error(p):
     global error_sintactico
     if p:
@@ -117,6 +137,7 @@ def p_error(p):
 
 # Construir el parser
 parser = yacc.yacc()
+
 def analizar_lexico(texto):
     lexer.input(texto)
     tokens_encontrados = []
@@ -126,6 +147,7 @@ def analizar_lexico(texto):
             break
         tokens_encontrados.append(tok)
     return tokens_encontrados
+
 def analizar_sintactico(texto):
     global error_sintactico
     error_sintactico = None # Reiniciar el error en cada análisis
