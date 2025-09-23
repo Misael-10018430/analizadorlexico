@@ -90,7 +90,12 @@ def p_if_sentencia(p):
     if_sentencia : IF PI expresion PD LLAVEI sentencias LLAVED
     '''
     pass
-
+def p_sentencia_error(p):
+    '''
+    sentencia : NUMERO ID OPERADOR expresion DELIMITADOR
+    '''
+    global error_sintactico
+    error_sintactico = f"ERROR SINTÁCTICO - Token: '{p[2]}' | Tipo: ID | Línea: {p.lineno(2)}\nIdentificador '{p[2]}' inesperado después de número '{p[1]}'. Los identificadores no pueden empezar con números."
 def p_for_sentencia(p):
     '''
     for_sentencia : FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
