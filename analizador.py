@@ -15,6 +15,8 @@ t_PD = r'\)'
 t_LLAVEI = r'\{'
 t_LLAVED = r'\}'
 t_DELIMITADOR = r'[;,]'
+
+
 # Regla para números - MEJORADA para capturar errores
 def t_NUMERO(t):
     r'\d+[a-zA-Z_][a-zA-Z0-9_]*|\d+'
@@ -26,23 +28,43 @@ def t_NUMERO(t):
     else:
         t.value = int(t.value)
         return t
+    
+
+
 # Regla para identificadores y palabras reservadas
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     t.type = reserved.get(t.value.lower(), 'ID')  # Revisa si es una palabra reservada
     return t
+
+
+
 # Regla para contar números de línea
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
+
+
+
+
 # Ignorar espacios y tabs
 t_ignore = ' \t'
+
+
+
 # Regla para manejar errores léxicos
 def t_error(t):
     print(f"ERROR LÉXICO: Carácter ilegal '{t.value[0]}' en línea {t.lineno}, posición {t.lexpos}. Este carácter no es válido en el lenguaje.")
     t.lexer.skip(1)
+
+
+
+
 # Construir el lexer
 lexer = lex.lex()
+
+
+
 # Variable para almacenar el resultado del análisis
 error_sintactico = None
 def p_programa(p):
@@ -139,6 +161,10 @@ def p_expresion_incremento(p):
     '''
     pass
 
+
+
+
+
 # Regla para manejar errores de sintaxis 
 def p_error(p):
     global error_sintactico
@@ -173,6 +199,12 @@ def p_error(p):
         error_sintactico = f"{info_basica}\n{descripcion}"    
     else:
         error_sintactico = "Error sintactico - Token: N/A | Tipo: N/A | Línea: N/A\nFin de entrada inesperado. El código parece incompleto - posible problema: falta llave de cierre '}}' o delimitador ';'."
+
+
+
+
+
+        
 # Construir el parser
 parser = yacc.yacc()
 def analizar_lexico(texto):
