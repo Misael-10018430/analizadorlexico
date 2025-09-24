@@ -52,12 +52,16 @@ def p_programa(p):
     p[0] = "Programa válido"
 def p_sentencias(p):
     '''
-    sentencias : sentencia sentencias | sentencia
+    sentencias : sentencia sentencias 
+    | sentencia
     '''
     pass
 def p_sentencia(p):
     '''
-    sentencia : if_sentencia| for_sentencia| while_sentencia| asignacion DELIMITADOR
+    sentencia : if_sentencia
+    | for_sentencia
+    | while_sentencia
+    | asignacion DELIMITADOR
     '''
     pass
 def p_if_sentencia(p):
@@ -83,13 +87,17 @@ def p_while_sentencia(p):
     pass
 def p_asignacion(p):
     '''
-    asignacion : ID OPERADOR expresion| ID OPERADOR ID| ID OPERADOR NUMERO
+    asignacion : ID OPERADOR expresion
+    | ID OPERADOR ID
+    | ID OPERADOR NUMERO
     '''
     pass
 # NUEVAS REGLAS PARA CAPTURAR ERRORES ESPECÍFICOS
 def p_asignacion_error(p):
     '''
-    asignacion : NUMERO ID| OPERADOR expresion| ID ID
+    asignacion : NUMERO ID
+    | OPERADOR expresion
+    | ID ID
     '''
     # Captura errores comunes en asignaciones
     global error_sintactico
@@ -99,14 +107,20 @@ def p_asignacion_error(p):
         error_sintactico = f"ERROR SINTÁCTICO - Token: '{p[1]}' | Tipo: OPERADOR | Línea: {p.lineno(1)}\nOperador '{p[1]}' inesperado al inicio. Falta identificador antes del operador."
 def p_expresion_error(p):
     '''
-    expresion : OPERADOR NUMERO| OPERADOR ID
+    expresion : OPERADOR NUMERO
+    | OPERADOR ID
     '''
     global error_sintactico
     error_sintactico = f"ERROR SINTÁCTICO - Token: '{p[1]}' | Tipo: OPERADOR | Línea: {p.lineno(1)}\nOperador '{p[1]}' inesperado. Falta identificador o número antes del operador."
 # MEJORADO: Expresiones más flexibles
 def p_expresion(p):
     '''
-    expresion : ID OPERADOR NUMERO| ID OPERADOR ID| NUMERO OPERADOR NUMERO| NUMERO OPERADOR ID| ID| NUMERO
+    expresion : ID OPERADOR NUMERO
+    | ID OPERADOR ID
+    | NUMERO OPERADOR NUMERO
+    | NUMERO OPERADOR ID
+    | ID
+    | NUMERO
     '''
     pass
 #Permitir sentencias vacías para manejar bloques correctamente
@@ -118,7 +132,10 @@ def p_sentencias_vacia(p):
 #Regla para incrementos en for que reconoce i++ correctamente
 def p_expresion_incremento(p):
     '''
-    expresion_incremento : ID OPERADOR| ID OPERADOR NUMERO| ID OPERADOR ID| asignacion
+    expresion_incremento : ID OPERADOR
+    | ID OPERADOR NUMERO
+    | ID OPERADOR ID
+    | asignacion
     '''
     pass
 
