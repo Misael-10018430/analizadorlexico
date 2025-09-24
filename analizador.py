@@ -6,7 +6,7 @@ reserved = {
 }
 # Lista de nombres de tokens
 tokens = [
-    'ID','NUMERO', 'OPERADOR','PI',  'PD', 'LLAVEI','LLAVED','DELIMITADOR'
+    'ID','NUMERO', 'OPERADOR','PI',  'PD', 'LLAVEI','LLAVED','DELIMITADOR', 'PUNTO'
 ] + list(reserved.values())
 # CORREGIDO: Expresiones regulares para tokens simples - agregué más operadores
 t_OPERADOR = r'<=|>=|\+\+|--|\*|/|[<>=+\-]'
@@ -15,6 +15,7 @@ t_PD = r'\)'
 t_LLAVEI = r'\{'
 t_LLAVED = r'\}'
 t_DELIMITADOR = r'[;,]'
+t_PUNTO = r'\.'
 
 
 # Regla para números - MEJORADA para capturar errores
@@ -84,8 +85,24 @@ def p_sentencia(p):
     | for_sentencia
     | while_sentencia
     | asignacion DELIMITADOR
+    | llamada_sistema DELIMITADOR
     '''
     pass
+
+def p_llamada_sistema(p):
+    '''
+    llamada_sistema : ID PUNTO ID PI argumentos PD
+    '''
+    pass
+
+def p_argumentos(p):
+    '''
+    argumentos : expresion DELIMITADOR argumentos
+    | expresion
+    | 
+    '''
+    pass
+
 def p_if_sentencia(p):
     '''
     if_sentencia : IF PI expresion PD LLAVEI sentencias LLAVED
@@ -143,8 +160,16 @@ def p_expresion(p):
     | NUMERO OPERADOR ID
     | ID
     | NUMERO
+    | cadena
     '''
     pass
+
+def p_cadena(p):
+    '''
+    cadena : ID
+    '''
+    pass
+
 #Permitir sentencias vacías para manejar bloques correctamente
 def p_sentencias_vacia(p):
     '''
