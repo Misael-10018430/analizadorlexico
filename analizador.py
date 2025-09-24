@@ -1,49 +1,38 @@
 import ply.lex as lex
 import ply.yacc as yacc
-# Lista de palabras reservadas
 reserved = {
     'if': 'IF','for': 'FOR','while': 'WHILE'
 }
-# Lista de nombres de tokens
 tokens = [
     'ID','NUMERO', 'OPERADOR','PI',  'PD', 'LLAVEI','LLAVED','DELIMITADOR'
 ] + list(reserved.values())
-# CORREGIDO: Expresiones regulares para tokens simples - agregué más operadores
 t_OPERADOR = r'<=|>=|\+\+|--|\*|/|[<>=+\-]'
 t_PI = r'\('
 t_PD = r'\)'
 t_LLAVEI = r'\{'
 t_LLAVED = r'\}'
 t_DELIMITADOR = r'[;,]'
-# Regla para números - MEJORADA para capturar errores
 def t_NUMERO(t):
     r'\d+[a-zA-Z_][a-zA-Z0-9_]*|\d+'
     if any(c.isalpha() or c == '_' for c in t.value):
-        # Si hay letras después de números, es un error
         print(f"ERROR LÉXICO: Identificador inválido '{t.value}' en línea {t.lineno}. Los identificadores no pueden empezar con números.")
         t.lexer.skip(len(t.value))
         return None
     else:
         t.value = int(t.value)
         return t
-# Regla para identificadores y palabras reservadas
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
-    t.type = reserved.get(t.value.lower(), 'ID')  # Revisa si es una palabra reservada
+    t.type = reserved.get(t.value.lower(), 'ID')
     return t
-# Regla para contar números de línea
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
-# Ignorar espacios y tabs
 t_ignore = ' \t'
-# Regla para manejar errores léxicos
 def t_error(t):
     print(f"ERROR LÉXICO: Carácter ilegal '{t.value[0]}' en línea {t.lineno}, posición {t.lexpos}. Este carácter no es válido en el lenguaje.")
     t.lexer.skip(1)
-# Construir el lexer
 lexer = lex.lex()
-# Variable para almacenar el resultado del análisis
 error_sintactico = None
 def p_programa(p):
     '''
@@ -86,12 +75,10 @@ def p_asignacion(p):
     asignacion : ID OPERADOR expresion| ID OPERADOR ID| ID OPERADOR NUMERO
     '''
     pass
-# NUEVAS REGLAS PARA CAPTURAR ERRORES ESPECÍFICOS
 def p_asignacion_error(p):
     '''
     asignacion : NUMERO ID| OPERADOR expresion| ID ID
     '''
-    # Captura errores comunes en asignaciones
     global error_sintactico
     if p[1].isdigit() if hasattr(p[1], 'isdigit') else str(p[1]).isdigit():
         error_sintactico = f"ERROR SINTÁCTICO - Token: '{p[2]}' | Tipo: ID | Línea: {p.lineno(2)}\nIdentificador '{p[2]}' inesperado después de número. Los identificadores no pueden empezar con números."
@@ -103,35 +90,28 @@ def p_expresion_error(p):
     '''
     global error_sintactico
     error_sintactico = f"ERROR SINTÁCTICO - Token: '{p[1]}' | Tipo: OPERADOR | Línea: {p.lineno(1)}\nOperador '{p[1]}' inesperado. Falta identificador o número antes del operador."
-# MEJORADO: Expresiones más flexibles
 def p_expresion(p):
     '''
     expresion : ID OPERADOR NUMERO| ID OPERADOR ID| NUMERO OPERADOR NUMERO| NUMERO OPERADOR ID| ID| NUMERO
     '''
     pass
-#Permitir sentencias vacías para manejar bloques correctamente
 def p_sentencias_vacia(p):
     '''
     sentencias : 
     '''
     pass
-#Regla para incrementos en for que reconoce i++ correctamente
 def p_expresion_incremento(p):
     '''
     expresion_incremento : ID OPERADOR| ID OPERADOR NUMERO| ID OPERADOR ID| asignacion
     '''
     pass
-
-# Regla para manejar errores de sintaxis 
 def p_error(p):
     global error_sintactico
     if p:
         token_actual = p.value
         tipo_token = p.type
         linea = p.lineno
-        # INFORMACIÓN BÁSICA DEL ERROR
         info_basica = f"ERROR SINTÁCTICO - Token: '{token_actual}' | Tipo: {tipo_token} | Línea: {linea}"       
-        # DESCRIPCIÓN ESPECÍFICA según el contexto
         if tipo_token == 'LLAVED':
             descripcion = "Llave de cierre '}}' inesperada. Posible problema: falta delimitador ';' en la línea anterior o estructura incompleta."        
         elif tipo_token == 'LLAVEI':
@@ -152,11 +132,9 @@ def p_error(p):
             descripcion = f"Palabra reservada '{token_actual}' inesperada. Posible problema: estructura de control anterior incompleta o falta delimitador ';'."        
         else:
             descripcion = f"Token '{token_actual}' no válido en esta posición."        
-        # COMBINAR INFORMACIÓN BÁSICA + DESCRIPCIÓN
         error_sintactico = f"{info_basica}\n{descripcion}"    
     else:
         error_sintactico = "Error sintactico - Token: N/A | Tipo: N/A | Línea: N/A\nFin de entrada inesperado. El código parece incompleto - posible problema: falta llave de cierre '}}' o delimitador ';'."
-# Construir el parser
 parser = yacc.yacc()
 def analizar_lexico(texto):
     lexer.input(texto)
@@ -169,8 +147,8 @@ def analizar_lexico(texto):
     return tokens_encontrados
 def analizar_sintactico(texto):
     global error_sintactico
-    error_sintactico = None # Reiniciar el error en cada análisis
-    lexer.lineno = 1 # Reiniciar el contador de líneas del lexer
+    error_sintactico = None
+    lexer.lineno = 1 
     parser.parse(texto, lexer=lexer)
     if error_sintactico:
         return error_sintactico
