@@ -10,7 +10,7 @@ def ejecutar_analisis_lexico():
     tokens_lista = analizar_lexico(texto)#llama a la funcion del analizador lexico, obtiene la lista de tokens encontrados
     #Procesar para estadísticas
     #clasifica tokens por categoria para conteo
-    palabras_reservadas_encontradas = [t.value for t in tokens_lista if t.type in ['IF', 'FOR', 'WHILE']]
+    palabras_reservadas_encontradas = [t.value for t in tokens_lista if t.type in ['IF', 'FOR', 'WHILE', 'PROGRAMA', 'INT', 'READ', 'PRINT', 'PRINTF', 'END']]
     identificadores_encontrados = [t.value for t in tokens_lista if t.type == 'ID']
     simbolos_encontrados = [t.value for t in tokens_lista if t.type in ['OPERADOR', 'PI', 'PD', 'LLAVEI', 'LLAVED', 'DELIMITADOR', 'NUMERO']]
     estadisticas = {
@@ -36,7 +36,7 @@ def ejecutar_analisis_sintactico():
     #incluye el resultado del analisis sintactico en la respuesta
     #puede ser: analisis exitoso o mensaje de error detallado
     tokens_tabla = [[t.value, t.type, getattr(t, 'lineno', 'N/A')] for t in tokens_lista_obj]
-    palabras_reservadas_encontradas = [t.value for t in tokens_lista_obj if t.type in ['IF', 'FOR', 'WHILE']]
+    palabras_reservadas_encontradas = [t.value for t in tokens_lista_obj if t.type in ['IF', 'FOR', 'WHILE', 'PROGRAMA', 'INT', 'READ', 'PRINT', 'PRINTF', 'END']]
     identificadores_encontrados = [t.value for t in tokens_lista_obj if t.type == 'ID']
     simbolos_encontrados = [t.value for t in tokens_lista_obj if t.type in ['OPERADOR', 'PI', 'PD', 'LLAVEI', 'LLAVED', 'DELIMITADOR', 'NUMERO']]
     estadisticas = {
