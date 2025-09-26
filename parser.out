@@ -10,7 +10,7 @@ Rule 4     declaraciones -> declaracion declaraciones
 Rule 5     declaraciones -> declaracion
 Rule 6     declaracion -> tipo_dato lista_variables DELIMITADOR
 Rule 7     tipo_dato -> INT
-Rule 8     lista_variables -> ID DELIMITADOR lista_variables
+Rule 8     lista_variables -> lista_variables DELIMITADOR ID
 Rule 9     lista_variables -> ID
 Rule 10    sentencias -> sentencia sentencias
 Rule 11    sentencias -> sentencia
@@ -1667,7 +1667,7 @@ state 100
 state 101
 
     (6) declaracion -> tipo_dato . lista_variables DELIMITADOR
-    (8) lista_variables -> . ID DELIMITADOR lista_variables
+    (8) lista_variables -> . lista_variables DELIMITADOR ID
     (9) lista_variables -> . ID
 
     ID              shift and go to state 112
@@ -1766,33 +1766,30 @@ state 110
 state 111
 
     (6) declaracion -> tipo_dato lista_variables . DELIMITADOR
+    (8) lista_variables -> lista_variables . DELIMITADOR ID
 
     DELIMITADOR     shift and go to state 121
 
 
 state 112
 
-    (8) lista_variables -> ID . DELIMITADOR lista_variables
     (9) lista_variables -> ID .
 
-  ! shift/reduce conflict for DELIMITADOR resolved as shift
-    DELIMITADOR     shift and go to state 122
-
-  ! DELIMITADOR     [ reduce using rule 9 (lista_variables -> ID .) ]
+    DELIMITADOR     reduce using rule 9 (lista_variables -> ID .)
 
 
 state 113
 
     (44) declaracion -> INT error . DELIMITADOR
 
-    DELIMITADOR     shift and go to state 123
+    DELIMITADOR     shift and go to state 122
 
 
 state 114
 
     (45) declaracion -> error ID . DELIMITADOR
 
-    DELIMITADOR     shift and go to state 124
+    DELIMITADOR     shift and go to state 123
 
 
 state 115
@@ -1824,7 +1821,7 @@ state 117
 
     (36) for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento . PD LLAVEI sentencias LLAVED
 
-    PD              shift and go to state 125
+    PD              shift and go to state 124
 
 
 state 118
@@ -1837,7 +1834,7 @@ state 118
     (40) asignacion -> ID . OPERADOR NUMERO
     (43) asignacion -> ID . ID
 
-    OPERADOR        shift and go to state 126
+    OPERADOR        shift and go to state 125
     ID              shift and go to state 25
 
 
@@ -1869,33 +1866,27 @@ state 120
 state 121
 
     (6) declaracion -> tipo_dato lista_variables DELIMITADOR .
+    (8) lista_variables -> lista_variables DELIMITADOR . ID
 
+  ! shift/reduce conflict for ID resolved as shift
     INT             reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
     error           reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
     NUMERO          reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
     IF              reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
     FOR             reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
     WHILE           reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
-    ID              reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
     OPERADOR        reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
     READ            reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
     PRINT           reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
     PRINTF          reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
     END             reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
     LLAVED          reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
+    ID              shift and go to state 126
+
+  ! ID              [ reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .) ]
 
 
 state 122
-
-    (8) lista_variables -> ID DELIMITADOR . lista_variables
-    (8) lista_variables -> . ID DELIMITADOR lista_variables
-    (9) lista_variables -> . ID
-
-    ID              shift and go to state 112
-
-    lista_variables                shift and go to state 127
-
-state 123
 
     (44) declaracion -> INT error DELIMITADOR .
 
@@ -1914,7 +1905,7 @@ state 123
     LLAVED          reduce using rule 44 (declaracion -> INT error DELIMITADOR .)
 
 
-state 124
+state 123
 
     (45) declaracion -> error ID DELIMITADOR .
 
@@ -1933,14 +1924,14 @@ state 124
     LLAVED          reduce using rule 45 (declaracion -> error ID DELIMITADOR .)
 
 
-state 125
+state 124
 
     (36) for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD . LLAVEI sentencias LLAVED
 
-    LLAVEI          shift and go to state 128
+    LLAVEI          shift and go to state 127
 
 
-state 126
+state 125
 
     (62) expresion_incremento -> ID OPERADOR .
     (63) expresion_incremento -> ID OPERADOR . NUMERO
@@ -1961,22 +1952,22 @@ state 126
     (59) cadena -> . ID
 
     PD              reduce using rule 62 (expresion_incremento -> ID OPERADOR .)
-    NUMERO          shift and go to state 130
-    ID              shift and go to state 129
+    NUMERO          shift and go to state 129
+    ID              shift and go to state 128
     OPERADOR        shift and go to state 37
     CADENA          shift and go to state 42
 
     expresion                      shift and go to state 54
     cadena                         shift and go to state 41
 
+state 126
+
+    (8) lista_variables -> lista_variables DELIMITADOR ID .
+
+    DELIMITADOR     reduce using rule 8 (lista_variables -> lista_variables DELIMITADOR ID .)
+
+
 state 127
-
-    (8) lista_variables -> ID DELIMITADOR lista_variables .
-
-    DELIMITADOR     reduce using rule 8 (lista_variables -> ID DELIMITADOR lista_variables .)
-
-
-state 128
 
     (36) for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI . sentencias LLAVED
     (10) sentencias -> . sentencia sentencias
@@ -2024,7 +2015,7 @@ state 128
     END             shift and go to state 22
 
     asignacion                     shift and go to state 9
-    sentencias                     shift and go to state 131
+    sentencias                     shift and go to state 130
     sentencia                      shift and go to state 5
     if_sentencia                   shift and go to state 6
     for_sentencia                  shift and go to state 7
@@ -2034,7 +2025,7 @@ state 128
     salida_datos                   shift and go to state 12
     fin_programa                   shift and go to state 13
 
-state 129
+state 128
 
     (64) expresion_incremento -> ID OPERADOR ID .
     (39) asignacion -> ID OPERADOR ID .
@@ -2054,7 +2045,7 @@ state 129
   ! PD              [ reduce using rule 59 (cadena -> ID .) ]
 
 
-state 130
+state 129
 
     (63) expresion_incremento -> ID OPERADOR NUMERO .
     (40) asignacion -> ID OPERADOR NUMERO .
@@ -2071,14 +2062,14 @@ state 130
   ! PD              [ reduce using rule 56 (expresion -> NUMERO .) ]
 
 
-state 131
+state 130
 
     (36) for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias . LLAVED
 
-    LLAVED          shift and go to state 132
+    LLAVED          shift and go to state 131
 
 
-state 132
+state 131
 
     (36) for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .
 
@@ -2115,7 +2106,7 @@ WARNING: shift/reduce conflict for PRINT in state 89 resolved as shift
 WARNING: shift/reduce conflict for PRINTF in state 89 resolved as shift
 WARNING: shift/reduce conflict for END in state 89 resolved as shift
 WARNING: shift/reduce conflict for DELIMITADOR in state 91 resolved as shift
-WARNING: shift/reduce conflict for DELIMITADOR in state 112 resolved as shift
+WARNING: shift/reduce conflict for ID in state 121 resolved as shift
 WARNING: reduce/reduce conflict in state 5 resolved using rule (sentencias -> sentencia)
 WARNING: rejected rule (sentencias -> <empty>) in state 5
 WARNING: reduce/reduce conflict in state 40 resolved using rule (expresion -> ID)
@@ -2132,16 +2123,16 @@ WARNING: reduce/reduce conflict in state 91 resolved using rule (argumentos -> C
 WARNING: rejected rule (expresion -> CADENA) in state 91
 WARNING: reduce/reduce conflict in state 100 resolved using rule (declaraciones -> declaracion)
 WARNING: rejected rule (declaraciones -> <empty>) in state 100
-WARNING: reduce/reduce conflict in state 129 resolved using rule (asignacion -> ID OPERADOR ID)
-WARNING: rejected rule (expresion_incremento -> ID OPERADOR ID) in state 129
-WARNING: reduce/reduce conflict in state 129 resolved using rule (asignacion -> ID OPERADOR ID)
-WARNING: rejected rule (expresion -> ID) in state 129
-WARNING: reduce/reduce conflict in state 129 resolved using rule (asignacion -> ID OPERADOR ID)
-WARNING: rejected rule (cadena -> ID) in state 129
-WARNING: reduce/reduce conflict in state 130 resolved using rule (asignacion -> ID OPERADOR NUMERO)
-WARNING: rejected rule (expresion_incremento -> ID OPERADOR NUMERO) in state 130
-WARNING: reduce/reduce conflict in state 130 resolved using rule (asignacion -> ID OPERADOR NUMERO)
-WARNING: rejected rule (expresion -> NUMERO) in state 130
+WARNING: reduce/reduce conflict in state 128 resolved using rule (asignacion -> ID OPERADOR ID)
+WARNING: rejected rule (expresion_incremento -> ID OPERADOR ID) in state 128
+WARNING: reduce/reduce conflict in state 128 resolved using rule (asignacion -> ID OPERADOR ID)
+WARNING: rejected rule (expresion -> ID) in state 128
+WARNING: reduce/reduce conflict in state 128 resolved using rule (asignacion -> ID OPERADOR ID)
+WARNING: rejected rule (cadena -> ID) in state 128
+WARNING: reduce/reduce conflict in state 129 resolved using rule (asignacion -> ID OPERADOR NUMERO)
+WARNING: rejected rule (expresion_incremento -> ID OPERADOR NUMERO) in state 129
+WARNING: reduce/reduce conflict in state 129 resolved using rule (asignacion -> ID OPERADOR NUMERO)
+WARNING: rejected rule (expresion -> NUMERO) in state 129
 WARNING: Rule (cadena -> ID) is never reduced
 WARNING: Rule (declaraciones -> <empty>) is never reduced
 WARNING: Rule (expresion_incremento -> ID OPERADOR ID) is never reduced

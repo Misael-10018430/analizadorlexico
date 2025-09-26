@@ -86,7 +86,7 @@ def p_tipo_dato(p):
 
 def p_lista_variables(p):
     '''
-    lista_variables : ID DELIMITADOR lista_variables
+    lista_variables : lista_variables DELIMITADOR ID
     | ID
     '''
     pass
