@@ -109,8 +109,6 @@ def p_sentencia(p):
     | fin_programa DELIMITADOR
     '''
     pass
-
-
 def p_entrada_datos(p):
     '''
     entrada_datos : READ ID
