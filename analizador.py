@@ -2,11 +2,11 @@ import ply.lex as lex
 import ply.yacc as yacc
 # Lista de palabras reservadas
 reserved = {
-    'if': 'IF','for': 'FOR','while': 'WHILE'
+    'if': 'IF','for': 'FOR','while': 'WHILE','programa': 'PROGRAMA','int': 'INT','read': 'READ','print': 'PRINT','end': 'END'
 }
 # Lista de nombres de tokens
 tokens = [
-    'ID','NUMERO', 'OPERADOR','PI',  'PD', 'LLAVEI','LLAVED','DELIMITADOR', 'PUNTO'
+    'ID','NUMERO', 'OPERADOR','PI',  'PD', 'LLAVEI','LLAVED','DELIMITADOR', 'PUNTO', 'CADENA'
 ] + list(reserved.values())
 # CORREGIDO: Expresiones regulares para tokens simples - agregué más operadores
 t_OPERADOR = r'<=|>=|\+\+|--|\*|/|[<>=+\-]'
@@ -16,9 +16,11 @@ t_LLAVEI = r'\{'
 t_LLAVED = r'\}'
 t_DELIMITADOR = r'[;,]'
 t_PUNTO = r'\.'
-
-
-# Regla para números - MEJORADA para capturar errores
+def t_CADENA(t): 
+    r'"[^"]*"'
+    t.value = t.value[1:-1]
+    return t
+# Regla para números (Reconoce numeros validos, "los identificasores por ejemplo no puede empezar con numeros")
 def t_NUMERO(t):
     r'\d+[a-zA-Z_][a-zA-Z0-9_]*|\d+'
     if any(c.isalpha() or c == '_' for c in t.value):
@@ -29,50 +31,66 @@ def t_NUMERO(t):
     else:
         t.value = int(t.value)
         return t
-    
-
-
-# Regla para identificadores y palabras reservadas
+# Regla para identificadores y palabras reservadas (identifca variables y funcionaes)
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     t.type = reserved.get(t.value.lower(), 'ID')  # Revisa si es una palabra reservada
     return t
-
-
-
 # Regla para contar números de línea
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
-
-
-
-
 # Ignorar espacios y tabs
 t_ignore = ' \t'
-
-
-
 # Regla para manejar errores léxicos
 def t_error(t):
     print(f"ERROR LÉXICO: Carácter ilegal '{t.value[0]}' en línea {t.lineno}, posición {t.lexpos}. Este carácter no es válido en el lenguaje.")
     t.lexer.skip(1)
-
-
-
-
 # Construir el lexer
 lexer = lex.lex()
-
-
-
 # Variable para almacenar el resultado del análisis
 error_sintactico = None
+
+
+def p_programa_completo(p):
+    '''
+    programa : PROGRAMA ID PI PD LLAVEI declaraciones sentencias LLAVED
+    | PROGRAMA ID PI PD LLAVEI sentencias LLAVED
+    '''
+    p[0] = "Programa válido"
+
+#un programa consiste en una sencuencia de sentencias
 def p_programa(p):
     '''
     programa : sentencias
     '''
     p[0] = "Programa válido"
+def p_declaraciones(p):
+    '''
+    declaraciones : declaracion declaraciones
+    | declaracion
+    '''
+    pass
+
+def p_declaracion(p):
+    '''
+    declaracion : tipo_dato lista_variables DELIMITADOR
+    '''
+    pass
+
+def p_tipo_dato(p):
+    '''
+    tipo_dato : INT
+    '''
+    pass
+
+def p_lista_variables(p):
+    '''
+    lista_variables : ID DELIMITADOR lista_variables
+    | ID
+    '''
+    pass
+
 def p_sentencias(p):
     '''
     sentencias : sentencia sentencias 
@@ -86,20 +104,43 @@ def p_sentencia(p):
     | while_sentencia
     | asignacion DELIMITADOR
     | llamada_sistema DELIMITADOR
+    | entrada_datos DELIMITADOR
+    | salida_datos DELIMITADOR
+    | fin_programa DELIMITADOR
     '''
     pass
 
+
+def p_entrada_datos(p):
+    '''
+    entrada_datos : READ ID
+    '''
+    pass
+
+def p_salida_datos(p):
+    '''
+    salida_datos : PRINT PI argumentos PD
+    | PRINT PI CADENA PD
+    '''
+    pass
+
+def p_fin_programa(p):
+    '''
+    fin_programa : END
+    '''
+    pass
 def p_llamada_sistema(p):
     '''
     llamada_sistema : ID PUNTO ID PI argumentos PD
     '''
     pass
-
 def p_argumentos(p):
     '''
     argumentos : expresion DELIMITADOR argumentos
     | expresion
-    | 
+    | CADENA DELIMITADOR argumentos
+    | CADENA
+    |
     '''
     pass
 
@@ -108,13 +149,19 @@ def p_if_sentencia(p):
     if_sentencia : IF PI expresion PD LLAVEI sentencias LLAVED
     '''
     pass
-#Agregar regla; que lo se defina como identificador lo respete en el manejo del error (nivel semantico, que sea estricto, la parte en el manejo de error 8por ejemplo que ya se ha definido antes de llave lo respete lo que esta delcarado en las llaves (ejemplo))
 def p_sentencia_error(p):
     '''
     sentencia : NUMERO ID OPERADOR expresion DELIMITADOR
     '''
     global error_sintactico
     error_sintactico = f"ERROR SINTÁCTICO - Token: '{p[2]}' | Tipo: ID | Línea: {p.lineno(2)}\nIdentificador '{p[2]}' inesperado después de número '{p[1]}'. Los identificadores no pueden empezar con números."
+def p_programa_error(p):
+    '''
+    programa : PROGRAMA error
+    | ID error
+    '''
+    global error_sintactico
+    error_sintactico = f"ERROR SINTÁCTICO- Estructura de programa incorrecta. Formato esperado: 'programa nombre() {{ ... }}'"
 def p_for_sentencia(p):
     '''
     for_sentencia : FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
@@ -132,7 +179,6 @@ def p_asignacion(p):
     | ID OPERADOR NUMERO
     '''
     pass
-# NUEVAS REGLAS PARA CAPTURAR ERRORES ESPECÍFICOS
 def p_asignacion_error(p):
     '''
     asignacion : NUMERO ID
@@ -145,6 +191,29 @@ def p_asignacion_error(p):
         error_sintactico = f"ERROR SINTÁCTICO - Token: '{p[2]}' | Tipo: ID | Línea: {p.lineno(2)}\nIdentificador '{p[2]}' inesperado después de número. Los identificadores no pueden empezar con números."
     elif p[1] in ['=', '+', '-', '*', '/', '<', '>', '<=', '>=']:
         error_sintactico = f"ERROR SINTÁCTICO - Token: '{p[1]}' | Tipo: OPERADOR | Línea: {p.lineno(1)}\nOperador '{p[1]}' inesperado al inicio. Falta identificador antes del operador."
+def p_declaracion_error(p):
+    '''
+    declaracion : INT error DELIMITADOR
+    | error ID DELIMITADOR
+    '''
+    global error_sintactico
+    error_sintactico = f"ERROR SINTÁCTICO - Error en declaración de variable. Formato correcto: 'int variable;'"
+
+#Errores para entrada/salida de datos
+def p_entrada_error(p):
+    '''
+    entrada_datos : READ error
+    '''
+    global error_sintactico
+    error_sintactico = f"ERROR SINTÁCTICO - Instrucción READ incorrecta. Formato correcto: 'read variable;'"
+
+def p_salida_error(p):
+    '''
+    salida_datos : PRINT error
+    '''
+    global error_sintactico
+    error_sintactico = f"ERROR SINTÁCTICO - Instrucción PRINT incorrecta. Formato correcto: 'print(expresion);' o 'print(\"texto\");'"
+
 def p_expresion_error(p):
     '''
     expresion : OPERADOR NUMERO
@@ -152,6 +221,7 @@ def p_expresion_error(p):
     '''
     global error_sintactico
     error_sintactico = f"ERROR SINTÁCTICO - Token: '{p[1]}' | Tipo: OPERADOR | Línea: {p.lineno(1)}\nOperador '{p[1]}' inesperado. Falta identificador o número antes del operador."
+
 # MEJORADO: Expresiones más flexibles
 def p_expresion(p):
     '''
@@ -162,6 +232,7 @@ def p_expresion(p):
     | ID
     | NUMERO
     | cadena
+    | CADENA
     '''
     pass
 
@@ -177,7 +248,15 @@ def p_sentencias_vacia(p):
     sentencias : 
     '''
     pass
-#Regla para incrementos en for que reconoce i++ correctamente
+
+# AGREGADO: Permitir declaraciones vacías
+def p_declaraciones_vacia(p):
+    '''
+    declaraciones :
+    '''
+    pass
+
+# Regla para incrementos en for que reconoce i++ correctamente
 def p_expresion_incremento(p):
     '''
     expresion_incremento : ID OPERADOR
@@ -186,10 +265,6 @@ def p_expresion_incremento(p):
     | asignacion
     '''
     pass
-
-
-
-
 
 # Regla para manejar errores de sintaxis 
 def p_error(p):
@@ -200,7 +275,7 @@ def p_error(p):
         linea = p.lineno
         # INFORMACIÓN BÁSICA DEL ERROR
         info_basica = f"ERROR SINTÁCTICO - Token: '{token_actual}' | Tipo: {tipo_token} | Línea: {linea}"       
-        # DESCRIPCIÓN ESPECÍFICA según el contexto
+        # DESCRIPCIÓN ESPECÍFICA según el contexto - AMPLIADA
         if tipo_token == 'LLAVED':
             descripcion = "Llave de cierre '}}' inesperada. Posible problema: falta delimitador ';' en la línea anterior o estructura incompleta."        
         elif tipo_token == 'LLAVEI':
@@ -218,19 +293,20 @@ def p_error(p):
         elif tipo_token == 'DELIMITADOR':
             descripcion = f"Delimitador '{token_actual}' inesperado. Posible problema: expresión incompleta antes del delimitador."       
         elif tipo_token in ['IF', 'FOR', 'WHILE']:
-            descripcion = f"Palabra reservada '{token_actual}' inesperada. Posible problema: estructura de control anterior incompleta o falta delimitador ';'."        
+            descripcion = f"Palabra reservada '{token_actual}' inesperada. Posible problema: estructura de control anterior incompleta o falta delimitador ';'."
+        # AGREGADO: Manejo de errores para nuevas palabras reservadas        
+        elif tipo_token in ['PROGRAMA', 'INT', 'READ', 'PRINT', 'END']:
+            descripcion = f"Palabra reservada '{token_actual}' inesperada en esta posición. Verifique la estructura del programa."
+        elif tipo_token == 'CADENA':
+            descripcion = f"Cadena '{token_actual}' inesperada. Posible problema: falta función print() o paréntesis."
         else:
             descripcion = f"Token '{token_actual}' no válido en esta posición."        
+        
         # COMBINAR INFORMACIÓN BÁSICA + DESCRIPCIÓN
         error_sintactico = f"{info_basica}\n{descripcion}"    
     else:
-        error_sintactico = "Error sintactico - Token: N/A | Tipo: N/A | Línea: N/A\nFin de entrada inesperado. El código parece incompleto - posible problema: falta llave de cierre '}}' o delimitador ';'."
+        error_sintactico = f"Error sintactico - Token: N/A | Tipo: N/A | Línea: N/A\nFin de entrada inesperado. El código parece incompleto - posible problema: falta llave de cierre '}}', 'end;' o delimitador ';'."
 
-
-
-
-
-        
 # Construir el parser
 parser = yacc.yacc()
 def analizar_lexico(texto):
