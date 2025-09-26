@@ -112,7 +112,7 @@
             font-weight: bold;
         }
     </style>
-</hea
+</head>
 <body>
     <div class="main-container">
         <h1>ANALIZADOR LÉXICO Y SINTÁCTICO</h1>
@@ -125,7 +125,7 @@
         </form>
         {% if resultado_sintactico %}
             <h2>Resultado del Análisis Sintáctico</h2>
-            <div class="resultado-sintactico {{ 'exito' if 'exitoso' in resultado_sintactico else 'error' }}">
+            <div class="resultado-sintactico {{ 'exito' if 'correcta' in resultado_sintactico else 'error' }}">
                 <p>{{ resultado_sintactico }}</p>
             </div>
         {% endif %}
@@ -164,7 +164,7 @@
             <tr>
                 <td class="token-column">{{token[0]}}</td>
                 <td>
-                    {% if token[1] in ['IF', 'FOR', 'WHILE'] %}
+                    {% if token[1] in ['IF', 'FOR', 'WHILE', 'PROGRAMA', 'INT', 'READ', 'PRINT', 'PRINTF', 'END'] %}
                         <span class="marca-x">X</span>
                     {% else %} - {% endif %}
                 </td>
