@@ -108,6 +108,7 @@ def p_if_sentencia(p):
     if_sentencia : IF PI expresion PD LLAVEI sentencias LLAVED
     '''
     pass
+#Agregar regla; que lo se defina como identificador lo respete en el manejo del error (nivel semantico, que sea estricto, la parte en el manejo de error 8por ejemplo que ya se ha definido antes de llave lo respete lo que esta delcarado en las llaves (ejemplo))
 def p_sentencia_error(p):
     '''
     sentencia : NUMERO ID OPERADOR expresion DELIMITADOR
