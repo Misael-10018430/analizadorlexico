@@ -2,7 +2,7 @@ import ply.lex as lex
 import ply.yacc as yacc
 # Lista de palabras reservadas
 reserved = {
-    'if': 'IF','for': 'FOR','while': 'WHILE','programa': 'PROGRAMA','int': 'INT','read': 'READ','print': 'PRINT','end': 'END'
+    'if': 'IF','for': 'FOR','while': 'WHILE','programa': 'PROGRAMA','int': 'INT','read': 'READ','print': 'PRINT','printf': 'PRINTF','end': 'END'
 }
 # Lista de nombres de tokens
 tokens = [
@@ -121,6 +121,8 @@ def p_salida_datos(p):
     '''
     salida_datos : PRINT PI argumentos PD
     | PRINT PI CADENA PD
+    | PRINTF PI argumentos PD
+    | PRINTF PI CADENA PD
     '''
     pass
 
@@ -210,9 +212,13 @@ def p_entrada_error(p):
 def p_salida_error(p):
     '''
     salida_datos : PRINT error
+    | PRINTF error
     '''
     global error_sintactico
-    error_sintactico = f"ERROR SINTÁCTICO - Instrucción PRINT incorrecta. Formato correcto: 'print(expresion);' o 'print(\"texto\");'"
+    if len(p) > 1 and p[1] == 'printf':
+        error_sintactico = f"ERROR SINTÁCTICO - Instrucción PRINTF incorrecta. Formato correcto: 'printf(expresion);' o 'printf(\"texto\");'"
+    else:
+        error_sintactico = f"ERROR SINTÁCTICO - Instrucción PRINT incorrecta. Formato correcto: 'print(expresion);' o 'print(\"texto\");'"
 
 def p_expresion_error(p):
     '''
@@ -295,10 +301,10 @@ def p_error(p):
         elif tipo_token in ['IF', 'FOR', 'WHILE']:
             descripcion = f"Palabra reservada '{token_actual}' inesperada. Posible problema: estructura de control anterior incompleta o falta delimitador ';'."
         # AGREGADO: Manejo de errores para nuevas palabras reservadas        
-        elif tipo_token in ['PROGRAMA', 'INT', 'READ', 'PRINT', 'END']:
+        elif tipo_token in ['PROGRAMA', 'INT', 'READ', 'PRINT', 'PRINTF', 'END']:
             descripcion = f"Palabra reservada '{token_actual}' inesperada en esta posición. Verifique la estructura del programa."
         elif tipo_token == 'CADENA':
-            descripcion = f"Cadena '{token_actual}' inesperada. Posible problema: falta función print() o paréntesis."
+            descripcion = f"Cadena '{token_actual}' inesperada. Posible problema: falta función print() o printf() o paréntesis."
         else:
             descripcion = f"Token '{token_actual}' no válido en esta posición."        
         
@@ -325,4 +331,4 @@ def analizar_sintactico(texto):
     parser.parse(texto, lexer=lexer)
     if error_sintactico:
         return error_sintactico
-    return "Análisis sintáctico exitoso. La estructura es correcta."
+    return "Análisis sintáctico dice que tiene estructura correcta."

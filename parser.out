@@ -3,117 +3,175 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Grammar
 
 Rule 0     S' -> programa
-Rule 1     programa -> sentencias
-Rule 2     sentencias -> sentencia sentencias
-Rule 3     sentencias -> sentencia
-Rule 4     sentencia -> if_sentencia
-Rule 5     sentencia -> for_sentencia
-Rule 6     sentencia -> while_sentencia
-Rule 7     sentencia -> asignacion DELIMITADOR
-Rule 8     sentencia -> llamada_sistema DELIMITADOR
-Rule 9     llamada_sistema -> ID PUNTO ID PI argumentos PD
-Rule 10    argumentos -> expresion DELIMITADOR argumentos
-Rule 11    argumentos -> expresion
-Rule 12    argumentos -> <empty>
-Rule 13    if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED
-Rule 14    sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR
-Rule 15    for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
-Rule 16    while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED
-Rule 17    asignacion -> ID OPERADOR expresion
-Rule 18    asignacion -> ID OPERADOR ID
-Rule 19    asignacion -> ID OPERADOR NUMERO
-Rule 20    asignacion -> NUMERO ID
-Rule 21    asignacion -> OPERADOR expresion
-Rule 22    asignacion -> ID ID
-Rule 23    expresion -> OPERADOR NUMERO
-Rule 24    expresion -> OPERADOR ID
-Rule 25    expresion -> ID OPERADOR NUMERO
-Rule 26    expresion -> ID OPERADOR ID
-Rule 27    expresion -> NUMERO OPERADOR NUMERO
-Rule 28    expresion -> NUMERO OPERADOR ID
-Rule 29    expresion -> ID
-Rule 30    expresion -> NUMERO
-Rule 31    expresion -> cadena
-Rule 32    cadena -> ID
-Rule 33    sentencias -> <empty>
-Rule 34    expresion_incremento -> ID OPERADOR
-Rule 35    expresion_incremento -> ID OPERADOR NUMERO
-Rule 36    expresion_incremento -> ID OPERADOR ID
-Rule 37    expresion_incremento -> asignacion
+Rule 1     programa -> PROGRAMA ID PI PD LLAVEI declaraciones sentencias LLAVED
+Rule 2     programa -> PROGRAMA ID PI PD LLAVEI sentencias LLAVED
+Rule 3     programa -> sentencias
+Rule 4     declaraciones -> declaracion declaraciones
+Rule 5     declaraciones -> declaracion
+Rule 6     declaracion -> tipo_dato lista_variables DELIMITADOR
+Rule 7     tipo_dato -> INT
+Rule 8     lista_variables -> ID DELIMITADOR lista_variables
+Rule 9     lista_variables -> ID
+Rule 10    sentencias -> sentencia sentencias
+Rule 11    sentencias -> sentencia
+Rule 12    sentencia -> if_sentencia
+Rule 13    sentencia -> for_sentencia
+Rule 14    sentencia -> while_sentencia
+Rule 15    sentencia -> asignacion DELIMITADOR
+Rule 16    sentencia -> llamada_sistema DELIMITADOR
+Rule 17    sentencia -> entrada_datos DELIMITADOR
+Rule 18    sentencia -> salida_datos DELIMITADOR
+Rule 19    sentencia -> fin_programa DELIMITADOR
+Rule 20    entrada_datos -> READ ID
+Rule 21    salida_datos -> PRINT PI argumentos PD
+Rule 22    salida_datos -> PRINT PI CADENA PD
+Rule 23    fin_programa -> END
+Rule 24    llamada_sistema -> ID PUNTO ID PI argumentos PD
+Rule 25    argumentos -> expresion DELIMITADOR argumentos
+Rule 26    argumentos -> expresion
+Rule 27    argumentos -> CADENA DELIMITADOR argumentos
+Rule 28    argumentos -> CADENA
+Rule 29    argumentos -> <empty>
+Rule 30    if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED
+Rule 31    sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR
+Rule 32    programa -> PROGRAMA error
+Rule 33    programa -> ID error
+Rule 34    for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
+Rule 35    while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED
+Rule 36    asignacion -> ID OPERADOR expresion
+Rule 37    asignacion -> ID OPERADOR ID
+Rule 38    asignacion -> ID OPERADOR NUMERO
+Rule 39    asignacion -> NUMERO ID
+Rule 40    asignacion -> OPERADOR expresion
+Rule 41    asignacion -> ID ID
+Rule 42    declaracion -> INT error DELIMITADOR
+Rule 43    declaracion -> error ID DELIMITADOR
+Rule 44    entrada_datos -> READ error
+Rule 45    salida_datos -> PRINT error
+Rule 46    expresion -> OPERADOR NUMERO
+Rule 47    expresion -> OPERADOR ID
+Rule 48    expresion -> ID OPERADOR NUMERO
+Rule 49    expresion -> ID OPERADOR ID
+Rule 50    expresion -> NUMERO OPERADOR NUMERO
+Rule 51    expresion -> NUMERO OPERADOR ID
+Rule 52    expresion -> ID
+Rule 53    expresion -> NUMERO
+Rule 54    expresion -> cadena
+Rule 55    expresion -> CADENA
+Rule 56    cadena -> ID
+Rule 57    sentencias -> <empty>
+Rule 58    declaraciones -> <empty>
+Rule 59    expresion_incremento -> ID OPERADOR
+Rule 60    expresion_incremento -> ID OPERADOR NUMERO
+Rule 61    expresion_incremento -> ID OPERADOR ID
+Rule 62    expresion_incremento -> asignacion
 
 Terminals, with rules where they appear
 
-DELIMITADOR          : 7 8 10 14 15 15
-FOR                  : 15
-ID                   : 9 9 14 17 18 18 19 20 22 22 24 25 26 26 28 29 32 34 35 36 36
-IF                   : 13
-LLAVED               : 13 15 16
-LLAVEI               : 13 15 16
-NUMERO               : 14 19 20 23 25 27 27 28 30 35
-OPERADOR             : 14 17 18 19 21 23 24 25 26 27 28 34 35 36
-PD                   : 9 13 15 16
-PI                   : 9 13 15 16
-PUNTO                : 9
-WHILE                : 16
-error                : 
+CADENA               : 22 27 28 55
+DELIMITADOR          : 6 8 15 16 17 18 19 25 27 31 34 34 42 43
+END                  : 23
+FOR                  : 34
+ID                   : 1 2 8 9 20 24 24 31 33 36 37 37 38 39 41 41 43 47 48 49 49 51 52 56 59 60 61 61
+IF                   : 30
+INT                  : 7 42
+LLAVED               : 1 2 30 34 35
+LLAVEI               : 1 2 30 34 35
+NUMERO               : 31 38 39 46 48 50 50 51 53 60
+OPERADOR             : 31 36 37 38 40 46 47 48 49 50 51 59 60 61
+PD                   : 1 2 21 22 24 30 34 35
+PI                   : 1 2 21 22 24 30 34 35
+PRINT                : 21 22 45
+PROGRAMA             : 1 2 32
+PUNTO                : 24
+READ                 : 20 44
+WHILE                : 35
+error                : 32 33 42 43 44 45
 
 Nonterminals, with rules where they appear
 
-argumentos           : 9 10
-asignacion           : 7 15 37
-cadena               : 31
-expresion            : 10 11 13 14 15 16 17 21
-expresion_incremento : 15
-for_sentencia        : 5
-if_sentencia         : 4
-llamada_sistema      : 8
+argumentos           : 21 24 25 27
+asignacion           : 15 34 62
+cadena               : 54
+declaracion          : 4 5
+declaraciones        : 1 4
+entrada_datos        : 17
+expresion            : 25 26 30 31 34 35 36 40
+expresion_incremento : 34
+fin_programa         : 19
+for_sentencia        : 13
+if_sentencia         : 12
+lista_variables      : 6 8
+llamada_sistema      : 16
 programa             : 0
-sentencia            : 2 3
-sentencias           : 1 2 13 15 16
-while_sentencia      : 6
+salida_datos         : 18
+sentencia            : 10 11
+sentencias           : 1 2 3 10 30 34 35
+tipo_dato            : 6
+while_sentencia      : 14
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . programa
-    (1) programa -> . sentencias
-    (2) sentencias -> . sentencia sentencias
-    (3) sentencias -> . sentencia
-    (33) sentencias -> .
-    (4) sentencia -> . if_sentencia
-    (5) sentencia -> . for_sentencia
-    (6) sentencia -> . while_sentencia
-    (7) sentencia -> . asignacion DELIMITADOR
-    (8) sentencia -> . llamada_sistema DELIMITADOR
-    (14) sentencia -> . NUMERO ID OPERADOR expresion DELIMITADOR
-    (13) if_sentencia -> . IF PI expresion PD LLAVEI sentencias LLAVED
-    (15) for_sentencia -> . FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
-    (16) while_sentencia -> . WHILE PI expresion PD LLAVEI sentencias LLAVED
-    (17) asignacion -> . ID OPERADOR expresion
-    (18) asignacion -> . ID OPERADOR ID
-    (19) asignacion -> . ID OPERADOR NUMERO
-    (20) asignacion -> . NUMERO ID
-    (21) asignacion -> . OPERADOR expresion
-    (22) asignacion -> . ID ID
-    (9) llamada_sistema -> . ID PUNTO ID PI argumentos PD
+    (1) programa -> . PROGRAMA ID PI PD LLAVEI declaraciones sentencias LLAVED
+    (2) programa -> . PROGRAMA ID PI PD LLAVEI sentencias LLAVED
+    (3) programa -> . sentencias
+    (32) programa -> . PROGRAMA error
+    (33) programa -> . ID error
+    (10) sentencias -> . sentencia sentencias
+    (11) sentencias -> . sentencia
+    (57) sentencias -> .
+    (12) sentencia -> . if_sentencia
+    (13) sentencia -> . for_sentencia
+    (14) sentencia -> . while_sentencia
+    (15) sentencia -> . asignacion DELIMITADOR
+    (16) sentencia -> . llamada_sistema DELIMITADOR
+    (17) sentencia -> . entrada_datos DELIMITADOR
+    (18) sentencia -> . salida_datos DELIMITADOR
+    (19) sentencia -> . fin_programa DELIMITADOR
+    (31) sentencia -> . NUMERO ID OPERADOR expresion DELIMITADOR
+    (30) if_sentencia -> . IF PI expresion PD LLAVEI sentencias LLAVED
+    (34) for_sentencia -> . FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
+    (35) while_sentencia -> . WHILE PI expresion PD LLAVEI sentencias LLAVED
+    (36) asignacion -> . ID OPERADOR expresion
+    (37) asignacion -> . ID OPERADOR ID
+    (38) asignacion -> . ID OPERADOR NUMERO
+    (39) asignacion -> . NUMERO ID
+    (40) asignacion -> . OPERADOR expresion
+    (41) asignacion -> . ID ID
+    (24) llamada_sistema -> . ID PUNTO ID PI argumentos PD
+    (20) entrada_datos -> . READ ID
+    (44) entrada_datos -> . READ error
+    (21) salida_datos -> . PRINT PI argumentos PD
+    (22) salida_datos -> . PRINT PI CADENA PD
+    (45) salida_datos -> . PRINT error
+    (23) fin_programa -> . END
 
-    $end            reduce using rule 33 (sentencias -> .)
-    NUMERO          shift and go to state 9
-    IF              shift and go to state 12
-    FOR             shift and go to state 13
-    WHILE           shift and go to state 14
-    ID              shift and go to state 10
-    OPERADOR        shift and go to state 11
+    PROGRAMA        shift and go to state 2
+    ID              shift and go to state 3
+    $end            reduce using rule 57 (sentencias -> .)
+    NUMERO          shift and go to state 14
+    IF              shift and go to state 16
+    FOR             shift and go to state 17
+    WHILE           shift and go to state 18
+    OPERADOR        shift and go to state 15
+    READ            shift and go to state 19
+    PRINT           shift and go to state 20
+    END             shift and go to state 21
 
     programa                       shift and go to state 1
-    sentencias                     shift and go to state 2
-    sentencia                      shift and go to state 3
-    if_sentencia                   shift and go to state 4
-    for_sentencia                  shift and go to state 5
-    while_sentencia                shift and go to state 6
-    asignacion                     shift and go to state 7
-    llamada_sistema                shift and go to state 8
+    sentencias                     shift and go to state 4
+    sentencia                      shift and go to state 5
+    if_sentencia                   shift and go to state 6
+    for_sentencia                  shift and go to state 7
+    while_sentencia                shift and go to state 8
+    asignacion                     shift and go to state 9
+    llamada_sistema                shift and go to state 10
+    entrada_datos                  shift and go to state 11
+    salida_datos                   shift and go to state 12
+    fin_programa                   shift and go to state 13
 
 state 1
 
@@ -123,1017 +181,1824 @@ state 1
 
 state 2
 
-    (1) programa -> sentencias .
+    (1) programa -> PROGRAMA . ID PI PD LLAVEI declaraciones sentencias LLAVED
+    (2) programa -> PROGRAMA . ID PI PD LLAVEI sentencias LLAVED
+    (32) programa -> PROGRAMA . error
 
-    $end            reduce using rule 1 (programa -> sentencias .)
+    ID              shift and go to state 22
+    error           shift and go to state 23
 
 
 state 3
 
-    (2) sentencias -> sentencia . sentencias
-    (3) sentencias -> sentencia .
-    (2) sentencias -> . sentencia sentencias
-    (3) sentencias -> . sentencia
-    (33) sentencias -> .
-    (4) sentencia -> . if_sentencia
-    (5) sentencia -> . for_sentencia
-    (6) sentencia -> . while_sentencia
-    (7) sentencia -> . asignacion DELIMITADOR
-    (8) sentencia -> . llamada_sistema DELIMITADOR
-    (14) sentencia -> . NUMERO ID OPERADOR expresion DELIMITADOR
-    (13) if_sentencia -> . IF PI expresion PD LLAVEI sentencias LLAVED
-    (15) for_sentencia -> . FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
-    (16) while_sentencia -> . WHILE PI expresion PD LLAVEI sentencias LLAVED
-    (17) asignacion -> . ID OPERADOR expresion
-    (18) asignacion -> . ID OPERADOR ID
-    (19) asignacion -> . ID OPERADOR NUMERO
-    (20) asignacion -> . NUMERO ID
-    (21) asignacion -> . OPERADOR expresion
-    (22) asignacion -> . ID ID
-    (9) llamada_sistema -> . ID PUNTO ID PI argumentos PD
+    (33) programa -> ID . error
+    (36) asignacion -> ID . OPERADOR expresion
+    (37) asignacion -> ID . OPERADOR ID
+    (38) asignacion -> ID . OPERADOR NUMERO
+    (41) asignacion -> ID . ID
+    (24) llamada_sistema -> ID . PUNTO ID PI argumentos PD
 
-  ! reduce/reduce conflict for $end resolved using rule 3 (sentencias -> sentencia .)
-  ! reduce/reduce conflict for LLAVED resolved using rule 3 (sentencias -> sentencia .)
-    $end            reduce using rule 3 (sentencias -> sentencia .)
-    LLAVED          reduce using rule 3 (sentencias -> sentencia .)
-    NUMERO          shift and go to state 9
-    IF              shift and go to state 12
-    FOR             shift and go to state 13
-    WHILE           shift and go to state 14
-    ID              shift and go to state 10
-    OPERADOR        shift and go to state 11
+    error           shift and go to state 25
+    OPERADOR        shift and go to state 26
+    ID              shift and go to state 24
+    PUNTO           shift and go to state 27
 
-  ! $end            [ reduce using rule 33 (sentencias -> .) ]
-  ! LLAVED          [ reduce using rule 33 (sentencias -> .) ]
-
-    sentencia                      shift and go to state 3
-    sentencias                     shift and go to state 15
-    if_sentencia                   shift and go to state 4
-    for_sentencia                  shift and go to state 5
-    while_sentencia                shift and go to state 6
-    asignacion                     shift and go to state 7
-    llamada_sistema                shift and go to state 8
 
 state 4
 
-    (4) sentencia -> if_sentencia .
+    (3) programa -> sentencias .
 
-    NUMERO          reduce using rule 4 (sentencia -> if_sentencia .)
-    IF              reduce using rule 4 (sentencia -> if_sentencia .)
-    FOR             reduce using rule 4 (sentencia -> if_sentencia .)
-    WHILE           reduce using rule 4 (sentencia -> if_sentencia .)
-    ID              reduce using rule 4 (sentencia -> if_sentencia .)
-    OPERADOR        reduce using rule 4 (sentencia -> if_sentencia .)
-    $end            reduce using rule 4 (sentencia -> if_sentencia .)
-    LLAVED          reduce using rule 4 (sentencia -> if_sentencia .)
+    $end            reduce using rule 3 (programa -> sentencias .)
 
 
 state 5
 
-    (5) sentencia -> for_sentencia .
+    (10) sentencias -> sentencia . sentencias
+    (11) sentencias -> sentencia .
+    (10) sentencias -> . sentencia sentencias
+    (11) sentencias -> . sentencia
+    (57) sentencias -> .
+    (12) sentencia -> . if_sentencia
+    (13) sentencia -> . for_sentencia
+    (14) sentencia -> . while_sentencia
+    (15) sentencia -> . asignacion DELIMITADOR
+    (16) sentencia -> . llamada_sistema DELIMITADOR
+    (17) sentencia -> . entrada_datos DELIMITADOR
+    (18) sentencia -> . salida_datos DELIMITADOR
+    (19) sentencia -> . fin_programa DELIMITADOR
+    (31) sentencia -> . NUMERO ID OPERADOR expresion DELIMITADOR
+    (30) if_sentencia -> . IF PI expresion PD LLAVEI sentencias LLAVED
+    (34) for_sentencia -> . FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
+    (35) while_sentencia -> . WHILE PI expresion PD LLAVEI sentencias LLAVED
+    (36) asignacion -> . ID OPERADOR expresion
+    (37) asignacion -> . ID OPERADOR ID
+    (38) asignacion -> . ID OPERADOR NUMERO
+    (39) asignacion -> . NUMERO ID
+    (40) asignacion -> . OPERADOR expresion
+    (41) asignacion -> . ID ID
+    (24) llamada_sistema -> . ID PUNTO ID PI argumentos PD
+    (20) entrada_datos -> . READ ID
+    (44) entrada_datos -> . READ error
+    (21) salida_datos -> . PRINT PI argumentos PD
+    (22) salida_datos -> . PRINT PI CADENA PD
+    (45) salida_datos -> . PRINT error
+    (23) fin_programa -> . END
 
-    NUMERO          reduce using rule 5 (sentencia -> for_sentencia .)
-    IF              reduce using rule 5 (sentencia -> for_sentencia .)
-    FOR             reduce using rule 5 (sentencia -> for_sentencia .)
-    WHILE           reduce using rule 5 (sentencia -> for_sentencia .)
-    ID              reduce using rule 5 (sentencia -> for_sentencia .)
-    OPERADOR        reduce using rule 5 (sentencia -> for_sentencia .)
-    $end            reduce using rule 5 (sentencia -> for_sentencia .)
-    LLAVED          reduce using rule 5 (sentencia -> for_sentencia .)
+  ! reduce/reduce conflict for $end resolved using rule 11 (sentencias -> sentencia .)
+  ! reduce/reduce conflict for LLAVED resolved using rule 11 (sentencias -> sentencia .)
+    $end            reduce using rule 11 (sentencias -> sentencia .)
+    LLAVED          reduce using rule 11 (sentencias -> sentencia .)
+    NUMERO          shift and go to state 14
+    IF              shift and go to state 16
+    FOR             shift and go to state 17
+    WHILE           shift and go to state 18
+    ID              shift and go to state 29
+    OPERADOR        shift and go to state 15
+    READ            shift and go to state 19
+    PRINT           shift and go to state 20
+    END             shift and go to state 21
 
+  ! $end            [ reduce using rule 57 (sentencias -> .) ]
+  ! LLAVED          [ reduce using rule 57 (sentencias -> .) ]
+
+    sentencia                      shift and go to state 5
+    sentencias                     shift and go to state 28
+    if_sentencia                   shift and go to state 6
+    for_sentencia                  shift and go to state 7
+    while_sentencia                shift and go to state 8
+    asignacion                     shift and go to state 9
+    llamada_sistema                shift and go to state 10
+    entrada_datos                  shift and go to state 11
+    salida_datos                   shift and go to state 12
+    fin_programa                   shift and go to state 13
 
 state 6
 
-    (6) sentencia -> while_sentencia .
+    (12) sentencia -> if_sentencia .
 
-    NUMERO          reduce using rule 6 (sentencia -> while_sentencia .)
-    IF              reduce using rule 6 (sentencia -> while_sentencia .)
-    FOR             reduce using rule 6 (sentencia -> while_sentencia .)
-    WHILE           reduce using rule 6 (sentencia -> while_sentencia .)
-    ID              reduce using rule 6 (sentencia -> while_sentencia .)
-    OPERADOR        reduce using rule 6 (sentencia -> while_sentencia .)
-    $end            reduce using rule 6 (sentencia -> while_sentencia .)
-    LLAVED          reduce using rule 6 (sentencia -> while_sentencia .)
+    NUMERO          reduce using rule 12 (sentencia -> if_sentencia .)
+    IF              reduce using rule 12 (sentencia -> if_sentencia .)
+    FOR             reduce using rule 12 (sentencia -> if_sentencia .)
+    WHILE           reduce using rule 12 (sentencia -> if_sentencia .)
+    ID              reduce using rule 12 (sentencia -> if_sentencia .)
+    OPERADOR        reduce using rule 12 (sentencia -> if_sentencia .)
+    READ            reduce using rule 12 (sentencia -> if_sentencia .)
+    PRINT           reduce using rule 12 (sentencia -> if_sentencia .)
+    END             reduce using rule 12 (sentencia -> if_sentencia .)
+    $end            reduce using rule 12 (sentencia -> if_sentencia .)
+    LLAVED          reduce using rule 12 (sentencia -> if_sentencia .)
 
 
 state 7
 
-    (7) sentencia -> asignacion . DELIMITADOR
+    (13) sentencia -> for_sentencia .
 
-    DELIMITADOR     shift and go to state 16
+    NUMERO          reduce using rule 13 (sentencia -> for_sentencia .)
+    IF              reduce using rule 13 (sentencia -> for_sentencia .)
+    FOR             reduce using rule 13 (sentencia -> for_sentencia .)
+    WHILE           reduce using rule 13 (sentencia -> for_sentencia .)
+    ID              reduce using rule 13 (sentencia -> for_sentencia .)
+    OPERADOR        reduce using rule 13 (sentencia -> for_sentencia .)
+    READ            reduce using rule 13 (sentencia -> for_sentencia .)
+    PRINT           reduce using rule 13 (sentencia -> for_sentencia .)
+    END             reduce using rule 13 (sentencia -> for_sentencia .)
+    $end            reduce using rule 13 (sentencia -> for_sentencia .)
+    LLAVED          reduce using rule 13 (sentencia -> for_sentencia .)
 
 
 state 8
 
-    (8) sentencia -> llamada_sistema . DELIMITADOR
+    (14) sentencia -> while_sentencia .
 
-    DELIMITADOR     shift and go to state 17
+    NUMERO          reduce using rule 14 (sentencia -> while_sentencia .)
+    IF              reduce using rule 14 (sentencia -> while_sentencia .)
+    FOR             reduce using rule 14 (sentencia -> while_sentencia .)
+    WHILE           reduce using rule 14 (sentencia -> while_sentencia .)
+    ID              reduce using rule 14 (sentencia -> while_sentencia .)
+    OPERADOR        reduce using rule 14 (sentencia -> while_sentencia .)
+    READ            reduce using rule 14 (sentencia -> while_sentencia .)
+    PRINT           reduce using rule 14 (sentencia -> while_sentencia .)
+    END             reduce using rule 14 (sentencia -> while_sentencia .)
+    $end            reduce using rule 14 (sentencia -> while_sentencia .)
+    LLAVED          reduce using rule 14 (sentencia -> while_sentencia .)
 
 
 state 9
 
-    (14) sentencia -> NUMERO . ID OPERADOR expresion DELIMITADOR
-    (20) asignacion -> NUMERO . ID
+    (15) sentencia -> asignacion . DELIMITADOR
 
-    ID              shift and go to state 18
+    DELIMITADOR     shift and go to state 30
 
 
 state 10
 
-    (17) asignacion -> ID . OPERADOR expresion
-    (18) asignacion -> ID . OPERADOR ID
-    (19) asignacion -> ID . OPERADOR NUMERO
-    (22) asignacion -> ID . ID
-    (9) llamada_sistema -> ID . PUNTO ID PI argumentos PD
+    (16) sentencia -> llamada_sistema . DELIMITADOR
 
-    OPERADOR        shift and go to state 20
-    ID              shift and go to state 19
-    PUNTO           shift and go to state 21
+    DELIMITADOR     shift and go to state 31
 
 
 state 11
 
-    (21) asignacion -> OPERADOR . expresion
-    (23) expresion -> . OPERADOR NUMERO
-    (24) expresion -> . OPERADOR ID
-    (25) expresion -> . ID OPERADOR NUMERO
-    (26) expresion -> . ID OPERADOR ID
-    (27) expresion -> . NUMERO OPERADOR NUMERO
-    (28) expresion -> . NUMERO OPERADOR ID
-    (29) expresion -> . ID
-    (30) expresion -> . NUMERO
-    (31) expresion -> . cadena
-    (32) cadena -> . ID
+    (17) sentencia -> entrada_datos . DELIMITADOR
 
-    OPERADOR        shift and go to state 22
-    ID              shift and go to state 25
-    NUMERO          shift and go to state 24
+    DELIMITADOR     shift and go to state 32
 
-    expresion                      shift and go to state 23
-    cadena                         shift and go to state 26
 
 state 12
 
-    (13) if_sentencia -> IF . PI expresion PD LLAVEI sentencias LLAVED
+    (18) sentencia -> salida_datos . DELIMITADOR
 
-    PI              shift and go to state 27
+    DELIMITADOR     shift and go to state 33
 
 
 state 13
 
-    (15) for_sentencia -> FOR . PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
+    (19) sentencia -> fin_programa . DELIMITADOR
 
-    PI              shift and go to state 28
+    DELIMITADOR     shift and go to state 34
 
 
 state 14
 
-    (16) while_sentencia -> WHILE . PI expresion PD LLAVEI sentencias LLAVED
+    (31) sentencia -> NUMERO . ID OPERADOR expresion DELIMITADOR
+    (39) asignacion -> NUMERO . ID
 
-    PI              shift and go to state 29
+    ID              shift and go to state 35
 
 
 state 15
 
-    (2) sentencias -> sentencia sentencias .
+    (40) asignacion -> OPERADOR . expresion
+    (46) expresion -> . OPERADOR NUMERO
+    (47) expresion -> . OPERADOR ID
+    (48) expresion -> . ID OPERADOR NUMERO
+    (49) expresion -> . ID OPERADOR ID
+    (50) expresion -> . NUMERO OPERADOR NUMERO
+    (51) expresion -> . NUMERO OPERADOR ID
+    (52) expresion -> . ID
+    (53) expresion -> . NUMERO
+    (54) expresion -> . cadena
+    (55) expresion -> . CADENA
+    (56) cadena -> . ID
 
-    $end            reduce using rule 2 (sentencias -> sentencia sentencias .)
-    LLAVED          reduce using rule 2 (sentencias -> sentencia sentencias .)
+    OPERADOR        shift and go to state 36
+    ID              shift and go to state 39
+    NUMERO          shift and go to state 38
+    CADENA          shift and go to state 41
 
+    expresion                      shift and go to state 37
+    cadena                         shift and go to state 40
 
 state 16
 
-    (7) sentencia -> asignacion DELIMITADOR .
+    (30) if_sentencia -> IF . PI expresion PD LLAVEI sentencias LLAVED
 
-    NUMERO          reduce using rule 7 (sentencia -> asignacion DELIMITADOR .)
-    IF              reduce using rule 7 (sentencia -> asignacion DELIMITADOR .)
-    FOR             reduce using rule 7 (sentencia -> asignacion DELIMITADOR .)
-    WHILE           reduce using rule 7 (sentencia -> asignacion DELIMITADOR .)
-    ID              reduce using rule 7 (sentencia -> asignacion DELIMITADOR .)
-    OPERADOR        reduce using rule 7 (sentencia -> asignacion DELIMITADOR .)
-    $end            reduce using rule 7 (sentencia -> asignacion DELIMITADOR .)
-    LLAVED          reduce using rule 7 (sentencia -> asignacion DELIMITADOR .)
+    PI              shift and go to state 42
 
 
 state 17
 
-    (8) sentencia -> llamada_sistema DELIMITADOR .
+    (34) for_sentencia -> FOR . PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
 
-    NUMERO          reduce using rule 8 (sentencia -> llamada_sistema DELIMITADOR .)
-    IF              reduce using rule 8 (sentencia -> llamada_sistema DELIMITADOR .)
-    FOR             reduce using rule 8 (sentencia -> llamada_sistema DELIMITADOR .)
-    WHILE           reduce using rule 8 (sentencia -> llamada_sistema DELIMITADOR .)
-    ID              reduce using rule 8 (sentencia -> llamada_sistema DELIMITADOR .)
-    OPERADOR        reduce using rule 8 (sentencia -> llamada_sistema DELIMITADOR .)
-    $end            reduce using rule 8 (sentencia -> llamada_sistema DELIMITADOR .)
-    LLAVED          reduce using rule 8 (sentencia -> llamada_sistema DELIMITADOR .)
+    PI              shift and go to state 43
 
 
 state 18
 
-    (14) sentencia -> NUMERO ID . OPERADOR expresion DELIMITADOR
-    (20) asignacion -> NUMERO ID .
+    (35) while_sentencia -> WHILE . PI expresion PD LLAVEI sentencias LLAVED
 
-    OPERADOR        shift and go to state 30
-    DELIMITADOR     reduce using rule 20 (asignacion -> NUMERO ID .)
+    PI              shift and go to state 44
 
 
 state 19
 
-    (22) asignacion -> ID ID .
+    (20) entrada_datos -> READ . ID
+    (44) entrada_datos -> READ . error
 
-    DELIMITADOR     reduce using rule 22 (asignacion -> ID ID .)
-    PD              reduce using rule 22 (asignacion -> ID ID .)
+    ID              shift and go to state 45
+    error           shift and go to state 46
 
 
 state 20
 
-    (17) asignacion -> ID OPERADOR . expresion
-    (18) asignacion -> ID OPERADOR . ID
-    (19) asignacion -> ID OPERADOR . NUMERO
-    (23) expresion -> . OPERADOR NUMERO
-    (24) expresion -> . OPERADOR ID
-    (25) expresion -> . ID OPERADOR NUMERO
-    (26) expresion -> . ID OPERADOR ID
-    (27) expresion -> . NUMERO OPERADOR NUMERO
-    (28) expresion -> . NUMERO OPERADOR ID
-    (29) expresion -> . ID
-    (30) expresion -> . NUMERO
-    (31) expresion -> . cadena
-    (32) cadena -> . ID
+    (21) salida_datos -> PRINT . PI argumentos PD
+    (22) salida_datos -> PRINT . PI CADENA PD
+    (45) salida_datos -> PRINT . error
 
-    ID              shift and go to state 31
-    NUMERO          shift and go to state 33
-    OPERADOR        shift and go to state 22
+    PI              shift and go to state 47
+    error           shift and go to state 48
 
-    expresion                      shift and go to state 32
-    cadena                         shift and go to state 26
 
 state 21
 
-    (9) llamada_sistema -> ID PUNTO . ID PI argumentos PD
+    (23) fin_programa -> END .
 
-    ID              shift and go to state 34
+    DELIMITADOR     reduce using rule 23 (fin_programa -> END .)
 
 
 state 22
 
-    (23) expresion -> OPERADOR . NUMERO
-    (24) expresion -> OPERADOR . ID
+    (1) programa -> PROGRAMA ID . PI PD LLAVEI declaraciones sentencias LLAVED
+    (2) programa -> PROGRAMA ID . PI PD LLAVEI sentencias LLAVED
 
-    NUMERO          shift and go to state 35
-    ID              shift and go to state 36
+    PI              shift and go to state 49
 
 
 state 23
 
-    (21) asignacion -> OPERADOR expresion .
+    (32) programa -> PROGRAMA error .
 
-    DELIMITADOR     reduce using rule 21 (asignacion -> OPERADOR expresion .)
-    PD              reduce using rule 21 (asignacion -> OPERADOR expresion .)
+    $end            reduce using rule 32 (programa -> PROGRAMA error .)
 
 
 state 24
 
-    (27) expresion -> NUMERO . OPERADOR NUMERO
-    (28) expresion -> NUMERO . OPERADOR ID
-    (30) expresion -> NUMERO .
+    (41) asignacion -> ID ID .
 
-    OPERADOR        shift and go to state 37
-    DELIMITADOR     reduce using rule 30 (expresion -> NUMERO .)
-    PD              reduce using rule 30 (expresion -> NUMERO .)
+    DELIMITADOR     reduce using rule 41 (asignacion -> ID ID .)
+    PD              reduce using rule 41 (asignacion -> ID ID .)
 
 
 state 25
 
-    (25) expresion -> ID . OPERADOR NUMERO
-    (26) expresion -> ID . OPERADOR ID
-    (29) expresion -> ID .
-    (32) cadena -> ID .
+    (33) programa -> ID error .
 
-  ! reduce/reduce conflict for DELIMITADOR resolved using rule 29 (expresion -> ID .)
-  ! reduce/reduce conflict for PD resolved using rule 29 (expresion -> ID .)
-    OPERADOR        shift and go to state 38
-    DELIMITADOR     reduce using rule 29 (expresion -> ID .)
-    PD              reduce using rule 29 (expresion -> ID .)
-
-  ! DELIMITADOR     [ reduce using rule 32 (cadena -> ID .) ]
-  ! PD              [ reduce using rule 32 (cadena -> ID .) ]
+    $end            reduce using rule 33 (programa -> ID error .)
 
 
 state 26
 
-    (31) expresion -> cadena .
+    (36) asignacion -> ID OPERADOR . expresion
+    (37) asignacion -> ID OPERADOR . ID
+    (38) asignacion -> ID OPERADOR . NUMERO
+    (46) expresion -> . OPERADOR NUMERO
+    (47) expresion -> . OPERADOR ID
+    (48) expresion -> . ID OPERADOR NUMERO
+    (49) expresion -> . ID OPERADOR ID
+    (50) expresion -> . NUMERO OPERADOR NUMERO
+    (51) expresion -> . NUMERO OPERADOR ID
+    (52) expresion -> . ID
+    (53) expresion -> . NUMERO
+    (54) expresion -> . cadena
+    (55) expresion -> . CADENA
+    (56) cadena -> . ID
 
-    DELIMITADOR     reduce using rule 31 (expresion -> cadena .)
-    PD              reduce using rule 31 (expresion -> cadena .)
+    ID              shift and go to state 50
+    NUMERO          shift and go to state 52
+    OPERADOR        shift and go to state 36
+    CADENA          shift and go to state 41
 
+    expresion                      shift and go to state 51
+    cadena                         shift and go to state 40
 
 state 27
 
-    (13) if_sentencia -> IF PI . expresion PD LLAVEI sentencias LLAVED
-    (23) expresion -> . OPERADOR NUMERO
-    (24) expresion -> . OPERADOR ID
-    (25) expresion -> . ID OPERADOR NUMERO
-    (26) expresion -> . ID OPERADOR ID
-    (27) expresion -> . NUMERO OPERADOR NUMERO
-    (28) expresion -> . NUMERO OPERADOR ID
-    (29) expresion -> . ID
-    (30) expresion -> . NUMERO
-    (31) expresion -> . cadena
-    (32) cadena -> . ID
+    (24) llamada_sistema -> ID PUNTO . ID PI argumentos PD
 
-    OPERADOR        shift and go to state 22
-    ID              shift and go to state 25
-    NUMERO          shift and go to state 24
+    ID              shift and go to state 53
 
-    expresion                      shift and go to state 39
-    cadena                         shift and go to state 26
 
 state 28
 
-    (15) for_sentencia -> FOR PI . asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
-    (17) asignacion -> . ID OPERADOR expresion
-    (18) asignacion -> . ID OPERADOR ID
-    (19) asignacion -> . ID OPERADOR NUMERO
-    (20) asignacion -> . NUMERO ID
-    (21) asignacion -> . OPERADOR expresion
-    (22) asignacion -> . ID ID
+    (10) sentencias -> sentencia sentencias .
 
-    ID              shift and go to state 41
-    NUMERO          shift and go to state 42
-    OPERADOR        shift and go to state 11
+    $end            reduce using rule 10 (sentencias -> sentencia sentencias .)
+    LLAVED          reduce using rule 10 (sentencias -> sentencia sentencias .)
 
-    asignacion                     shift and go to state 40
 
 state 29
 
-    (16) while_sentencia -> WHILE PI . expresion PD LLAVEI sentencias LLAVED
-    (23) expresion -> . OPERADOR NUMERO
-    (24) expresion -> . OPERADOR ID
-    (25) expresion -> . ID OPERADOR NUMERO
-    (26) expresion -> . ID OPERADOR ID
-    (27) expresion -> . NUMERO OPERADOR NUMERO
-    (28) expresion -> . NUMERO OPERADOR ID
-    (29) expresion -> . ID
-    (30) expresion -> . NUMERO
-    (31) expresion -> . cadena
-    (32) cadena -> . ID
+    (36) asignacion -> ID . OPERADOR expresion
+    (37) asignacion -> ID . OPERADOR ID
+    (38) asignacion -> ID . OPERADOR NUMERO
+    (41) asignacion -> ID . ID
+    (24) llamada_sistema -> ID . PUNTO ID PI argumentos PD
 
-    OPERADOR        shift and go to state 22
-    ID              shift and go to state 25
-    NUMERO          shift and go to state 24
+    OPERADOR        shift and go to state 26
+    ID              shift and go to state 24
+    PUNTO           shift and go to state 27
 
-    expresion                      shift and go to state 43
-    cadena                         shift and go to state 26
 
 state 30
 
-    (14) sentencia -> NUMERO ID OPERADOR . expresion DELIMITADOR
-    (23) expresion -> . OPERADOR NUMERO
-    (24) expresion -> . OPERADOR ID
-    (25) expresion -> . ID OPERADOR NUMERO
-    (26) expresion -> . ID OPERADOR ID
-    (27) expresion -> . NUMERO OPERADOR NUMERO
-    (28) expresion -> . NUMERO OPERADOR ID
-    (29) expresion -> . ID
-    (30) expresion -> . NUMERO
-    (31) expresion -> . cadena
-    (32) cadena -> . ID
+    (15) sentencia -> asignacion DELIMITADOR .
 
-    OPERADOR        shift and go to state 22
-    ID              shift and go to state 25
-    NUMERO          shift and go to state 24
+    NUMERO          reduce using rule 15 (sentencia -> asignacion DELIMITADOR .)
+    IF              reduce using rule 15 (sentencia -> asignacion DELIMITADOR .)
+    FOR             reduce using rule 15 (sentencia -> asignacion DELIMITADOR .)
+    WHILE           reduce using rule 15 (sentencia -> asignacion DELIMITADOR .)
+    ID              reduce using rule 15 (sentencia -> asignacion DELIMITADOR .)
+    OPERADOR        reduce using rule 15 (sentencia -> asignacion DELIMITADOR .)
+    READ            reduce using rule 15 (sentencia -> asignacion DELIMITADOR .)
+    PRINT           reduce using rule 15 (sentencia -> asignacion DELIMITADOR .)
+    END             reduce using rule 15 (sentencia -> asignacion DELIMITADOR .)
+    $end            reduce using rule 15 (sentencia -> asignacion DELIMITADOR .)
+    LLAVED          reduce using rule 15 (sentencia -> asignacion DELIMITADOR .)
 
-    expresion                      shift and go to state 44
-    cadena                         shift and go to state 26
 
 state 31
 
-    (18) asignacion -> ID OPERADOR ID .
-    (25) expresion -> ID . OPERADOR NUMERO
-    (26) expresion -> ID . OPERADOR ID
-    (29) expresion -> ID .
-    (32) cadena -> ID .
+    (16) sentencia -> llamada_sistema DELIMITADOR .
 
-  ! reduce/reduce conflict for DELIMITADOR resolved using rule 18 (asignacion -> ID OPERADOR ID .)
-  ! reduce/reduce conflict for DELIMITADOR resolved using rule 18 (asignacion -> ID OPERADOR ID .)
-    DELIMITADOR     reduce using rule 18 (asignacion -> ID OPERADOR ID .)
-    OPERADOR        shift and go to state 38
-
-  ! DELIMITADOR     [ reduce using rule 29 (expresion -> ID .) ]
-  ! DELIMITADOR     [ reduce using rule 32 (cadena -> ID .) ]
+    NUMERO          reduce using rule 16 (sentencia -> llamada_sistema DELIMITADOR .)
+    IF              reduce using rule 16 (sentencia -> llamada_sistema DELIMITADOR .)
+    FOR             reduce using rule 16 (sentencia -> llamada_sistema DELIMITADOR .)
+    WHILE           reduce using rule 16 (sentencia -> llamada_sistema DELIMITADOR .)
+    ID              reduce using rule 16 (sentencia -> llamada_sistema DELIMITADOR .)
+    OPERADOR        reduce using rule 16 (sentencia -> llamada_sistema DELIMITADOR .)
+    READ            reduce using rule 16 (sentencia -> llamada_sistema DELIMITADOR .)
+    PRINT           reduce using rule 16 (sentencia -> llamada_sistema DELIMITADOR .)
+    END             reduce using rule 16 (sentencia -> llamada_sistema DELIMITADOR .)
+    $end            reduce using rule 16 (sentencia -> llamada_sistema DELIMITADOR .)
+    LLAVED          reduce using rule 16 (sentencia -> llamada_sistema DELIMITADOR .)
 
 
 state 32
 
-    (17) asignacion -> ID OPERADOR expresion .
+    (17) sentencia -> entrada_datos DELIMITADOR .
 
-    DELIMITADOR     reduce using rule 17 (asignacion -> ID OPERADOR expresion .)
-    PD              reduce using rule 17 (asignacion -> ID OPERADOR expresion .)
+    NUMERO          reduce using rule 17 (sentencia -> entrada_datos DELIMITADOR .)
+    IF              reduce using rule 17 (sentencia -> entrada_datos DELIMITADOR .)
+    FOR             reduce using rule 17 (sentencia -> entrada_datos DELIMITADOR .)
+    WHILE           reduce using rule 17 (sentencia -> entrada_datos DELIMITADOR .)
+    ID              reduce using rule 17 (sentencia -> entrada_datos DELIMITADOR .)
+    OPERADOR        reduce using rule 17 (sentencia -> entrada_datos DELIMITADOR .)
+    READ            reduce using rule 17 (sentencia -> entrada_datos DELIMITADOR .)
+    PRINT           reduce using rule 17 (sentencia -> entrada_datos DELIMITADOR .)
+    END             reduce using rule 17 (sentencia -> entrada_datos DELIMITADOR .)
+    $end            reduce using rule 17 (sentencia -> entrada_datos DELIMITADOR .)
+    LLAVED          reduce using rule 17 (sentencia -> entrada_datos DELIMITADOR .)
 
 
 state 33
 
-    (19) asignacion -> ID OPERADOR NUMERO .
-    (27) expresion -> NUMERO . OPERADOR NUMERO
-    (28) expresion -> NUMERO . OPERADOR ID
-    (30) expresion -> NUMERO .
+    (18) sentencia -> salida_datos DELIMITADOR .
 
-  ! reduce/reduce conflict for DELIMITADOR resolved using rule 19 (asignacion -> ID OPERADOR NUMERO .)
-    DELIMITADOR     reduce using rule 19 (asignacion -> ID OPERADOR NUMERO .)
-    OPERADOR        shift and go to state 37
-
-  ! DELIMITADOR     [ reduce using rule 30 (expresion -> NUMERO .) ]
+    NUMERO          reduce using rule 18 (sentencia -> salida_datos DELIMITADOR .)
+    IF              reduce using rule 18 (sentencia -> salida_datos DELIMITADOR .)
+    FOR             reduce using rule 18 (sentencia -> salida_datos DELIMITADOR .)
+    WHILE           reduce using rule 18 (sentencia -> salida_datos DELIMITADOR .)
+    ID              reduce using rule 18 (sentencia -> salida_datos DELIMITADOR .)
+    OPERADOR        reduce using rule 18 (sentencia -> salida_datos DELIMITADOR .)
+    READ            reduce using rule 18 (sentencia -> salida_datos DELIMITADOR .)
+    PRINT           reduce using rule 18 (sentencia -> salida_datos DELIMITADOR .)
+    END             reduce using rule 18 (sentencia -> salida_datos DELIMITADOR .)
+    $end            reduce using rule 18 (sentencia -> salida_datos DELIMITADOR .)
+    LLAVED          reduce using rule 18 (sentencia -> salida_datos DELIMITADOR .)
 
 
 state 34
 
-    (9) llamada_sistema -> ID PUNTO ID . PI argumentos PD
+    (19) sentencia -> fin_programa DELIMITADOR .
 
-    PI              shift and go to state 45
+    NUMERO          reduce using rule 19 (sentencia -> fin_programa DELIMITADOR .)
+    IF              reduce using rule 19 (sentencia -> fin_programa DELIMITADOR .)
+    FOR             reduce using rule 19 (sentencia -> fin_programa DELIMITADOR .)
+    WHILE           reduce using rule 19 (sentencia -> fin_programa DELIMITADOR .)
+    ID              reduce using rule 19 (sentencia -> fin_programa DELIMITADOR .)
+    OPERADOR        reduce using rule 19 (sentencia -> fin_programa DELIMITADOR .)
+    READ            reduce using rule 19 (sentencia -> fin_programa DELIMITADOR .)
+    PRINT           reduce using rule 19 (sentencia -> fin_programa DELIMITADOR .)
+    END             reduce using rule 19 (sentencia -> fin_programa DELIMITADOR .)
+    $end            reduce using rule 19 (sentencia -> fin_programa DELIMITADOR .)
+    LLAVED          reduce using rule 19 (sentencia -> fin_programa DELIMITADOR .)
 
 
 state 35
 
-    (23) expresion -> OPERADOR NUMERO .
+    (31) sentencia -> NUMERO ID . OPERADOR expresion DELIMITADOR
+    (39) asignacion -> NUMERO ID .
 
-    DELIMITADOR     reduce using rule 23 (expresion -> OPERADOR NUMERO .)
-    PD              reduce using rule 23 (expresion -> OPERADOR NUMERO .)
+    OPERADOR        shift and go to state 54
+    DELIMITADOR     reduce using rule 39 (asignacion -> NUMERO ID .)
 
 
 state 36
 
-    (24) expresion -> OPERADOR ID .
+    (46) expresion -> OPERADOR . NUMERO
+    (47) expresion -> OPERADOR . ID
 
-    DELIMITADOR     reduce using rule 24 (expresion -> OPERADOR ID .)
-    PD              reduce using rule 24 (expresion -> OPERADOR ID .)
+    NUMERO          shift and go to state 55
+    ID              shift and go to state 56
 
 
 state 37
 
-    (27) expresion -> NUMERO OPERADOR . NUMERO
-    (28) expresion -> NUMERO OPERADOR . ID
+    (40) asignacion -> OPERADOR expresion .
 
-    NUMERO          shift and go to state 46
-    ID              shift and go to state 47
+    DELIMITADOR     reduce using rule 40 (asignacion -> OPERADOR expresion .)
+    PD              reduce using rule 40 (asignacion -> OPERADOR expresion .)
 
 
 state 38
 
-    (25) expresion -> ID OPERADOR . NUMERO
-    (26) expresion -> ID OPERADOR . ID
+    (50) expresion -> NUMERO . OPERADOR NUMERO
+    (51) expresion -> NUMERO . OPERADOR ID
+    (53) expresion -> NUMERO .
 
-    NUMERO          shift and go to state 49
-    ID              shift and go to state 48
+    OPERADOR        shift and go to state 57
+    DELIMITADOR     reduce using rule 53 (expresion -> NUMERO .)
+    PD              reduce using rule 53 (expresion -> NUMERO .)
 
 
 state 39
 
-    (13) if_sentencia -> IF PI expresion . PD LLAVEI sentencias LLAVED
+    (48) expresion -> ID . OPERADOR NUMERO
+    (49) expresion -> ID . OPERADOR ID
+    (52) expresion -> ID .
+    (56) cadena -> ID .
 
-    PD              shift and go to state 50
+  ! reduce/reduce conflict for DELIMITADOR resolved using rule 52 (expresion -> ID .)
+  ! reduce/reduce conflict for PD resolved using rule 52 (expresion -> ID .)
+    OPERADOR        shift and go to state 58
+    DELIMITADOR     reduce using rule 52 (expresion -> ID .)
+    PD              reduce using rule 52 (expresion -> ID .)
+
+  ! DELIMITADOR     [ reduce using rule 56 (cadena -> ID .) ]
+  ! PD              [ reduce using rule 56 (cadena -> ID .) ]
 
 
 state 40
 
-    (15) for_sentencia -> FOR PI asignacion . DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
+    (54) expresion -> cadena .
 
-    DELIMITADOR     shift and go to state 51
+    DELIMITADOR     reduce using rule 54 (expresion -> cadena .)
+    PD              reduce using rule 54 (expresion -> cadena .)
 
 
 state 41
 
-    (17) asignacion -> ID . OPERADOR expresion
-    (18) asignacion -> ID . OPERADOR ID
-    (19) asignacion -> ID . OPERADOR NUMERO
-    (22) asignacion -> ID . ID
+    (55) expresion -> CADENA .
 
-    OPERADOR        shift and go to state 20
-    ID              shift and go to state 19
+    DELIMITADOR     reduce using rule 55 (expresion -> CADENA .)
+    PD              reduce using rule 55 (expresion -> CADENA .)
 
 
 state 42
 
-    (20) asignacion -> NUMERO . ID
+    (30) if_sentencia -> IF PI . expresion PD LLAVEI sentencias LLAVED
+    (46) expresion -> . OPERADOR NUMERO
+    (47) expresion -> . OPERADOR ID
+    (48) expresion -> . ID OPERADOR NUMERO
+    (49) expresion -> . ID OPERADOR ID
+    (50) expresion -> . NUMERO OPERADOR NUMERO
+    (51) expresion -> . NUMERO OPERADOR ID
+    (52) expresion -> . ID
+    (53) expresion -> . NUMERO
+    (54) expresion -> . cadena
+    (55) expresion -> . CADENA
+    (56) cadena -> . ID
 
-    ID              shift and go to state 52
+    OPERADOR        shift and go to state 36
+    ID              shift and go to state 39
+    NUMERO          shift and go to state 38
+    CADENA          shift and go to state 41
 
+    expresion                      shift and go to state 59
+    cadena                         shift and go to state 40
 
 state 43
 
-    (16) while_sentencia -> WHILE PI expresion . PD LLAVEI sentencias LLAVED
+    (34) for_sentencia -> FOR PI . asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
+    (36) asignacion -> . ID OPERADOR expresion
+    (37) asignacion -> . ID OPERADOR ID
+    (38) asignacion -> . ID OPERADOR NUMERO
+    (39) asignacion -> . NUMERO ID
+    (40) asignacion -> . OPERADOR expresion
+    (41) asignacion -> . ID ID
 
-    PD              shift and go to state 53
+    ID              shift and go to state 61
+    NUMERO          shift and go to state 62
+    OPERADOR        shift and go to state 15
 
+    asignacion                     shift and go to state 60
 
 state 44
 
-    (14) sentencia -> NUMERO ID OPERADOR expresion . DELIMITADOR
+    (35) while_sentencia -> WHILE PI . expresion PD LLAVEI sentencias LLAVED
+    (46) expresion -> . OPERADOR NUMERO
+    (47) expresion -> . OPERADOR ID
+    (48) expresion -> . ID OPERADOR NUMERO
+    (49) expresion -> . ID OPERADOR ID
+    (50) expresion -> . NUMERO OPERADOR NUMERO
+    (51) expresion -> . NUMERO OPERADOR ID
+    (52) expresion -> . ID
+    (53) expresion -> . NUMERO
+    (54) expresion -> . cadena
+    (55) expresion -> . CADENA
+    (56) cadena -> . ID
 
-    DELIMITADOR     shift and go to state 54
+    OPERADOR        shift and go to state 36
+    ID              shift and go to state 39
+    NUMERO          shift and go to state 38
+    CADENA          shift and go to state 41
 
+    expresion                      shift and go to state 63
+    cadena                         shift and go to state 40
 
 state 45
 
-    (9) llamada_sistema -> ID PUNTO ID PI . argumentos PD
-    (10) argumentos -> . expresion DELIMITADOR argumentos
-    (11) argumentos -> . expresion
-    (12) argumentos -> .
-    (23) expresion -> . OPERADOR NUMERO
-    (24) expresion -> . OPERADOR ID
-    (25) expresion -> . ID OPERADOR NUMERO
-    (26) expresion -> . ID OPERADOR ID
-    (27) expresion -> . NUMERO OPERADOR NUMERO
-    (28) expresion -> . NUMERO OPERADOR ID
-    (29) expresion -> . ID
-    (30) expresion -> . NUMERO
-    (31) expresion -> . cadena
-    (32) cadena -> . ID
+    (20) entrada_datos -> READ ID .
 
-    PD              reduce using rule 12 (argumentos -> .)
-    OPERADOR        shift and go to state 22
-    ID              shift and go to state 25
-    NUMERO          shift and go to state 24
+    DELIMITADOR     reduce using rule 20 (entrada_datos -> READ ID .)
 
-    argumentos                     shift and go to state 55
-    expresion                      shift and go to state 56
-    cadena                         shift and go to state 26
 
 state 46
 
-    (27) expresion -> NUMERO OPERADOR NUMERO .
+    (44) entrada_datos -> READ error .
 
-    DELIMITADOR     reduce using rule 27 (expresion -> NUMERO OPERADOR NUMERO .)
-    PD              reduce using rule 27 (expresion -> NUMERO OPERADOR NUMERO .)
+    DELIMITADOR     reduce using rule 44 (entrada_datos -> READ error .)
 
 
 state 47
 
-    (28) expresion -> NUMERO OPERADOR ID .
+    (21) salida_datos -> PRINT PI . argumentos PD
+    (22) salida_datos -> PRINT PI . CADENA PD
+    (25) argumentos -> . expresion DELIMITADOR argumentos
+    (26) argumentos -> . expresion
+    (27) argumentos -> . CADENA DELIMITADOR argumentos
+    (28) argumentos -> . CADENA
+    (29) argumentos -> .
+    (46) expresion -> . OPERADOR NUMERO
+    (47) expresion -> . OPERADOR ID
+    (48) expresion -> . ID OPERADOR NUMERO
+    (49) expresion -> . ID OPERADOR ID
+    (50) expresion -> . NUMERO OPERADOR NUMERO
+    (51) expresion -> . NUMERO OPERADOR ID
+    (52) expresion -> . ID
+    (53) expresion -> . NUMERO
+    (54) expresion -> . cadena
+    (55) expresion -> . CADENA
+    (56) cadena -> . ID
 
-    DELIMITADOR     reduce using rule 28 (expresion -> NUMERO OPERADOR ID .)
-    PD              reduce using rule 28 (expresion -> NUMERO OPERADOR ID .)
+    CADENA          shift and go to state 65
+    PD              reduce using rule 29 (argumentos -> .)
+    OPERADOR        shift and go to state 36
+    ID              shift and go to state 39
+    NUMERO          shift and go to state 38
 
+    argumentos                     shift and go to state 64
+    expresion                      shift and go to state 66
+    cadena                         shift and go to state 40
 
 state 48
 
-    (26) expresion -> ID OPERADOR ID .
+    (45) salida_datos -> PRINT error .
 
-    DELIMITADOR     reduce using rule 26 (expresion -> ID OPERADOR ID .)
-    PD              reduce using rule 26 (expresion -> ID OPERADOR ID .)
+    DELIMITADOR     reduce using rule 45 (salida_datos -> PRINT error .)
 
 
 state 49
 
-    (25) expresion -> ID OPERADOR NUMERO .
+    (1) programa -> PROGRAMA ID PI . PD LLAVEI declaraciones sentencias LLAVED
+    (2) programa -> PROGRAMA ID PI . PD LLAVEI sentencias LLAVED
 
-    DELIMITADOR     reduce using rule 25 (expresion -> ID OPERADOR NUMERO .)
-    PD              reduce using rule 25 (expresion -> ID OPERADOR NUMERO .)
+    PD              shift and go to state 67
 
 
 state 50
 
-    (13) if_sentencia -> IF PI expresion PD . LLAVEI sentencias LLAVED
+    (37) asignacion -> ID OPERADOR ID .
+    (48) expresion -> ID . OPERADOR NUMERO
+    (49) expresion -> ID . OPERADOR ID
+    (52) expresion -> ID .
+    (56) cadena -> ID .
 
-    LLAVEI          shift and go to state 57
+  ! reduce/reduce conflict for DELIMITADOR resolved using rule 37 (asignacion -> ID OPERADOR ID .)
+  ! reduce/reduce conflict for DELIMITADOR resolved using rule 37 (asignacion -> ID OPERADOR ID .)
+    DELIMITADOR     reduce using rule 37 (asignacion -> ID OPERADOR ID .)
+    OPERADOR        shift and go to state 58
+
+  ! DELIMITADOR     [ reduce using rule 52 (expresion -> ID .) ]
+  ! DELIMITADOR     [ reduce using rule 56 (cadena -> ID .) ]
 
 
 state 51
 
-    (15) for_sentencia -> FOR PI asignacion DELIMITADOR . expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
-    (23) expresion -> . OPERADOR NUMERO
-    (24) expresion -> . OPERADOR ID
-    (25) expresion -> . ID OPERADOR NUMERO
-    (26) expresion -> . ID OPERADOR ID
-    (27) expresion -> . NUMERO OPERADOR NUMERO
-    (28) expresion -> . NUMERO OPERADOR ID
-    (29) expresion -> . ID
-    (30) expresion -> . NUMERO
-    (31) expresion -> . cadena
-    (32) cadena -> . ID
+    (36) asignacion -> ID OPERADOR expresion .
 
-    OPERADOR        shift and go to state 22
-    ID              shift and go to state 25
-    NUMERO          shift and go to state 24
+    DELIMITADOR     reduce using rule 36 (asignacion -> ID OPERADOR expresion .)
+    PD              reduce using rule 36 (asignacion -> ID OPERADOR expresion .)
 
-    expresion                      shift and go to state 58
-    cadena                         shift and go to state 26
 
 state 52
 
-    (20) asignacion -> NUMERO ID .
+    (38) asignacion -> ID OPERADOR NUMERO .
+    (50) expresion -> NUMERO . OPERADOR NUMERO
+    (51) expresion -> NUMERO . OPERADOR ID
+    (53) expresion -> NUMERO .
 
-    DELIMITADOR     reduce using rule 20 (asignacion -> NUMERO ID .)
-    PD              reduce using rule 20 (asignacion -> NUMERO ID .)
+  ! reduce/reduce conflict for DELIMITADOR resolved using rule 38 (asignacion -> ID OPERADOR NUMERO .)
+    DELIMITADOR     reduce using rule 38 (asignacion -> ID OPERADOR NUMERO .)
+    OPERADOR        shift and go to state 57
+
+  ! DELIMITADOR     [ reduce using rule 53 (expresion -> NUMERO .) ]
 
 
 state 53
 
-    (16) while_sentencia -> WHILE PI expresion PD . LLAVEI sentencias LLAVED
+    (24) llamada_sistema -> ID PUNTO ID . PI argumentos PD
 
-    LLAVEI          shift and go to state 59
+    PI              shift and go to state 68
 
 
 state 54
 
-    (14) sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .
+    (31) sentencia -> NUMERO ID OPERADOR . expresion DELIMITADOR
+    (46) expresion -> . OPERADOR NUMERO
+    (47) expresion -> . OPERADOR ID
+    (48) expresion -> . ID OPERADOR NUMERO
+    (49) expresion -> . ID OPERADOR ID
+    (50) expresion -> . NUMERO OPERADOR NUMERO
+    (51) expresion -> . NUMERO OPERADOR ID
+    (52) expresion -> . ID
+    (53) expresion -> . NUMERO
+    (54) expresion -> . cadena
+    (55) expresion -> . CADENA
+    (56) cadena -> . ID
 
-    NUMERO          reduce using rule 14 (sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .)
-    IF              reduce using rule 14 (sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .)
-    FOR             reduce using rule 14 (sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .)
-    WHILE           reduce using rule 14 (sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .)
-    ID              reduce using rule 14 (sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .)
-    OPERADOR        reduce using rule 14 (sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .)
-    $end            reduce using rule 14 (sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .)
-    LLAVED          reduce using rule 14 (sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .)
+    OPERADOR        shift and go to state 36
+    ID              shift and go to state 39
+    NUMERO          shift and go to state 38
+    CADENA          shift and go to state 41
 
+    expresion                      shift and go to state 69
+    cadena                         shift and go to state 40
 
 state 55
 
-    (9) llamada_sistema -> ID PUNTO ID PI argumentos . PD
+    (46) expresion -> OPERADOR NUMERO .
 
-    PD              shift and go to state 60
+    DELIMITADOR     reduce using rule 46 (expresion -> OPERADOR NUMERO .)
+    PD              reduce using rule 46 (expresion -> OPERADOR NUMERO .)
 
 
 state 56
 
-    (10) argumentos -> expresion . DELIMITADOR argumentos
-    (11) argumentos -> expresion .
+    (47) expresion -> OPERADOR ID .
 
-    DELIMITADOR     shift and go to state 61
-    PD              reduce using rule 11 (argumentos -> expresion .)
+    DELIMITADOR     reduce using rule 47 (expresion -> OPERADOR ID .)
+    PD              reduce using rule 47 (expresion -> OPERADOR ID .)
 
 
 state 57
 
-    (13) if_sentencia -> IF PI expresion PD LLAVEI . sentencias LLAVED
-    (2) sentencias -> . sentencia sentencias
-    (3) sentencias -> . sentencia
-    (33) sentencias -> .
-    (4) sentencia -> . if_sentencia
-    (5) sentencia -> . for_sentencia
-    (6) sentencia -> . while_sentencia
-    (7) sentencia -> . asignacion DELIMITADOR
-    (8) sentencia -> . llamada_sistema DELIMITADOR
-    (14) sentencia -> . NUMERO ID OPERADOR expresion DELIMITADOR
-    (13) if_sentencia -> . IF PI expresion PD LLAVEI sentencias LLAVED
-    (15) for_sentencia -> . FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
-    (16) while_sentencia -> . WHILE PI expresion PD LLAVEI sentencias LLAVED
-    (17) asignacion -> . ID OPERADOR expresion
-    (18) asignacion -> . ID OPERADOR ID
-    (19) asignacion -> . ID OPERADOR NUMERO
-    (20) asignacion -> . NUMERO ID
-    (21) asignacion -> . OPERADOR expresion
-    (22) asignacion -> . ID ID
-    (9) llamada_sistema -> . ID PUNTO ID PI argumentos PD
+    (50) expresion -> NUMERO OPERADOR . NUMERO
+    (51) expresion -> NUMERO OPERADOR . ID
 
-    LLAVED          reduce using rule 33 (sentencias -> .)
-    NUMERO          shift and go to state 9
-    IF              shift and go to state 12
-    FOR             shift and go to state 13
-    WHILE           shift and go to state 14
-    ID              shift and go to state 10
-    OPERADOR        shift and go to state 11
+    NUMERO          shift and go to state 70
+    ID              shift and go to state 71
 
-    sentencias                     shift and go to state 62
-    sentencia                      shift and go to state 3
-    if_sentencia                   shift and go to state 4
-    for_sentencia                  shift and go to state 5
-    while_sentencia                shift and go to state 6
-    asignacion                     shift and go to state 7
-    llamada_sistema                shift and go to state 8
 
 state 58
 
-    (15) for_sentencia -> FOR PI asignacion DELIMITADOR expresion . DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
+    (48) expresion -> ID OPERADOR . NUMERO
+    (49) expresion -> ID OPERADOR . ID
 
-    DELIMITADOR     shift and go to state 63
+    NUMERO          shift and go to state 73
+    ID              shift and go to state 72
 
 
 state 59
 
-    (16) while_sentencia -> WHILE PI expresion PD LLAVEI . sentencias LLAVED
-    (2) sentencias -> . sentencia sentencias
-    (3) sentencias -> . sentencia
-    (33) sentencias -> .
-    (4) sentencia -> . if_sentencia
-    (5) sentencia -> . for_sentencia
-    (6) sentencia -> . while_sentencia
-    (7) sentencia -> . asignacion DELIMITADOR
-    (8) sentencia -> . llamada_sistema DELIMITADOR
-    (14) sentencia -> . NUMERO ID OPERADOR expresion DELIMITADOR
-    (13) if_sentencia -> . IF PI expresion PD LLAVEI sentencias LLAVED
-    (15) for_sentencia -> . FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
-    (16) while_sentencia -> . WHILE PI expresion PD LLAVEI sentencias LLAVED
-    (17) asignacion -> . ID OPERADOR expresion
-    (18) asignacion -> . ID OPERADOR ID
-    (19) asignacion -> . ID OPERADOR NUMERO
-    (20) asignacion -> . NUMERO ID
-    (21) asignacion -> . OPERADOR expresion
-    (22) asignacion -> . ID ID
-    (9) llamada_sistema -> . ID PUNTO ID PI argumentos PD
+    (30) if_sentencia -> IF PI expresion . PD LLAVEI sentencias LLAVED
 
-    LLAVED          reduce using rule 33 (sentencias -> .)
-    NUMERO          shift and go to state 9
-    IF              shift and go to state 12
-    FOR             shift and go to state 13
-    WHILE           shift and go to state 14
-    ID              shift and go to state 10
-    OPERADOR        shift and go to state 11
+    PD              shift and go to state 74
 
-    sentencias                     shift and go to state 64
-    sentencia                      shift and go to state 3
-    if_sentencia                   shift and go to state 4
-    for_sentencia                  shift and go to state 5
-    while_sentencia                shift and go to state 6
-    asignacion                     shift and go to state 7
-    llamada_sistema                shift and go to state 8
 
 state 60
 
-    (9) llamada_sistema -> ID PUNTO ID PI argumentos PD .
+    (34) for_sentencia -> FOR PI asignacion . DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
 
-    DELIMITADOR     reduce using rule 9 (llamada_sistema -> ID PUNTO ID PI argumentos PD .)
+    DELIMITADOR     shift and go to state 75
 
 
 state 61
 
-    (10) argumentos -> expresion DELIMITADOR . argumentos
-    (10) argumentos -> . expresion DELIMITADOR argumentos
-    (11) argumentos -> . expresion
-    (12) argumentos -> .
-    (23) expresion -> . OPERADOR NUMERO
-    (24) expresion -> . OPERADOR ID
-    (25) expresion -> . ID OPERADOR NUMERO
-    (26) expresion -> . ID OPERADOR ID
-    (27) expresion -> . NUMERO OPERADOR NUMERO
-    (28) expresion -> . NUMERO OPERADOR ID
-    (29) expresion -> . ID
-    (30) expresion -> . NUMERO
-    (31) expresion -> . cadena
-    (32) cadena -> . ID
+    (36) asignacion -> ID . OPERADOR expresion
+    (37) asignacion -> ID . OPERADOR ID
+    (38) asignacion -> ID . OPERADOR NUMERO
+    (41) asignacion -> ID . ID
 
-    PD              reduce using rule 12 (argumentos -> .)
-    OPERADOR        shift and go to state 22
-    ID              shift and go to state 25
-    NUMERO          shift and go to state 24
+    OPERADOR        shift and go to state 26
+    ID              shift and go to state 24
 
-    expresion                      shift and go to state 56
-    argumentos                     shift and go to state 65
-    cadena                         shift and go to state 26
 
 state 62
 
-    (13) if_sentencia -> IF PI expresion PD LLAVEI sentencias . LLAVED
+    (39) asignacion -> NUMERO . ID
 
-    LLAVED          shift and go to state 66
+    ID              shift and go to state 76
 
 
 state 63
 
-    (15) for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR . expresion_incremento PD LLAVEI sentencias LLAVED
-    (34) expresion_incremento -> . ID OPERADOR
-    (35) expresion_incremento -> . ID OPERADOR NUMERO
-    (36) expresion_incremento -> . ID OPERADOR ID
-    (37) expresion_incremento -> . asignacion
-    (17) asignacion -> . ID OPERADOR expresion
-    (18) asignacion -> . ID OPERADOR ID
-    (19) asignacion -> . ID OPERADOR NUMERO
-    (20) asignacion -> . NUMERO ID
-    (21) asignacion -> . OPERADOR expresion
-    (22) asignacion -> . ID ID
+    (35) while_sentencia -> WHILE PI expresion . PD LLAVEI sentencias LLAVED
 
-    ID              shift and go to state 69
-    NUMERO          shift and go to state 42
-    OPERADOR        shift and go to state 11
+    PD              shift and go to state 77
 
-    asignacion                     shift and go to state 67
-    expresion_incremento           shift and go to state 68
 
 state 64
 
-    (16) while_sentencia -> WHILE PI expresion PD LLAVEI sentencias . LLAVED
+    (21) salida_datos -> PRINT PI argumentos . PD
 
-    LLAVED          shift and go to state 70
+    PD              shift and go to state 78
 
 
 state 65
 
-    (10) argumentos -> expresion DELIMITADOR argumentos .
+    (22) salida_datos -> PRINT PI CADENA . PD
+    (27) argumentos -> CADENA . DELIMITADOR argumentos
+    (28) argumentos -> CADENA .
+    (55) expresion -> CADENA .
 
-    PD              reduce using rule 10 (argumentos -> expresion DELIMITADOR argumentos .)
+  ! shift/reduce conflict for PD resolved as shift
+  ! shift/reduce conflict for DELIMITADOR resolved as shift
+  ! shift/reduce conflict for PD resolved as shift
+    PD              shift and go to state 79
+    DELIMITADOR     shift and go to state 80
+
+  ! PD              [ reduce using rule 28 (argumentos -> CADENA .) ]
+  ! DELIMITADOR     [ reduce using rule 55 (expresion -> CADENA .) ]
+  ! PD              [ reduce using rule 55 (expresion -> CADENA .) ]
 
 
 state 66
 
-    (13) if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .
+    (25) argumentos -> expresion . DELIMITADOR argumentos
+    (26) argumentos -> expresion .
 
-    NUMERO          reduce using rule 13 (if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .)
-    IF              reduce using rule 13 (if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .)
-    FOR             reduce using rule 13 (if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .)
-    WHILE           reduce using rule 13 (if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .)
-    ID              reduce using rule 13 (if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .)
-    OPERADOR        reduce using rule 13 (if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .)
-    $end            reduce using rule 13 (if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .)
-    LLAVED          reduce using rule 13 (if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .)
+    DELIMITADOR     shift and go to state 81
+    PD              reduce using rule 26 (argumentos -> expresion .)
 
 
 state 67
 
-    (37) expresion_incremento -> asignacion .
+    (1) programa -> PROGRAMA ID PI PD . LLAVEI declaraciones sentencias LLAVED
+    (2) programa -> PROGRAMA ID PI PD . LLAVEI sentencias LLAVED
 
-    PD              reduce using rule 37 (expresion_incremento -> asignacion .)
+    LLAVEI          shift and go to state 82
 
 
 state 68
 
-    (15) for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento . PD LLAVEI sentencias LLAVED
+    (24) llamada_sistema -> ID PUNTO ID PI . argumentos PD
+    (25) argumentos -> . expresion DELIMITADOR argumentos
+    (26) argumentos -> . expresion
+    (27) argumentos -> . CADENA DELIMITADOR argumentos
+    (28) argumentos -> . CADENA
+    (29) argumentos -> .
+    (46) expresion -> . OPERADOR NUMERO
+    (47) expresion -> . OPERADOR ID
+    (48) expresion -> . ID OPERADOR NUMERO
+    (49) expresion -> . ID OPERADOR ID
+    (50) expresion -> . NUMERO OPERADOR NUMERO
+    (51) expresion -> . NUMERO OPERADOR ID
+    (52) expresion -> . ID
+    (53) expresion -> . NUMERO
+    (54) expresion -> . cadena
+    (55) expresion -> . CADENA
+    (56) cadena -> . ID
 
-    PD              shift and go to state 71
+    CADENA          shift and go to state 84
+    PD              reduce using rule 29 (argumentos -> .)
+    OPERADOR        shift and go to state 36
+    ID              shift and go to state 39
+    NUMERO          shift and go to state 38
 
+    argumentos                     shift and go to state 83
+    expresion                      shift and go to state 66
+    cadena                         shift and go to state 40
 
 state 69
 
-    (34) expresion_incremento -> ID . OPERADOR
-    (35) expresion_incremento -> ID . OPERADOR NUMERO
-    (36) expresion_incremento -> ID . OPERADOR ID
-    (17) asignacion -> ID . OPERADOR expresion
-    (18) asignacion -> ID . OPERADOR ID
-    (19) asignacion -> ID . OPERADOR NUMERO
-    (22) asignacion -> ID . ID
+    (31) sentencia -> NUMERO ID OPERADOR expresion . DELIMITADOR
 
-    OPERADOR        shift and go to state 72
-    ID              shift and go to state 19
+    DELIMITADOR     shift and go to state 85
 
 
 state 70
 
-    (16) while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .
+    (50) expresion -> NUMERO OPERADOR NUMERO .
 
-    NUMERO          reduce using rule 16 (while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .)
-    IF              reduce using rule 16 (while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .)
-    FOR             reduce using rule 16 (while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .)
-    WHILE           reduce using rule 16 (while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .)
-    ID              reduce using rule 16 (while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .)
-    OPERADOR        reduce using rule 16 (while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .)
-    $end            reduce using rule 16 (while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .)
-    LLAVED          reduce using rule 16 (while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .)
+    DELIMITADOR     reduce using rule 50 (expresion -> NUMERO OPERADOR NUMERO .)
+    PD              reduce using rule 50 (expresion -> NUMERO OPERADOR NUMERO .)
 
 
 state 71
 
-    (15) for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD . LLAVEI sentencias LLAVED
+    (51) expresion -> NUMERO OPERADOR ID .
 
-    LLAVEI          shift and go to state 73
+    DELIMITADOR     reduce using rule 51 (expresion -> NUMERO OPERADOR ID .)
+    PD              reduce using rule 51 (expresion -> NUMERO OPERADOR ID .)
 
 
 state 72
 
-    (34) expresion_incremento -> ID OPERADOR .
-    (35) expresion_incremento -> ID OPERADOR . NUMERO
-    (36) expresion_incremento -> ID OPERADOR . ID
-    (17) asignacion -> ID OPERADOR . expresion
-    (18) asignacion -> ID OPERADOR . ID
-    (19) asignacion -> ID OPERADOR . NUMERO
-    (23) expresion -> . OPERADOR NUMERO
-    (24) expresion -> . OPERADOR ID
-    (25) expresion -> . ID OPERADOR NUMERO
-    (26) expresion -> . ID OPERADOR ID
-    (27) expresion -> . NUMERO OPERADOR NUMERO
-    (28) expresion -> . NUMERO OPERADOR ID
-    (29) expresion -> . ID
-    (30) expresion -> . NUMERO
-    (31) expresion -> . cadena
-    (32) cadena -> . ID
+    (49) expresion -> ID OPERADOR ID .
 
-    PD              reduce using rule 34 (expresion_incremento -> ID OPERADOR .)
-    NUMERO          shift and go to state 75
-    ID              shift and go to state 74
-    OPERADOR        shift and go to state 22
+    DELIMITADOR     reduce using rule 49 (expresion -> ID OPERADOR ID .)
+    PD              reduce using rule 49 (expresion -> ID OPERADOR ID .)
 
-    expresion                      shift and go to state 32
-    cadena                         shift and go to state 26
 
 state 73
 
-    (15) for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI . sentencias LLAVED
-    (2) sentencias -> . sentencia sentencias
-    (3) sentencias -> . sentencia
-    (33) sentencias -> .
-    (4) sentencia -> . if_sentencia
-    (5) sentencia -> . for_sentencia
-    (6) sentencia -> . while_sentencia
-    (7) sentencia -> . asignacion DELIMITADOR
-    (8) sentencia -> . llamada_sistema DELIMITADOR
-    (14) sentencia -> . NUMERO ID OPERADOR expresion DELIMITADOR
-    (13) if_sentencia -> . IF PI expresion PD LLAVEI sentencias LLAVED
-    (15) for_sentencia -> . FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
-    (16) while_sentencia -> . WHILE PI expresion PD LLAVEI sentencias LLAVED
-    (17) asignacion -> . ID OPERADOR expresion
-    (18) asignacion -> . ID OPERADOR ID
-    (19) asignacion -> . ID OPERADOR NUMERO
-    (20) asignacion -> . NUMERO ID
-    (21) asignacion -> . OPERADOR expresion
-    (22) asignacion -> . ID ID
-    (9) llamada_sistema -> . ID PUNTO ID PI argumentos PD
+    (48) expresion -> ID OPERADOR NUMERO .
 
-    LLAVED          reduce using rule 33 (sentencias -> .)
-    NUMERO          shift and go to state 9
-    IF              shift and go to state 12
-    FOR             shift and go to state 13
-    WHILE           shift and go to state 14
-    ID              shift and go to state 10
-    OPERADOR        shift and go to state 11
+    DELIMITADOR     reduce using rule 48 (expresion -> ID OPERADOR NUMERO .)
+    PD              reduce using rule 48 (expresion -> ID OPERADOR NUMERO .)
 
-    asignacion                     shift and go to state 7
-    sentencias                     shift and go to state 76
-    sentencia                      shift and go to state 3
-    if_sentencia                   shift and go to state 4
-    for_sentencia                  shift and go to state 5
-    while_sentencia                shift and go to state 6
-    llamada_sistema                shift and go to state 8
 
 state 74
 
-    (36) expresion_incremento -> ID OPERADOR ID .
-    (18) asignacion -> ID OPERADOR ID .
-    (25) expresion -> ID . OPERADOR NUMERO
-    (26) expresion -> ID . OPERADOR ID
-    (29) expresion -> ID .
-    (32) cadena -> ID .
+    (30) if_sentencia -> IF PI expresion PD . LLAVEI sentencias LLAVED
 
-  ! reduce/reduce conflict for PD resolved using rule 18 (asignacion -> ID OPERADOR ID .)
-  ! reduce/reduce conflict for PD resolved using rule 18 (asignacion -> ID OPERADOR ID .)
-  ! reduce/reduce conflict for PD resolved using rule 18 (asignacion -> ID OPERADOR ID .)
-    PD              reduce using rule 18 (asignacion -> ID OPERADOR ID .)
-    OPERADOR        shift and go to state 38
-
-  ! PD              [ reduce using rule 36 (expresion_incremento -> ID OPERADOR ID .) ]
-  ! PD              [ reduce using rule 29 (expresion -> ID .) ]
-  ! PD              [ reduce using rule 32 (cadena -> ID .) ]
+    LLAVEI          shift and go to state 86
 
 
 state 75
 
-    (35) expresion_incremento -> ID OPERADOR NUMERO .
-    (19) asignacion -> ID OPERADOR NUMERO .
-    (27) expresion -> NUMERO . OPERADOR NUMERO
-    (28) expresion -> NUMERO . OPERADOR ID
-    (30) expresion -> NUMERO .
+    (34) for_sentencia -> FOR PI asignacion DELIMITADOR . expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
+    (46) expresion -> . OPERADOR NUMERO
+    (47) expresion -> . OPERADOR ID
+    (48) expresion -> . ID OPERADOR NUMERO
+    (49) expresion -> . ID OPERADOR ID
+    (50) expresion -> . NUMERO OPERADOR NUMERO
+    (51) expresion -> . NUMERO OPERADOR ID
+    (52) expresion -> . ID
+    (53) expresion -> . NUMERO
+    (54) expresion -> . cadena
+    (55) expresion -> . CADENA
+    (56) cadena -> . ID
 
-  ! reduce/reduce conflict for PD resolved using rule 19 (asignacion -> ID OPERADOR NUMERO .)
-  ! reduce/reduce conflict for PD resolved using rule 19 (asignacion -> ID OPERADOR NUMERO .)
-    PD              reduce using rule 19 (asignacion -> ID OPERADOR NUMERO .)
-    OPERADOR        shift and go to state 37
+    OPERADOR        shift and go to state 36
+    ID              shift and go to state 39
+    NUMERO          shift and go to state 38
+    CADENA          shift and go to state 41
 
-  ! PD              [ reduce using rule 35 (expresion_incremento -> ID OPERADOR NUMERO .) ]
-  ! PD              [ reduce using rule 30 (expresion -> NUMERO .) ]
-
+    expresion                      shift and go to state 87
+    cadena                         shift and go to state 40
 
 state 76
 
-    (15) for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias . LLAVED
+    (39) asignacion -> NUMERO ID .
 
-    LLAVED          shift and go to state 77
+    DELIMITADOR     reduce using rule 39 (asignacion -> NUMERO ID .)
+    PD              reduce using rule 39 (asignacion -> NUMERO ID .)
 
 
 state 77
 
-    (15) for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .
+    (35) while_sentencia -> WHILE PI expresion PD . LLAVEI sentencias LLAVED
 
-    NUMERO          reduce using rule 15 (for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .)
-    IF              reduce using rule 15 (for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .)
-    FOR             reduce using rule 15 (for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .)
-    WHILE           reduce using rule 15 (for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .)
-    ID              reduce using rule 15 (for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .)
-    OPERADOR        reduce using rule 15 (for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .)
-    $end            reduce using rule 15 (for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .)
-    LLAVED          reduce using rule 15 (for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .)
+    LLAVEI          shift and go to state 88
+
+
+state 78
+
+    (21) salida_datos -> PRINT PI argumentos PD .
+
+    DELIMITADOR     reduce using rule 21 (salida_datos -> PRINT PI argumentos PD .)
+
+
+state 79
+
+    (22) salida_datos -> PRINT PI CADENA PD .
+
+    DELIMITADOR     reduce using rule 22 (salida_datos -> PRINT PI CADENA PD .)
+
+
+state 80
+
+    (27) argumentos -> CADENA DELIMITADOR . argumentos
+    (25) argumentos -> . expresion DELIMITADOR argumentos
+    (26) argumentos -> . expresion
+    (27) argumentos -> . CADENA DELIMITADOR argumentos
+    (28) argumentos -> . CADENA
+    (29) argumentos -> .
+    (46) expresion -> . OPERADOR NUMERO
+    (47) expresion -> . OPERADOR ID
+    (48) expresion -> . ID OPERADOR NUMERO
+    (49) expresion -> . ID OPERADOR ID
+    (50) expresion -> . NUMERO OPERADOR NUMERO
+    (51) expresion -> . NUMERO OPERADOR ID
+    (52) expresion -> . ID
+    (53) expresion -> . NUMERO
+    (54) expresion -> . cadena
+    (55) expresion -> . CADENA
+    (56) cadena -> . ID
+
+    CADENA          shift and go to state 84
+    PD              reduce using rule 29 (argumentos -> .)
+    OPERADOR        shift and go to state 36
+    ID              shift and go to state 39
+    NUMERO          shift and go to state 38
+
+    argumentos                     shift and go to state 89
+    expresion                      shift and go to state 66
+    cadena                         shift and go to state 40
+
+state 81
+
+    (25) argumentos -> expresion DELIMITADOR . argumentos
+    (25) argumentos -> . expresion DELIMITADOR argumentos
+    (26) argumentos -> . expresion
+    (27) argumentos -> . CADENA DELIMITADOR argumentos
+    (28) argumentos -> . CADENA
+    (29) argumentos -> .
+    (46) expresion -> . OPERADOR NUMERO
+    (47) expresion -> . OPERADOR ID
+    (48) expresion -> . ID OPERADOR NUMERO
+    (49) expresion -> . ID OPERADOR ID
+    (50) expresion -> . NUMERO OPERADOR NUMERO
+    (51) expresion -> . NUMERO OPERADOR ID
+    (52) expresion -> . ID
+    (53) expresion -> . NUMERO
+    (54) expresion -> . cadena
+    (55) expresion -> . CADENA
+    (56) cadena -> . ID
+
+    CADENA          shift and go to state 84
+    PD              reduce using rule 29 (argumentos -> .)
+    OPERADOR        shift and go to state 36
+    ID              shift and go to state 39
+    NUMERO          shift and go to state 38
+
+    expresion                      shift and go to state 66
+    argumentos                     shift and go to state 90
+    cadena                         shift and go to state 40
+
+state 82
+
+    (1) programa -> PROGRAMA ID PI PD LLAVEI . declaraciones sentencias LLAVED
+    (2) programa -> PROGRAMA ID PI PD LLAVEI . sentencias LLAVED
+    (4) declaraciones -> . declaracion declaraciones
+    (5) declaraciones -> . declaracion
+    (58) declaraciones -> .
+    (10) sentencias -> . sentencia sentencias
+    (11) sentencias -> . sentencia
+    (57) sentencias -> .
+    (6) declaracion -> . tipo_dato lista_variables DELIMITADOR
+    (42) declaracion -> . INT error DELIMITADOR
+    (43) declaracion -> . error ID DELIMITADOR
+    (12) sentencia -> . if_sentencia
+    (13) sentencia -> . for_sentencia
+    (14) sentencia -> . while_sentencia
+    (15) sentencia -> . asignacion DELIMITADOR
+    (16) sentencia -> . llamada_sistema DELIMITADOR
+    (17) sentencia -> . entrada_datos DELIMITADOR
+    (18) sentencia -> . salida_datos DELIMITADOR
+    (19) sentencia -> . fin_programa DELIMITADOR
+    (31) sentencia -> . NUMERO ID OPERADOR expresion DELIMITADOR
+    (7) tipo_dato -> . INT
+    (30) if_sentencia -> . IF PI expresion PD LLAVEI sentencias LLAVED
+    (34) for_sentencia -> . FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
+    (35) while_sentencia -> . WHILE PI expresion PD LLAVEI sentencias LLAVED
+    (36) asignacion -> . ID OPERADOR expresion
+    (37) asignacion -> . ID OPERADOR ID
+    (38) asignacion -> . ID OPERADOR NUMERO
+    (39) asignacion -> . NUMERO ID
+    (40) asignacion -> . OPERADOR expresion
+    (41) asignacion -> . ID ID
+    (24) llamada_sistema -> . ID PUNTO ID PI argumentos PD
+    (20) entrada_datos -> . READ ID
+    (44) entrada_datos -> . READ error
+    (21) salida_datos -> . PRINT PI argumentos PD
+    (22) salida_datos -> . PRINT PI CADENA PD
+    (45) salida_datos -> . PRINT error
+    (23) fin_programa -> . END
+
+  ! reduce/reduce conflict for LLAVED resolved using rule 57 (sentencias -> .)
+  ! shift/reduce conflict for NUMERO resolved as shift
+  ! shift/reduce conflict for IF resolved as shift
+  ! shift/reduce conflict for FOR resolved as shift
+  ! shift/reduce conflict for WHILE resolved as shift
+  ! shift/reduce conflict for ID resolved as shift
+  ! shift/reduce conflict for OPERADOR resolved as shift
+  ! shift/reduce conflict for READ resolved as shift
+  ! shift/reduce conflict for PRINT resolved as shift
+  ! shift/reduce conflict for END resolved as shift
+    LLAVED          reduce using rule 57 (sentencias -> .)
+    INT             shift and go to state 95
+    error           shift and go to state 96
+    NUMERO          shift and go to state 14
+    IF              shift and go to state 16
+    FOR             shift and go to state 17
+    WHILE           shift and go to state 18
+    ID              shift and go to state 29
+    OPERADOR        shift and go to state 15
+    READ            shift and go to state 19
+    PRINT           shift and go to state 20
+    END             shift and go to state 21
+
+  ! NUMERO          [ reduce using rule 58 (declaraciones -> .) ]
+  ! IF              [ reduce using rule 58 (declaraciones -> .) ]
+  ! FOR             [ reduce using rule 58 (declaraciones -> .) ]
+  ! WHILE           [ reduce using rule 58 (declaraciones -> .) ]
+  ! ID              [ reduce using rule 58 (declaraciones -> .) ]
+  ! OPERADOR        [ reduce using rule 58 (declaraciones -> .) ]
+  ! READ            [ reduce using rule 58 (declaraciones -> .) ]
+  ! PRINT           [ reduce using rule 58 (declaraciones -> .) ]
+  ! END             [ reduce using rule 58 (declaraciones -> .) ]
+  ! LLAVED          [ reduce using rule 58 (declaraciones -> .) ]
+
+    declaraciones                  shift and go to state 91
+    sentencias                     shift and go to state 92
+    declaracion                    shift and go to state 93
+    sentencia                      shift and go to state 5
+    tipo_dato                      shift and go to state 94
+    if_sentencia                   shift and go to state 6
+    for_sentencia                  shift and go to state 7
+    while_sentencia                shift and go to state 8
+    asignacion                     shift and go to state 9
+    llamada_sistema                shift and go to state 10
+    entrada_datos                  shift and go to state 11
+    salida_datos                   shift and go to state 12
+    fin_programa                   shift and go to state 13
+
+state 83
+
+    (24) llamada_sistema -> ID PUNTO ID PI argumentos . PD
+
+    PD              shift and go to state 97
+
+
+state 84
+
+    (27) argumentos -> CADENA . DELIMITADOR argumentos
+    (28) argumentos -> CADENA .
+    (55) expresion -> CADENA .
+
+  ! shift/reduce conflict for DELIMITADOR resolved as shift
+  ! reduce/reduce conflict for PD resolved using rule 28 (argumentos -> CADENA .)
+    DELIMITADOR     shift and go to state 80
+    PD              reduce using rule 28 (argumentos -> CADENA .)
+
+  ! DELIMITADOR     [ reduce using rule 55 (expresion -> CADENA .) ]
+  ! PD              [ reduce using rule 55 (expresion -> CADENA .) ]
+
+
+state 85
+
+    (31) sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .
+
+    NUMERO          reduce using rule 31 (sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .)
+    IF              reduce using rule 31 (sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .)
+    FOR             reduce using rule 31 (sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .)
+    WHILE           reduce using rule 31 (sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .)
+    ID              reduce using rule 31 (sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .)
+    OPERADOR        reduce using rule 31 (sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .)
+    READ            reduce using rule 31 (sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .)
+    PRINT           reduce using rule 31 (sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .)
+    END             reduce using rule 31 (sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .)
+    $end            reduce using rule 31 (sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .)
+    LLAVED          reduce using rule 31 (sentencia -> NUMERO ID OPERADOR expresion DELIMITADOR .)
+
+
+state 86
+
+    (30) if_sentencia -> IF PI expresion PD LLAVEI . sentencias LLAVED
+    (10) sentencias -> . sentencia sentencias
+    (11) sentencias -> . sentencia
+    (57) sentencias -> .
+    (12) sentencia -> . if_sentencia
+    (13) sentencia -> . for_sentencia
+    (14) sentencia -> . while_sentencia
+    (15) sentencia -> . asignacion DELIMITADOR
+    (16) sentencia -> . llamada_sistema DELIMITADOR
+    (17) sentencia -> . entrada_datos DELIMITADOR
+    (18) sentencia -> . salida_datos DELIMITADOR
+    (19) sentencia -> . fin_programa DELIMITADOR
+    (31) sentencia -> . NUMERO ID OPERADOR expresion DELIMITADOR
+    (30) if_sentencia -> . IF PI expresion PD LLAVEI sentencias LLAVED
+    (34) for_sentencia -> . FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
+    (35) while_sentencia -> . WHILE PI expresion PD LLAVEI sentencias LLAVED
+    (36) asignacion -> . ID OPERADOR expresion
+    (37) asignacion -> . ID OPERADOR ID
+    (38) asignacion -> . ID OPERADOR NUMERO
+    (39) asignacion -> . NUMERO ID
+    (40) asignacion -> . OPERADOR expresion
+    (41) asignacion -> . ID ID
+    (24) llamada_sistema -> . ID PUNTO ID PI argumentos PD
+    (20) entrada_datos -> . READ ID
+    (44) entrada_datos -> . READ error
+    (21) salida_datos -> . PRINT PI argumentos PD
+    (22) salida_datos -> . PRINT PI CADENA PD
+    (45) salida_datos -> . PRINT error
+    (23) fin_programa -> . END
+
+    LLAVED          reduce using rule 57 (sentencias -> .)
+    NUMERO          shift and go to state 14
+    IF              shift and go to state 16
+    FOR             shift and go to state 17
+    WHILE           shift and go to state 18
+    ID              shift and go to state 29
+    OPERADOR        shift and go to state 15
+    READ            shift and go to state 19
+    PRINT           shift and go to state 20
+    END             shift and go to state 21
+
+    sentencias                     shift and go to state 98
+    sentencia                      shift and go to state 5
+    if_sentencia                   shift and go to state 6
+    for_sentencia                  shift and go to state 7
+    while_sentencia                shift and go to state 8
+    asignacion                     shift and go to state 9
+    llamada_sistema                shift and go to state 10
+    entrada_datos                  shift and go to state 11
+    salida_datos                   shift and go to state 12
+    fin_programa                   shift and go to state 13
+
+state 87
+
+    (34) for_sentencia -> FOR PI asignacion DELIMITADOR expresion . DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
+
+    DELIMITADOR     shift and go to state 99
+
+
+state 88
+
+    (35) while_sentencia -> WHILE PI expresion PD LLAVEI . sentencias LLAVED
+    (10) sentencias -> . sentencia sentencias
+    (11) sentencias -> . sentencia
+    (57) sentencias -> .
+    (12) sentencia -> . if_sentencia
+    (13) sentencia -> . for_sentencia
+    (14) sentencia -> . while_sentencia
+    (15) sentencia -> . asignacion DELIMITADOR
+    (16) sentencia -> . llamada_sistema DELIMITADOR
+    (17) sentencia -> . entrada_datos DELIMITADOR
+    (18) sentencia -> . salida_datos DELIMITADOR
+    (19) sentencia -> . fin_programa DELIMITADOR
+    (31) sentencia -> . NUMERO ID OPERADOR expresion DELIMITADOR
+    (30) if_sentencia -> . IF PI expresion PD LLAVEI sentencias LLAVED
+    (34) for_sentencia -> . FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
+    (35) while_sentencia -> . WHILE PI expresion PD LLAVEI sentencias LLAVED
+    (36) asignacion -> . ID OPERADOR expresion
+    (37) asignacion -> . ID OPERADOR ID
+    (38) asignacion -> . ID OPERADOR NUMERO
+    (39) asignacion -> . NUMERO ID
+    (40) asignacion -> . OPERADOR expresion
+    (41) asignacion -> . ID ID
+    (24) llamada_sistema -> . ID PUNTO ID PI argumentos PD
+    (20) entrada_datos -> . READ ID
+    (44) entrada_datos -> . READ error
+    (21) salida_datos -> . PRINT PI argumentos PD
+    (22) salida_datos -> . PRINT PI CADENA PD
+    (45) salida_datos -> . PRINT error
+    (23) fin_programa -> . END
+
+    LLAVED          reduce using rule 57 (sentencias -> .)
+    NUMERO          shift and go to state 14
+    IF              shift and go to state 16
+    FOR             shift and go to state 17
+    WHILE           shift and go to state 18
+    ID              shift and go to state 29
+    OPERADOR        shift and go to state 15
+    READ            shift and go to state 19
+    PRINT           shift and go to state 20
+    END             shift and go to state 21
+
+    sentencias                     shift and go to state 100
+    sentencia                      shift and go to state 5
+    if_sentencia                   shift and go to state 6
+    for_sentencia                  shift and go to state 7
+    while_sentencia                shift and go to state 8
+    asignacion                     shift and go to state 9
+    llamada_sistema                shift and go to state 10
+    entrada_datos                  shift and go to state 11
+    salida_datos                   shift and go to state 12
+    fin_programa                   shift and go to state 13
+
+state 89
+
+    (27) argumentos -> CADENA DELIMITADOR argumentos .
+
+    PD              reduce using rule 27 (argumentos -> CADENA DELIMITADOR argumentos .)
+
+
+state 90
+
+    (25) argumentos -> expresion DELIMITADOR argumentos .
+
+    PD              reduce using rule 25 (argumentos -> expresion DELIMITADOR argumentos .)
+
+
+state 91
+
+    (1) programa -> PROGRAMA ID PI PD LLAVEI declaraciones . sentencias LLAVED
+    (10) sentencias -> . sentencia sentencias
+    (11) sentencias -> . sentencia
+    (57) sentencias -> .
+    (12) sentencia -> . if_sentencia
+    (13) sentencia -> . for_sentencia
+    (14) sentencia -> . while_sentencia
+    (15) sentencia -> . asignacion DELIMITADOR
+    (16) sentencia -> . llamada_sistema DELIMITADOR
+    (17) sentencia -> . entrada_datos DELIMITADOR
+    (18) sentencia -> . salida_datos DELIMITADOR
+    (19) sentencia -> . fin_programa DELIMITADOR
+    (31) sentencia -> . NUMERO ID OPERADOR expresion DELIMITADOR
+    (30) if_sentencia -> . IF PI expresion PD LLAVEI sentencias LLAVED
+    (34) for_sentencia -> . FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
+    (35) while_sentencia -> . WHILE PI expresion PD LLAVEI sentencias LLAVED
+    (36) asignacion -> . ID OPERADOR expresion
+    (37) asignacion -> . ID OPERADOR ID
+    (38) asignacion -> . ID OPERADOR NUMERO
+    (39) asignacion -> . NUMERO ID
+    (40) asignacion -> . OPERADOR expresion
+    (41) asignacion -> . ID ID
+    (24) llamada_sistema -> . ID PUNTO ID PI argumentos PD
+    (20) entrada_datos -> . READ ID
+    (44) entrada_datos -> . READ error
+    (21) salida_datos -> . PRINT PI argumentos PD
+    (22) salida_datos -> . PRINT PI CADENA PD
+    (45) salida_datos -> . PRINT error
+    (23) fin_programa -> . END
+
+    LLAVED          reduce using rule 57 (sentencias -> .)
+    NUMERO          shift and go to state 14
+    IF              shift and go to state 16
+    FOR             shift and go to state 17
+    WHILE           shift and go to state 18
+    ID              shift and go to state 29
+    OPERADOR        shift and go to state 15
+    READ            shift and go to state 19
+    PRINT           shift and go to state 20
+    END             shift and go to state 21
+
+    sentencias                     shift and go to state 101
+    sentencia                      shift and go to state 5
+    if_sentencia                   shift and go to state 6
+    for_sentencia                  shift and go to state 7
+    while_sentencia                shift and go to state 8
+    asignacion                     shift and go to state 9
+    llamada_sistema                shift and go to state 10
+    entrada_datos                  shift and go to state 11
+    salida_datos                   shift and go to state 12
+    fin_programa                   shift and go to state 13
+
+state 92
+
+    (2) programa -> PROGRAMA ID PI PD LLAVEI sentencias . LLAVED
+
+    LLAVED          shift and go to state 102
+
+
+state 93
+
+    (4) declaraciones -> declaracion . declaraciones
+    (5) declaraciones -> declaracion .
+    (4) declaraciones -> . declaracion declaraciones
+    (5) declaraciones -> . declaracion
+    (58) declaraciones -> .
+    (6) declaracion -> . tipo_dato lista_variables DELIMITADOR
+    (42) declaracion -> . INT error DELIMITADOR
+    (43) declaracion -> . error ID DELIMITADOR
+    (7) tipo_dato -> . INT
+
+  ! reduce/reduce conflict for NUMERO resolved using rule 5 (declaraciones -> declaracion .)
+  ! reduce/reduce conflict for IF resolved using rule 5 (declaraciones -> declaracion .)
+  ! reduce/reduce conflict for FOR resolved using rule 5 (declaraciones -> declaracion .)
+  ! reduce/reduce conflict for WHILE resolved using rule 5 (declaraciones -> declaracion .)
+  ! reduce/reduce conflict for ID resolved using rule 5 (declaraciones -> declaracion .)
+  ! reduce/reduce conflict for OPERADOR resolved using rule 5 (declaraciones -> declaracion .)
+  ! reduce/reduce conflict for READ resolved using rule 5 (declaraciones -> declaracion .)
+  ! reduce/reduce conflict for PRINT resolved using rule 5 (declaraciones -> declaracion .)
+  ! reduce/reduce conflict for END resolved using rule 5 (declaraciones -> declaracion .)
+  ! reduce/reduce conflict for LLAVED resolved using rule 5 (declaraciones -> declaracion .)
+    NUMERO          reduce using rule 5 (declaraciones -> declaracion .)
+    IF              reduce using rule 5 (declaraciones -> declaracion .)
+    FOR             reduce using rule 5 (declaraciones -> declaracion .)
+    WHILE           reduce using rule 5 (declaraciones -> declaracion .)
+    ID              reduce using rule 5 (declaraciones -> declaracion .)
+    OPERADOR        reduce using rule 5 (declaraciones -> declaracion .)
+    READ            reduce using rule 5 (declaraciones -> declaracion .)
+    PRINT           reduce using rule 5 (declaraciones -> declaracion .)
+    END             reduce using rule 5 (declaraciones -> declaracion .)
+    LLAVED          reduce using rule 5 (declaraciones -> declaracion .)
+    INT             shift and go to state 95
+    error           shift and go to state 96
+
+  ! NUMERO          [ reduce using rule 58 (declaraciones -> .) ]
+  ! IF              [ reduce using rule 58 (declaraciones -> .) ]
+  ! FOR             [ reduce using rule 58 (declaraciones -> .) ]
+  ! WHILE           [ reduce using rule 58 (declaraciones -> .) ]
+  ! ID              [ reduce using rule 58 (declaraciones -> .) ]
+  ! OPERADOR        [ reduce using rule 58 (declaraciones -> .) ]
+  ! READ            [ reduce using rule 58 (declaraciones -> .) ]
+  ! PRINT           [ reduce using rule 58 (declaraciones -> .) ]
+  ! END             [ reduce using rule 58 (declaraciones -> .) ]
+  ! LLAVED          [ reduce using rule 58 (declaraciones -> .) ]
+
+    declaracion                    shift and go to state 93
+    declaraciones                  shift and go to state 103
+    tipo_dato                      shift and go to state 94
+
+state 94
+
+    (6) declaracion -> tipo_dato . lista_variables DELIMITADOR
+    (8) lista_variables -> . ID DELIMITADOR lista_variables
+    (9) lista_variables -> . ID
+
+    ID              shift and go to state 105
+
+    lista_variables                shift and go to state 104
+
+state 95
+
+    (42) declaracion -> INT . error DELIMITADOR
+    (7) tipo_dato -> INT .
+
+    error           shift and go to state 106
+    ID              reduce using rule 7 (tipo_dato -> INT .)
+
+
+state 96
+
+    (43) declaracion -> error . ID DELIMITADOR
+
+    ID              shift and go to state 107
+
+
+state 97
+
+    (24) llamada_sistema -> ID PUNTO ID PI argumentos PD .
+
+    DELIMITADOR     reduce using rule 24 (llamada_sistema -> ID PUNTO ID PI argumentos PD .)
+
+
+state 98
+
+    (30) if_sentencia -> IF PI expresion PD LLAVEI sentencias . LLAVED
+
+    LLAVED          shift and go to state 108
+
+
+state 99
+
+    (34) for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR . expresion_incremento PD LLAVEI sentencias LLAVED
+    (59) expresion_incremento -> . ID OPERADOR
+    (60) expresion_incremento -> . ID OPERADOR NUMERO
+    (61) expresion_incremento -> . ID OPERADOR ID
+    (62) expresion_incremento -> . asignacion
+    (36) asignacion -> . ID OPERADOR expresion
+    (37) asignacion -> . ID OPERADOR ID
+    (38) asignacion -> . ID OPERADOR NUMERO
+    (39) asignacion -> . NUMERO ID
+    (40) asignacion -> . OPERADOR expresion
+    (41) asignacion -> . ID ID
+
+    ID              shift and go to state 111
+    NUMERO          shift and go to state 62
+    OPERADOR        shift and go to state 15
+
+    asignacion                     shift and go to state 109
+    expresion_incremento           shift and go to state 110
+
+state 100
+
+    (35) while_sentencia -> WHILE PI expresion PD LLAVEI sentencias . LLAVED
+
+    LLAVED          shift and go to state 112
+
+
+state 101
+
+    (1) programa -> PROGRAMA ID PI PD LLAVEI declaraciones sentencias . LLAVED
+
+    LLAVED          shift and go to state 113
+
+
+state 102
+
+    (2) programa -> PROGRAMA ID PI PD LLAVEI sentencias LLAVED .
+
+    $end            reduce using rule 2 (programa -> PROGRAMA ID PI PD LLAVEI sentencias LLAVED .)
+
+
+state 103
+
+    (4) declaraciones -> declaracion declaraciones .
+
+    NUMERO          reduce using rule 4 (declaraciones -> declaracion declaraciones .)
+    IF              reduce using rule 4 (declaraciones -> declaracion declaraciones .)
+    FOR             reduce using rule 4 (declaraciones -> declaracion declaraciones .)
+    WHILE           reduce using rule 4 (declaraciones -> declaracion declaraciones .)
+    ID              reduce using rule 4 (declaraciones -> declaracion declaraciones .)
+    OPERADOR        reduce using rule 4 (declaraciones -> declaracion declaraciones .)
+    READ            reduce using rule 4 (declaraciones -> declaracion declaraciones .)
+    PRINT           reduce using rule 4 (declaraciones -> declaracion declaraciones .)
+    END             reduce using rule 4 (declaraciones -> declaracion declaraciones .)
+    LLAVED          reduce using rule 4 (declaraciones -> declaracion declaraciones .)
+
+
+state 104
+
+    (6) declaracion -> tipo_dato lista_variables . DELIMITADOR
+
+    DELIMITADOR     shift and go to state 114
+
+
+state 105
+
+    (8) lista_variables -> ID . DELIMITADOR lista_variables
+    (9) lista_variables -> ID .
+
+  ! shift/reduce conflict for DELIMITADOR resolved as shift
+    DELIMITADOR     shift and go to state 115
+
+  ! DELIMITADOR     [ reduce using rule 9 (lista_variables -> ID .) ]
+
+
+state 106
+
+    (42) declaracion -> INT error . DELIMITADOR
+
+    DELIMITADOR     shift and go to state 116
+
+
+state 107
+
+    (43) declaracion -> error ID . DELIMITADOR
+
+    DELIMITADOR     shift and go to state 117
+
+
+state 108
+
+    (30) if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .
+
+    NUMERO          reduce using rule 30 (if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .)
+    IF              reduce using rule 30 (if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .)
+    FOR             reduce using rule 30 (if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .)
+    WHILE           reduce using rule 30 (if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .)
+    ID              reduce using rule 30 (if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .)
+    OPERADOR        reduce using rule 30 (if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .)
+    READ            reduce using rule 30 (if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .)
+    PRINT           reduce using rule 30 (if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .)
+    END             reduce using rule 30 (if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .)
+    $end            reduce using rule 30 (if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .)
+    LLAVED          reduce using rule 30 (if_sentencia -> IF PI expresion PD LLAVEI sentencias LLAVED .)
+
+
+state 109
+
+    (62) expresion_incremento -> asignacion .
+
+    PD              reduce using rule 62 (expresion_incremento -> asignacion .)
+
+
+state 110
+
+    (34) for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento . PD LLAVEI sentencias LLAVED
+
+    PD              shift and go to state 118
+
+
+state 111
+
+    (59) expresion_incremento -> ID . OPERADOR
+    (60) expresion_incremento -> ID . OPERADOR NUMERO
+    (61) expresion_incremento -> ID . OPERADOR ID
+    (36) asignacion -> ID . OPERADOR expresion
+    (37) asignacion -> ID . OPERADOR ID
+    (38) asignacion -> ID . OPERADOR NUMERO
+    (41) asignacion -> ID . ID
+
+    OPERADOR        shift and go to state 119
+    ID              shift and go to state 24
+
+
+state 112
+
+    (35) while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .
+
+    NUMERO          reduce using rule 35 (while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .)
+    IF              reduce using rule 35 (while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .)
+    FOR             reduce using rule 35 (while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .)
+    WHILE           reduce using rule 35 (while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .)
+    ID              reduce using rule 35 (while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .)
+    OPERADOR        reduce using rule 35 (while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .)
+    READ            reduce using rule 35 (while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .)
+    PRINT           reduce using rule 35 (while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .)
+    END             reduce using rule 35 (while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .)
+    $end            reduce using rule 35 (while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .)
+    LLAVED          reduce using rule 35 (while_sentencia -> WHILE PI expresion PD LLAVEI sentencias LLAVED .)
+
+
+state 113
+
+    (1) programa -> PROGRAMA ID PI PD LLAVEI declaraciones sentencias LLAVED .
+
+    $end            reduce using rule 1 (programa -> PROGRAMA ID PI PD LLAVEI declaraciones sentencias LLAVED .)
+
+
+state 114
+
+    (6) declaracion -> tipo_dato lista_variables DELIMITADOR .
+
+    INT             reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
+    error           reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
+    NUMERO          reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
+    IF              reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
+    FOR             reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
+    WHILE           reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
+    ID              reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
+    OPERADOR        reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
+    READ            reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
+    PRINT           reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
+    END             reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
+    LLAVED          reduce using rule 6 (declaracion -> tipo_dato lista_variables DELIMITADOR .)
+
+
+state 115
+
+    (8) lista_variables -> ID DELIMITADOR . lista_variables
+    (8) lista_variables -> . ID DELIMITADOR lista_variables
+    (9) lista_variables -> . ID
+
+    ID              shift and go to state 105
+
+    lista_variables                shift and go to state 120
+
+state 116
+
+    (42) declaracion -> INT error DELIMITADOR .
+
+    INT             reduce using rule 42 (declaracion -> INT error DELIMITADOR .)
+    error           reduce using rule 42 (declaracion -> INT error DELIMITADOR .)
+    NUMERO          reduce using rule 42 (declaracion -> INT error DELIMITADOR .)
+    IF              reduce using rule 42 (declaracion -> INT error DELIMITADOR .)
+    FOR             reduce using rule 42 (declaracion -> INT error DELIMITADOR .)
+    WHILE           reduce using rule 42 (declaracion -> INT error DELIMITADOR .)
+    ID              reduce using rule 42 (declaracion -> INT error DELIMITADOR .)
+    OPERADOR        reduce using rule 42 (declaracion -> INT error DELIMITADOR .)
+    READ            reduce using rule 42 (declaracion -> INT error DELIMITADOR .)
+    PRINT           reduce using rule 42 (declaracion -> INT error DELIMITADOR .)
+    END             reduce using rule 42 (declaracion -> INT error DELIMITADOR .)
+    LLAVED          reduce using rule 42 (declaracion -> INT error DELIMITADOR .)
+
+
+state 117
+
+    (43) declaracion -> error ID DELIMITADOR .
+
+    INT             reduce using rule 43 (declaracion -> error ID DELIMITADOR .)
+    error           reduce using rule 43 (declaracion -> error ID DELIMITADOR .)
+    NUMERO          reduce using rule 43 (declaracion -> error ID DELIMITADOR .)
+    IF              reduce using rule 43 (declaracion -> error ID DELIMITADOR .)
+    FOR             reduce using rule 43 (declaracion -> error ID DELIMITADOR .)
+    WHILE           reduce using rule 43 (declaracion -> error ID DELIMITADOR .)
+    ID              reduce using rule 43 (declaracion -> error ID DELIMITADOR .)
+    OPERADOR        reduce using rule 43 (declaracion -> error ID DELIMITADOR .)
+    READ            reduce using rule 43 (declaracion -> error ID DELIMITADOR .)
+    PRINT           reduce using rule 43 (declaracion -> error ID DELIMITADOR .)
+    END             reduce using rule 43 (declaracion -> error ID DELIMITADOR .)
+    LLAVED          reduce using rule 43 (declaracion -> error ID DELIMITADOR .)
+
+
+state 118
+
+    (34) for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD . LLAVEI sentencias LLAVED
+
+    LLAVEI          shift and go to state 121
+
+
+state 119
+
+    (59) expresion_incremento -> ID OPERADOR .
+    (60) expresion_incremento -> ID OPERADOR . NUMERO
+    (61) expresion_incremento -> ID OPERADOR . ID
+    (36) asignacion -> ID OPERADOR . expresion
+    (37) asignacion -> ID OPERADOR . ID
+    (38) asignacion -> ID OPERADOR . NUMERO
+    (46) expresion -> . OPERADOR NUMERO
+    (47) expresion -> . OPERADOR ID
+    (48) expresion -> . ID OPERADOR NUMERO
+    (49) expresion -> . ID OPERADOR ID
+    (50) expresion -> . NUMERO OPERADOR NUMERO
+    (51) expresion -> . NUMERO OPERADOR ID
+    (52) expresion -> . ID
+    (53) expresion -> . NUMERO
+    (54) expresion -> . cadena
+    (55) expresion -> . CADENA
+    (56) cadena -> . ID
+
+    PD              reduce using rule 59 (expresion_incremento -> ID OPERADOR .)
+    NUMERO          shift and go to state 123
+    ID              shift and go to state 122
+    OPERADOR        shift and go to state 36
+    CADENA          shift and go to state 41
+
+    expresion                      shift and go to state 51
+    cadena                         shift and go to state 40
+
+state 120
+
+    (8) lista_variables -> ID DELIMITADOR lista_variables .
+
+    DELIMITADOR     reduce using rule 8 (lista_variables -> ID DELIMITADOR lista_variables .)
+
+
+state 121
+
+    (34) for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI . sentencias LLAVED
+    (10) sentencias -> . sentencia sentencias
+    (11) sentencias -> . sentencia
+    (57) sentencias -> .
+    (12) sentencia -> . if_sentencia
+    (13) sentencia -> . for_sentencia
+    (14) sentencia -> . while_sentencia
+    (15) sentencia -> . asignacion DELIMITADOR
+    (16) sentencia -> . llamada_sistema DELIMITADOR
+    (17) sentencia -> . entrada_datos DELIMITADOR
+    (18) sentencia -> . salida_datos DELIMITADOR
+    (19) sentencia -> . fin_programa DELIMITADOR
+    (31) sentencia -> . NUMERO ID OPERADOR expresion DELIMITADOR
+    (30) if_sentencia -> . IF PI expresion PD LLAVEI sentencias LLAVED
+    (34) for_sentencia -> . FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED
+    (35) while_sentencia -> . WHILE PI expresion PD LLAVEI sentencias LLAVED
+    (36) asignacion -> . ID OPERADOR expresion
+    (37) asignacion -> . ID OPERADOR ID
+    (38) asignacion -> . ID OPERADOR NUMERO
+    (39) asignacion -> . NUMERO ID
+    (40) asignacion -> . OPERADOR expresion
+    (41) asignacion -> . ID ID
+    (24) llamada_sistema -> . ID PUNTO ID PI argumentos PD
+    (20) entrada_datos -> . READ ID
+    (44) entrada_datos -> . READ error
+    (21) salida_datos -> . PRINT PI argumentos PD
+    (22) salida_datos -> . PRINT PI CADENA PD
+    (45) salida_datos -> . PRINT error
+    (23) fin_programa -> . END
+
+    LLAVED          reduce using rule 57 (sentencias -> .)
+    NUMERO          shift and go to state 14
+    IF              shift and go to state 16
+    FOR             shift and go to state 17
+    WHILE           shift and go to state 18
+    ID              shift and go to state 29
+    OPERADOR        shift and go to state 15
+    READ            shift and go to state 19
+    PRINT           shift and go to state 20
+    END             shift and go to state 21
+
+    asignacion                     shift and go to state 9
+    sentencias                     shift and go to state 124
+    sentencia                      shift and go to state 5
+    if_sentencia                   shift and go to state 6
+    for_sentencia                  shift and go to state 7
+    while_sentencia                shift and go to state 8
+    llamada_sistema                shift and go to state 10
+    entrada_datos                  shift and go to state 11
+    salida_datos                   shift and go to state 12
+    fin_programa                   shift and go to state 13
+
+state 122
+
+    (61) expresion_incremento -> ID OPERADOR ID .
+    (37) asignacion -> ID OPERADOR ID .
+    (48) expresion -> ID . OPERADOR NUMERO
+    (49) expresion -> ID . OPERADOR ID
+    (52) expresion -> ID .
+    (56) cadena -> ID .
+
+  ! reduce/reduce conflict for PD resolved using rule 37 (asignacion -> ID OPERADOR ID .)
+  ! reduce/reduce conflict for PD resolved using rule 37 (asignacion -> ID OPERADOR ID .)
+  ! reduce/reduce conflict for PD resolved using rule 37 (asignacion -> ID OPERADOR ID .)
+    PD              reduce using rule 37 (asignacion -> ID OPERADOR ID .)
+    OPERADOR        shift and go to state 58
+
+  ! PD              [ reduce using rule 61 (expresion_incremento -> ID OPERADOR ID .) ]
+  ! PD              [ reduce using rule 52 (expresion -> ID .) ]
+  ! PD              [ reduce using rule 56 (cadena -> ID .) ]
+
+
+state 123
+
+    (60) expresion_incremento -> ID OPERADOR NUMERO .
+    (38) asignacion -> ID OPERADOR NUMERO .
+    (50) expresion -> NUMERO . OPERADOR NUMERO
+    (51) expresion -> NUMERO . OPERADOR ID
+    (53) expresion -> NUMERO .
+
+  ! reduce/reduce conflict for PD resolved using rule 38 (asignacion -> ID OPERADOR NUMERO .)
+  ! reduce/reduce conflict for PD resolved using rule 38 (asignacion -> ID OPERADOR NUMERO .)
+    PD              reduce using rule 38 (asignacion -> ID OPERADOR NUMERO .)
+    OPERADOR        shift and go to state 57
+
+  ! PD              [ reduce using rule 60 (expresion_incremento -> ID OPERADOR NUMERO .) ]
+  ! PD              [ reduce using rule 53 (expresion -> NUMERO .) ]
+
+
+state 124
+
+    (34) for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias . LLAVED
+
+    LLAVED          shift and go to state 125
+
+
+state 125
+
+    (34) for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .
+
+    NUMERO          reduce using rule 34 (for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .)
+    IF              reduce using rule 34 (for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .)
+    FOR             reduce using rule 34 (for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .)
+    WHILE           reduce using rule 34 (for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .)
+    ID              reduce using rule 34 (for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .)
+    OPERADOR        reduce using rule 34 (for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .)
+    READ            reduce using rule 34 (for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .)
+    PRINT           reduce using rule 34 (for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .)
+    END             reduce using rule 34 (for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .)
+    $end            reduce using rule 34 (for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .)
+    LLAVED          reduce using rule 34 (for_sentencia -> FOR PI asignacion DELIMITADOR expresion DELIMITADOR expresion_incremento PD LLAVEI sentencias LLAVED .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: reduce/reduce conflict in state 3 resolved using rule (sentencias -> sentencia)
-WARNING: rejected rule (sentencias -> <empty>) in state 3
-WARNING: reduce/reduce conflict in state 25 resolved using rule (expresion -> ID)
-WARNING: rejected rule (cadena -> ID) in state 25
-WARNING: reduce/reduce conflict in state 31 resolved using rule (asignacion -> ID OPERADOR ID)
-WARNING: rejected rule (expresion -> ID) in state 31
-WARNING: reduce/reduce conflict in state 31 resolved using rule (asignacion -> ID OPERADOR ID)
-WARNING: rejected rule (cadena -> ID) in state 31
-WARNING: reduce/reduce conflict in state 33 resolved using rule (asignacion -> ID OPERADOR NUMERO)
-WARNING: rejected rule (expresion -> NUMERO) in state 33
-WARNING: reduce/reduce conflict in state 74 resolved using rule (asignacion -> ID OPERADOR ID)
-WARNING: rejected rule (expresion_incremento -> ID OPERADOR ID) in state 74
-WARNING: reduce/reduce conflict in state 74 resolved using rule (asignacion -> ID OPERADOR ID)
-WARNING: rejected rule (expresion -> ID) in state 74
-WARNING: reduce/reduce conflict in state 74 resolved using rule (asignacion -> ID OPERADOR ID)
-WARNING: rejected rule (cadena -> ID) in state 74
-WARNING: reduce/reduce conflict in state 75 resolved using rule (asignacion -> ID OPERADOR NUMERO)
-WARNING: rejected rule (expresion_incremento -> ID OPERADOR NUMERO) in state 75
-WARNING: reduce/reduce conflict in state 75 resolved using rule (asignacion -> ID OPERADOR NUMERO)
-WARNING: rejected rule (expresion -> NUMERO) in state 75
+WARNING: shift/reduce conflict for PD in state 65 resolved as shift
+WARNING: shift/reduce conflict for DELIMITADOR in state 65 resolved as shift
+WARNING: shift/reduce conflict for PD in state 65 resolved as shift
+WARNING: shift/reduce conflict for NUMERO in state 82 resolved as shift
+WARNING: shift/reduce conflict for IF in state 82 resolved as shift
+WARNING: shift/reduce conflict for FOR in state 82 resolved as shift
+WARNING: shift/reduce conflict for WHILE in state 82 resolved as shift
+WARNING: shift/reduce conflict for ID in state 82 resolved as shift
+WARNING: shift/reduce conflict for OPERADOR in state 82 resolved as shift
+WARNING: shift/reduce conflict for READ in state 82 resolved as shift
+WARNING: shift/reduce conflict for PRINT in state 82 resolved as shift
+WARNING: shift/reduce conflict for END in state 82 resolved as shift
+WARNING: shift/reduce conflict for DELIMITADOR in state 84 resolved as shift
+WARNING: shift/reduce conflict for DELIMITADOR in state 105 resolved as shift
+WARNING: reduce/reduce conflict in state 5 resolved using rule (sentencias -> sentencia)
+WARNING: rejected rule (sentencias -> <empty>) in state 5
+WARNING: reduce/reduce conflict in state 39 resolved using rule (expresion -> ID)
+WARNING: rejected rule (cadena -> ID) in state 39
+WARNING: reduce/reduce conflict in state 50 resolved using rule (asignacion -> ID OPERADOR ID)
+WARNING: rejected rule (expresion -> ID) in state 50
+WARNING: reduce/reduce conflict in state 50 resolved using rule (asignacion -> ID OPERADOR ID)
+WARNING: rejected rule (cadena -> ID) in state 50
+WARNING: reduce/reduce conflict in state 52 resolved using rule (asignacion -> ID OPERADOR NUMERO)
+WARNING: rejected rule (expresion -> NUMERO) in state 52
+WARNING: reduce/reduce conflict in state 82 resolved using rule (sentencias -> <empty>)
+WARNING: rejected rule (declaraciones -> <empty>) in state 82
+WARNING: reduce/reduce conflict in state 84 resolved using rule (argumentos -> CADENA)
+WARNING: rejected rule (expresion -> CADENA) in state 84
+WARNING: reduce/reduce conflict in state 93 resolved using rule (declaraciones -> declaracion)
+WARNING: rejected rule (declaraciones -> <empty>) in state 93
+WARNING: reduce/reduce conflict in state 122 resolved using rule (asignacion -> ID OPERADOR ID)
+WARNING: rejected rule (expresion_incremento -> ID OPERADOR ID) in state 122
+WARNING: reduce/reduce conflict in state 122 resolved using rule (asignacion -> ID OPERADOR ID)
+WARNING: rejected rule (expresion -> ID) in state 122
+WARNING: reduce/reduce conflict in state 122 resolved using rule (asignacion -> ID OPERADOR ID)
+WARNING: rejected rule (cadena -> ID) in state 122
+WARNING: reduce/reduce conflict in state 123 resolved using rule (asignacion -> ID OPERADOR NUMERO)
+WARNING: rejected rule (expresion_incremento -> ID OPERADOR NUMERO) in state 123
+WARNING: reduce/reduce conflict in state 123 resolved using rule (asignacion -> ID OPERADOR NUMERO)
+WARNING: rejected rule (expresion -> NUMERO) in state 123
 WARNING: Rule (cadena -> ID) is never reduced
+WARNING: Rule (declaraciones -> <empty>) is never reduced
 WARNING: Rule (expresion_incremento -> ID OPERADOR ID) is never reduced
 WARNING: Rule (expresion_incremento -> ID OPERADOR NUMERO) is never reduced
