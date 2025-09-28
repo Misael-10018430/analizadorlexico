@@ -58,7 +58,6 @@ def p_programa_completo(p):
     | PROGRAMA ID PI PD LLAVEI sentencias LLAVED
     '''
     p[0] = "Programa válido"
-
 #un programa consiste en una sencuencia de sentencias
 def p_programa(p):
     '''
@@ -71,26 +70,22 @@ def p_declaraciones(p):
     | declaracion
     '''
     pass
-
 def p_declaracion(p):
     '''
     declaracion : tipo_dato lista_variables DELIMITADOR
     '''
     pass
-
 def p_tipo_dato(p):
     '''
     tipo_dato : INT
     '''
     pass
-
 def p_lista_variables(p):
     '''
     lista_variables : lista_variables DELIMITADOR ID
     | ID
     '''
     pass
-
 def p_sentencias(p):
     '''
     sentencias : sentencia sentencias 
@@ -114,7 +109,6 @@ def p_entrada_datos(p):
     entrada_datos : READ ID
     '''
     pass
-
 def p_salida_datos(p):
     '''
     salida_datos : PRINT PI argumentos PD
@@ -123,7 +117,6 @@ def p_salida_datos(p):
     | PRINTF PI CADENA PD
     '''
     pass
-
 def p_fin_programa(p):
     '''
     fin_programa : END
@@ -143,7 +136,6 @@ def p_argumentos(p):
     |
     '''
     pass
-
 def p_if_sentencia(p):
     '''
     if_sentencia : IF PI expresion PD LLAVEI sentencias LLAVED
@@ -179,6 +171,7 @@ def p_asignacion(p):
     | ID OPERADOR NUMERO
     '''
     pass
+
 def p_asignacion_error(p):
     '''
     asignacion : NUMERO ID
@@ -198,7 +191,6 @@ def p_declaracion_error(p):
     '''
     global error_sintactico
     error_sintactico = f"ERROR SINTÁCTICO - Error en declaración de variable. Formato correcto: 'int variable;'"
-
 #Errores para entrada/salida de datos
 def p_entrada_error(p):
     '''
@@ -217,7 +209,6 @@ def p_salida_error(p):
         error_sintactico = f"ERROR SINTÁCTICO - Instrucción PRINTF incorrecta. Formato correcto: 'printf(expresion);' o 'printf(\"texto\");'"
     else:
         error_sintactico = f"ERROR SINTÁCTICO - Instrucción PRINT incorrecta. Formato correcto: 'print(expresion);' o 'print(\"texto\");'"
-
 def p_expresion_error(p):
     '''
     expresion : OPERADOR NUMERO
@@ -239,27 +230,23 @@ def p_expresion(p):
     | CADENA
     '''
     pass
-
 def p_cadena(p):
     '''
     cadena : ID
     '''
     pass
-
 #Permitir sentencias vacías para manejar bloques correctamente
 def p_sentencias_vacia(p):
     '''
     sentencias : 
     '''
     pass
-
 # AGREGADO: Permitir declaraciones vacías
 def p_declaraciones_vacia(p):
     '''
     declaraciones :
     '''
     pass
-
 # Regla para incrementos en for que reconoce i++ correctamente
 def p_expresion_incremento(p):
     '''
@@ -269,7 +256,6 @@ def p_expresion_incremento(p):
     | asignacion
     '''
     pass
-
 # Regla para manejar errores de sintaxis 
 def p_error(p):
     global error_sintactico
